@@ -65,4 +65,4 @@ class Scene:
 
     def add_animation(self, start: float, end: float, target: Node, animator: Any) -> None:
         """Add an animation to the timeline."""
-        self.timeline = self.timeline.add(start, end, target, animator)
+        self.timeline = self.timeline.add(float(start), float(end), target, animator)
