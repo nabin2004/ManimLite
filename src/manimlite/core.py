@@ -58,3 +58,8 @@ class Scene:
     def narrate(self, voice_over: Any) -> None:
         """Register narration for mixing into the output audio (stub)."""
         _ = voice_over
+
+    def add_node(self, node: Node) -> None:
+        """Add a node to the scene graph """
+        self.root.children += (node,)
+        
