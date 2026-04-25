@@ -62,4 +62,7 @@ class Scene:
     def add_node(self, node: Node) -> None:
         """Add a node to the scene graph """
         self.root.children += (node,)
-        
+
+    def add_animation(self, start: float, end: float, target: Node, animator: Any) -> None:
+        """Add an animation to the timeline."""
+        self.timeline = self.timeline.add(start, end, target, animator)
