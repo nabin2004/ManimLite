@@ -15,6 +15,8 @@ Installing `[tts]` may pull a **large** dependency tree (for example **PyTorch**
 
 **Status:** pre-alpha — API and internals are stubs; see [docs/](docs/) for requirements and design.
 
+**Tutorial:** step-by-step build from ASCII to PyAV-oriented design in [learn/](learn/) (phases `000`–`100`).
+
 ## Quick start (placeholder)
 
 ```bash
@@ -26,6 +28,7 @@ Implementation of `render` and the pipeline is tracked in the roadmap.
 
 ## Documentation
 
+- [Learn path (phases 000–100)](learn/README.md)
 - [Proposal](docs/proposal.md)
 - [Roadmap](docs/roadmap.md)
 - [Software Requirements Specification (SRS)](docs/requirements/SRS.md)
