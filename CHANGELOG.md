@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **`Node.update(t, dt)`** and **`Renderer.play(scene)`:** time-stepped loop (`dt = 1 / scene.fps`, `frames = max(1, int(duration * fps))`) runs **update then draw** each frame via the same `AsciiFrameCanvas` / `root.draw` path as `render`. Non-positive `scene.fps` raises `ValueError`.
-- **`examples/draw_circle.py`:** uses `play` with `DriftingCircle` (subclass) for horizontal motion; library **`Circle`** stays static unless you override `update`.
+- **`examples/play_circles.py`:** `Renderer.play` with `DriftingCircle` (subclass) for horizontal motion; library **`Circle`** stays static unless you override `update`. **`examples/draw_circle.py`** is the single-frame `render` counterpart.
 - Tests: `test_node_update_visits_self_and_children`, `test_play_calls_update_once_per_frame`, `test_play_rejects_non_positive_fps`.
 
 - **Scene graph (terminal path):** `Node` now has `x`, `y`, and `add()`; `draw(canvas, ox, oy)` propagates parent origin so child positions are relative. `Scene.add_node` calls `root.add()`.
