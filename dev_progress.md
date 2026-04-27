@@ -1,0 +1,110 @@
+# Development Progress
+
+Below is the checklist of all the files in the `learn` directory:
+
+- [X] 000_overview.md
+- [X] 001_motivation.md
+- [X] 002_design_philosophy.md
+- [X] 003_python_setup.md
+- [X] 004_canvas_and_coordinates.md
+- [X] 005_print_renderer.md
+- [X] 006_draw_point.md
+- [X] 007_draw_line.md
+- [X] 008_draw_circle.md
+- [ ] 009_limits_of_functions.md
+- [ ] 010_first_node_class.md
+- [ ] 011_node_draw.md
+- [ ] 012_node_position.md
+- [ ] 013_list_vs_scene.md
+- [ ] 014_scene_class.md
+- [ ] 015_scene_render.md
+- [ ] 016_circle_shape.md
+- [ ] 017_line_shape.md
+- [ ] 018_rectangle_shape.md
+- [ ] 019_duplication_smell.md
+- [ ] 020_base_shape.md
+- [ ] 021_polymorphic_draw.md
+- [ ] 022_drawable_protocol.md
+- [ ] 023_color_stroke.md
+- [ ] 024_z_ordering.md
+- [ ] 025_grouping_children.md
+- [ ] 026_recursive_draw.md
+- [ ] 027_limits_of_ascii.md
+- [ ] 028_numpy_framebuffer.md
+- [ ] 029_draw_into_array.md
+- [ ] 030_save_frame_png.md
+- [ ] 031_what_is_animation_lerp.md
+- [ ] 032_move_animation.md
+- [ ] 033_apply_over_frames.md
+- [ ] 034_fade_animation.md
+- [ ] 035_scale_animation.md
+- [ ] 036_multiple_animations.md
+- [ ] 037_timeline_tuples.md
+- [ ] 038_scene_animate.md
+- [ ] 039_sequential_parallel.md
+- [ ] 040_easing.md
+- [ ] 041_easing_in_animators.md
+- [ ] 042_dispatcher_loop.md
+- [ ] 043_subclass_explosion.md
+- [ ] 044_callable_animator.md
+- [ ] 045_dataclass_animators.md
+- [ ] 046_generic_tween.md
+- [ ] 047_property_animations.md
+- [ ] 048_scene_play.md
+- [ ] 049_render_n_frames.md
+- [ ] 050_from_frames_to_video_concept.md
+- [ ] 051_transform_dataclass.md
+- [ ] 052_replace_xy_with_transform.md
+- [ ] 053_compose_transforms.md
+- [ ] 054_parent_transform_chain.md
+- [ ] 055_group_node.md
+- [ ] 056_shape_refactor.md
+- [ ] 057_style_dataclass.md
+- [ ] 058_composition_over_inheritance.md
+- [ ] 059_scene_graph_traversal.md
+- [ ] 060_bounding_box.md
+- [ ] 061_dirty_flags.md
+- [ ] 062_renderer_protocol.md
+- [ ] 063_numpy_renderer.md
+- [ ] 064_skia_sketch.md
+- [ ] 065_renderer_vs_exporter.md
+- [ ] 066_frame_iterator.md
+- [ ] 067_time_driven_loop.md
+- [ ] 068_scene_save_api.md
+- [ ] 069_error_handling.md
+- [ ] 070_testing_strategy.md
+- [ ] 071_architecture_recap.md
+- [ ] 072_profiling.md
+- [ ] 073_no_disk_frame_pipeline.md
+- [ ] 074_pyav_intro.md
+- [ ] 075_pyav_h264_stream.md
+- [ ] 076_pcm_timeline.md
+- [ ] 077_mux_audio_video.md
+- [ ] 078_voiceover_hook.md
+- [ ] 079_kitten_tts_hook.md
+- [ ] 080_pydub_mix.md
+- [ ] 081_math_cache_typst.md
+- [ ] 082_font_caching.md
+- [ ] 083_memory_chunked_encoding.md
+- [ ] 084_determinism.md
+- [ ] 085_async_threading.md
+- [ ] 086_cli_render.md
+- [ ] 087_scene_discovery.md
+- [ ] 088_config.md
+- [ ] 089_debug_overlay.md
+- [ ] 090_packaging_lockfile.md
+- [ ] 091_distribution.md
+- [ ] 092_plugin_shapes.md
+- [ ] 093_pluggable_renderers.md
+- [ ] 094_pluggable_animators.md
+- [ ] 095_pluggable_voiceover.md
+- [ ] 096_ci_and_tests.md
+- [ ] 097_agents_llm.md
+- [ ] 098_manimce_comparison.md
+- [ ] 099_limitations.md
+- [ ] 100_final_architecture.md
+- [ ] README.md
+
+---
+
+Check off each file as you complete it.
