@@ -30,6 +30,8 @@ ManimLite separates **structure**, **time scheduling**, and **how values change*
 - **Types:** `MoveX`, `CircleOutline`, and other `Animator` implementations (`apply(node, t)` with segment-local `t ∈ [0, 1]`).
 - **Responsibility:** *how* the target changes. Animators should not walk the scene graph.
 
+**Composition:** `Parallel(*animators)` runs every child with the same `t`. `Sequence(*animators)` splits `t ∈ [0, 1]` into equal slices and runs **one** child at a time—properties not written by the active child keep their prior values, so align segment boundaries when chaining. `Delay(animator, start, end)` runs the inner animator only when `start <= t <= end` (normalized within the parent segment); outside that range it does nothing (no “pin” to start—set initial pose on the node if needed).
+
 **Rule of thumb:** any **visible change over the clip** should come from **timeline + animator**. Initial pose in a constructor (e.g. `Circle(…, progress=0.0)` so the first frame matches `CircleOutline` at `u=0` before the first `apply_timeline` step) is **setup**, not a second animation system.
 
 **Canonical example:** [examples/play_circles.py](examples/play_circles.py) — outline via `CircleOutline`, translation via `MoveX`, no motion inside `Node.update` subclasses.

@@ -14,12 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`Renderer(..., debug=True)`** and **`play(..., debug=True)`:** log each timeline application to **stderr** (animator type, segment, target id, `u`, and `x` / `progress` when present).
 - **Timeline-driven animation:** `Scene.add_animation(start, end, target, animator)` appends to `scene.timeline`. `apply_timeline(scene, t, *, ease=smoothstep)` walks entries in order (skips `end <= start`); maps global `t` to segment-local `u ∈ [0, 1]`; passes `ease(u)` to `apply` (use `ease=None` for linear). `Renderer.render` applies the timeline at `t=0` before drawing. `Renderer.play` uses `n_frames = max(1, round(duration * fps))` and `t_frame = min(duration, (i + 1) * dt)` per frame, then `apply_timeline`, `root.update`, and `draw`.
 - **`lerp`**, **`smoothstep`**, **`MoveX`**, **`CircleOutline`**, **`Animator`** (protocol): exported from `manimlite`. `CircleOutline` applies only to `Circle` (otherwise `TypeError`).
+- **Composable animators:** **`Parallel(*animators)`** (same `t` to each child), **`Sequence(*animators)`** (equal time slices, one child active), **`Delay(animator, start, end)`** (inner `apply` only when `start <= t <= end` within the parent segment, `0 <= start < end <= 1`). Documented in `AGENTS.md`.
 - **`Renderer.play(scene, *, realtime=True)`** and **`Node.update(t, dt)`:** non-positive `scene.fps` raises `ValueError`. Realtime playback clears the terminal each frame, paces with `sleep`, and hides/restores the cursor; `realtime=False` for tests and headless runs.
 - **`examples/play_circles.py`:** declarative outline reveal (`CircleOutline`) and horizontal move (`MoveX`). **`examples/draw_circle.py`:** single-frame `render` with full circles by default.
 - **Scene graph (terminal):** `Node` has `x`, `y`, `add()`, and `draw(canvas, ox, oy)` with parent-origin propagation; `Scene.add_node` delegates to `root.add()`.
 - **`AsciiFrameCanvas`:** binds a `Renderer` and character grid so nodes call `set_pixel`.
 - **`Circle`** (grid outline via polygon sampling in `core`); `manimlite.shapes.Circle` remains the Skia-oriented stub.
-- Tests: timeline at `t=0`, `MoveX` end state, play/update, circle progress via `apply_timeline`, timeline debug stderr, scene graph rendering.
+- Tests: timeline at `t=0`, `MoveX` end state, play/update, circle progress via `apply_timeline`, timeline debug stderr, composable animators (`tests/unit/test_compose.py`), scene graph rendering.
 
 ### Changed
 
