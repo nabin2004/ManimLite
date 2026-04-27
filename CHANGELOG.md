@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Scene graph (terminal path):** `Node` now has `x`, `y`, and `add()`; `draw(canvas, ox, oy)` propagates parent origin so child positions are relative. `Scene.add_node` calls `root.add()`.
+- **`AsciiFrameCanvas`** in `renderer.py`: binds a `Renderer` and frame so nodes call `set_pixel(x, y, ch)`. `Renderer.render` runs `scene.root.draw(canvas, 0, 0)` (replaces the old `_draw_node` walker).
+- **`Circle`** in `core.py`: grid/outline circle via `set_pixel` (polygon sampling); exported from `manimlite`. Note: `manimlite.shapes.Circle` remains the separate Skia-oriented stub (`radius`, colors).
+- Tests: `test_render_scene_draws_circle_node`, `test_render_propagates_parent_position`.
+
+### Changed
+
+- **`Drawable` protocol:** `draw` now takes optional `ox`, `oy` (accumulated world origin).
+- **`text.py` / `shapes.py` stubs:** `draw` signatures aligned with `Node`; stubs call `Node.draw` so children still recurse.
+- **`Circle.draw`:** uses `Node.draw(self, …)` instead of `super().draw` to avoid `TypeError` with chained `@dataclass(slots=True)` subclasses.
+
 - `learn/` tutorial: 101 phase markdown files (`000`–`100`) building the engine concept from a print renderer to PyAV-oriented architecture.
 
 ### Changed
