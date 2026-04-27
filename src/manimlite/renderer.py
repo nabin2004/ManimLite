@@ -1,4 +1,20 @@
+from __future__ import annotations
+
 from manimlite.core import Scene
+
+
+class AsciiFrameCanvas:
+    """Binds a renderer and frame so nodes can call set_pixel(x, y, ch)."""
+
+    __slots__ = ("_renderer", "_frame")
+
+    def __init__(self, renderer: Renderer, frame: list[list[str]]) -> None:
+        self._renderer = renderer
+        self._frame = frame
+
+    def set_pixel(self, x: int, y: int, ch: str = "#") -> None:
+        self._renderer.set_pixel(self._frame, x, y, ch)
+
 
 class Renderer:
     def __init__(self, width: int = 1920, height: int = 1080, fps: float = 30.0, bg: str = "black"):
@@ -69,14 +85,9 @@ class Renderer:
     def render(self, scene: Scene) -> None:
         """Render the scene to the terminal"""
         frame = self.blank_frame()
-        self._draw_node(scene.root, frame)
+        canvas = AsciiFrameCanvas(self, frame)
+        scene.root.draw(canvas, 0.0, 0.0)
         self.show(frame)
-
-    def _draw_node(self, node, frame: list[list[str]]) -> None:
-        """Recursively draw a node and its children onto the frame."""
-        node.draw(frame)
-        for child in node.children:
-            self._draw_node(child, frame)
 
     def show(self, frame: list[list[str]]) -> None:
         """Print the frame to the terminal."""

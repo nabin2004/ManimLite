@@ -17,9 +17,10 @@ class Circle(Node):
     stroke_color: str | None = None
     stroke_width: float = 0.0
 
-    def draw(self, canvas: Any) -> None:
+    def draw(self, canvas: Any, ox: float = 0.0, oy: float = 0.0) -> None:
         """Draw circle via Skia (stub)."""
-        _ = canvas
+        _ = canvas, ox, oy
+        Node.draw(self, canvas, ox, oy)
 
 
 @dataclass(slots=True)
@@ -33,9 +34,10 @@ class Line(Node):
     stroke_color: str = "#FFFFFF"
     stroke_width: float = 2.0
 
-    def draw(self, canvas: Any) -> None:
+    def draw(self, canvas: Any, ox: float = 0.0, oy: float = 0.0) -> None:
         """Draw line via Skia (stub)."""
-        _ = canvas
+        _ = canvas, ox, oy
+        Node.draw(self, canvas, ox, oy)
 
 
 @dataclass(slots=True)
@@ -47,6 +49,7 @@ class Polygon(Node):
     stroke_color: str | None = None
     stroke_width: float = 0.0
 
-    def draw(self, canvas: Any) -> None:
+    def draw(self, canvas: Any, ox: float = 0.0, oy: float = 0.0) -> None:
         """Draw polygon via Skia (stub)."""
-        _ = canvas
+        _ = canvas, ox, oy
+        Node.draw(self, canvas, ox, oy)

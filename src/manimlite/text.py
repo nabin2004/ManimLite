@@ -16,9 +16,10 @@ class Text(Node):
     font_size: float = 24.0
     color: str = "#FFFFFF"
 
-    def draw(self, canvas: Any) -> None:
+    def draw(self, canvas: Any, ox: float = 0.0, oy: float = 0.0) -> None:
         """Rasterize text via Skia (stub)."""
-        _ = canvas
+        _ = canvas, ox, oy
+        Node.draw(self, canvas, ox, oy)
 
 
 @dataclass(slots=True)
@@ -29,9 +30,10 @@ class MathExpr(Node):
     font_size: float = 28.0
     color: str = "#FFFFFF"
 
-    def draw(self, canvas: Any) -> None:
+    def draw(self, canvas: Any, ox: float = 0.0, oy: float = 0.0) -> None:
         """Render Typst → SVG → Skia (stub)."""
-        _ = canvas
+        _ = canvas, ox, oy
+        Node.draw(self, canvas, ox, oy)
 
 
 @dataclass(slots=True)
@@ -42,6 +44,7 @@ class CodeBlock(Node):
     language: str = "python"
     font_size: float = 14.0
 
-    def draw(self, canvas: Any) -> None:
+    def draw(self, canvas: Any, ox: float = 0.0, oy: float = 0.0) -> None:
         """Highlight and draw code (stub)."""
-        _ = canvas
+        _ = canvas, ox, oy
+        Node.draw(self, canvas, ox, oy)
