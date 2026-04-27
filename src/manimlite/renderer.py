@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 from manimlite.core import Scene
 
 
@@ -87,24 +89,40 @@ class Renderer:
         frame = self.blank_frame()
         canvas = AsciiFrameCanvas(self, frame)
         scene.root.draw(canvas, 0.0, 0.0)
-        self.show(frame)
+        self.show(frame, ansi_clear=False)
 
-    def play(self, scene: Scene) -> None:
-        """Step scene time: update then draw each frame until scene.duration (first frame after update at t=0)."""
+    def play(self, scene: Scene, *, realtime: bool = True) -> None:
+        """Step scene time: update then draw each frame until scene.duration (first frame after update at t=0).
+
+        With ``realtime=True`` (default): clear screen + home cursor each frame, pace with ``sleep`` for ``scene.fps``,
+        hide terminal cursor during playback. Use ``realtime=False`` for tests or headless runs.
+        """
         if scene.fps <= 0:
             raise ValueError("scene.fps must be positive")
         t = 0.0
         dt = 1.0 / scene.fps
         frames = max(1, int(scene.duration * scene.fps))
-        for _ in range(frames):
-            scene.root.update(t, dt)
-            frame = self.blank_frame()
-            canvas = AsciiFrameCanvas(self, frame)
-            scene.root.draw(canvas, 0.0, 0.0)
-            self.show(frame)
-            t += dt
+        if realtime:
+            print("\033[?25l", end="", flush=True)
+        try:
+            for _ in range(frames):
+                start = time.perf_counter()
+                scene.root.update(t, dt)
+                frame = self.blank_frame()
+                canvas = AsciiFrameCanvas(self, frame)
+                scene.root.draw(canvas, 0.0, 0.0)
+                self.show(frame, ansi_clear=realtime)
+                if realtime:
+                    elapsed = time.perf_counter() - start
+                    time.sleep(max(0.0, dt - elapsed))
+                t += dt
+        finally:
+            if realtime:
+                print("\033[?25h", end="", flush=True)
 
-    def show(self, frame: list[list[str]]) -> None:
+    def show(self, frame: list[list[str]], *, ansi_clear: bool = False) -> None:
         """Print the frame to the terminal."""
+        if ansi_clear:
+            print("\033[2J\033[H", end="", flush=True)
         for row in frame:
             print("".join(row))

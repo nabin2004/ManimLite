@@ -9,9 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **`Node.update(t, dt)`** and **`Renderer.play(scene)`:** time-stepped loop (`dt = 1 / scene.fps`, `frames = max(1, int(duration * fps))`) runs **update then draw** each frame via the same `AsciiFrameCanvas` / `root.draw` path as `render`. Non-positive `scene.fps` raises `ValueError`.
-- **`examples/play_circles.py`:** `Renderer.play` with `DriftingCircle` (subclass) for horizontal motion; library **`Circle`** stays static unless you override `update`. **`examples/draw_circle.py`** is the single-frame `render` counterpart.
-- Tests: `test_node_update_visits_self_and_children`, `test_play_calls_update_once_per_frame`, `test_play_rejects_non_positive_fps`.
+- **`Node.update(t, dt)`** and **`Renderer.play(scene, *, realtime=True)`:** time-stepped loop (`dt = 1 / scene.fps`, `frames = max(1, int(duration * fps))`) runs **update then draw** each frame via the same `AsciiFrameCanvas` / `root.draw` path as `render`. Non-positive `scene.fps` raises `ValueError`. With **`realtime=True`**: clear screen + home (`\033[2J\033[H`) each frame, pace with `sleep` to match fps, hide/show cursor (`\033[?25l` / `\033[?25h`). **`realtime=False`** skips ANSI + sleeping (e.g. tests).
+- **`Circle.progress`** (default `1.0`): **`draw`** plots only the first `progress` fraction of outline samples; **`Circle.update`** grows progress by `dt` until `1.0` (use `progress=0.0` for progressive reveal). Subclasses that override **`update`** should call **`Circle.update(self, …)`** when they extend **`Circle`**.
+- **`examples/play_circles.py`:** drifting circle + circles starting at **`progress=0`** so outlines grow while playing.
+- **`examples/draw_circle.py`** remains the single-frame **`render`** counterpart (full circles by default).
+- Tests: `test_node_update_visits_self_and_children`, `test_play_calls_update_once_per_frame`, `test_play_rejects_non_positive_fps`, `test_circle_progress_partial_draw`, `test_play_advances_circle_progress`.
 
 - **Scene graph (terminal path):** `Node` now has `x`, `y`, and `add()`; `draw(canvas, ox, oy)` propagates parent origin so child positions are relative. `Scene.add_node` calls `root.add()`.
 - **`AsciiFrameCanvas`** in `renderer.py`: binds a `Renderer` and frame so nodes call `set_pixel(x, y, ch)`. `Renderer.render` runs `scene.root.draw(canvas, 0, 0)` (replaces the old `_draw_node` walker).

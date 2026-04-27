@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 import pytest
 
 from manimlite.core import Circle, Node, Scene
-from manimlite.renderer import Renderer
+from manimlite.renderer import AsciiFrameCanvas, Renderer
 
 
 @dataclass(slots=True)
@@ -81,9 +81,33 @@ def test_play_calls_update_once_per_frame(capsys) -> None:
     scene = Scene(width=8, height=4, fps=10.0, duration=0.2)
     counter = CountingNode()
     scene.add_node(counter)
-    r.play(scene)
+    r.play(scene, realtime=False)
     _ = capsys.readouterr()
     assert counter.hits[0] == 2
+
+
+def test_circle_progress_partial_draw() -> None:
+    r = Renderer(width=32, height=16, bg=" ")
+    frame = r.blank_frame()
+    canvas = AsciiFrameCanvas(r, frame)
+    c = Circle(x=10, y=8, r=3, ch="N", progress=0.0)
+    c.draw(canvas, 0.0, 0.0)
+    assert "N" not in "".join("".join(row) for row in frame)
+    c.progress = 1.0
+    frame = r.blank_frame()
+    canvas = AsciiFrameCanvas(r, frame)
+    c.draw(canvas, 0.0, 0.0)
+    assert "N" in "".join("".join(row) for row in frame)
+
+
+def test_play_advances_circle_progress(capsys) -> None:
+    r = Renderer(width=32, height=16, bg=" ")
+    scene = Scene(width=32, height=16, fps=10.0, duration=1.0)
+    c = Circle(x=10, y=8, r=3, ch="N", progress=0.0)
+    scene.add_node(c)
+    r.play(scene, realtime=False)
+    _ = capsys.readouterr()
+    assert c.progress >= 1.0 - 1e-9
 
 
 def test_play_rejects_non_positive_fps() -> None:

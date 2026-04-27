@@ -14,18 +14,19 @@ DURATION = 2.0
 
 @dataclass(slots=True)
 class DriftingCircle(Circle):
-    """Motion lives in update(); library Circle stays static unless you subclass."""
+    """Motion lives in update(); ``Circle.update`` keeps progressive outline in sync."""
 
     def update(self, t: float, dt: float) -> None:
         self.x += 5.0 * dt
-        Node.update(self, t, dt)
+        Circle.update(self, t, dt)
 
 
 def main() -> None:
     r = Renderer(width=WIDTH, height=HEIGHT, fps=FPS, bg=BG)
     scene = Scene(width=WIDTH, height=HEIGHT, fps=FPS, duration=DURATION)
-    scene.add_node(Circle(x=10, y=8, r=4, ch="N"))
-    scene.add_node(DriftingCircle(x=20, y=8, r=4, ch="O"))
+    # progress=0: outline grows each frame via Circle.update (linear in dt)
+    scene.add_node(Circle(x=10, y=8, r=4, ch="N", progress=0.0))
+    scene.add_node(DriftingCircle(x=20, y=8, r=4, ch="O", progress=0.0))
     r.play(scene)
 
 

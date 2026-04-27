@@ -46,15 +46,24 @@ class Circle(Node):
 
     r: float = 1.0
     ch: str = "#"
+    progress: float = 1.0
+    """1.0 = full outline; lower values draw only the first ``progress`` fraction of samples (set 0 and step in ``update``)."""
+
+    def update(self, t: float, dt: float) -> None:
+        if self.progress < 1.0:
+            self.progress = min(1.0, self.progress + dt)
+        Node.update(self, t, dt)
 
     def draw(self, canvas: Any, ox: float = 0.0, oy: float = 0.0) -> None:
         cx = ox + self.x
         cy = oy + self.y
         n = max(8, int(self.r * 8))
-        for i in range(n):
-            t = 2 * math.pi * i / n
-            px = int(round(cx + self.r * math.cos(t)))
-            py = int(round(cy + self.r * math.sin(t)))
+        p = max(0.0, min(1.0, self.progress))
+        k = int(n * p)
+        for i in range(k):
+            ang = 2 * math.pi * i / n
+            px = int(round(cx + self.r * math.cos(ang)))
+            py = int(round(cy + self.r * math.sin(ang)))
             canvas.set_pixel(px, py, self.ch)
         Node.draw(self, canvas, cx, cy)
 
