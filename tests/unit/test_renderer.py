@@ -1,5 +1,18 @@
+from dataclasses import dataclass, field
+
+import pytest
+
 from manimlite.core import Circle, Node, Scene
 from manimlite.renderer import Renderer
+
+
+@dataclass(slots=True)
+class CountingNode(Node):
+    hits: list[int] = field(default_factory=lambda: [0])
+
+    def update(self, t: float, dt: float) -> None:
+        self.hits[0] += 1
+        Node.update(self, t, dt)
 
 
 def test_set_pixel_in_bounds() -> None:
@@ -49,3 +62,32 @@ def test_render_propagates_parent_position(capsys) -> None:
     scene.add_node(group)
     r.render(scene)
     assert "@" in capsys.readouterr().out
+
+
+def test_node_update_visits_self_and_children() -> None:
+    root = CountingNode()
+    a = CountingNode()
+    b = CountingNode()
+    root.add(a)
+    root.add(b)
+    root.update(0.0, 1 / 30)
+    assert root.hits[0] == 1
+    assert a.hits[0] == 1
+    assert b.hits[0] == 1
+
+
+def test_play_calls_update_once_per_frame(capsys) -> None:
+    r = Renderer(width=8, height=4, bg=" ")
+    scene = Scene(width=8, height=4, fps=10.0, duration=0.2)
+    counter = CountingNode()
+    scene.add_node(counter)
+    r.play(scene)
+    _ = capsys.readouterr()
+    assert counter.hits[0] == 2
+
+
+def test_play_rejects_non_positive_fps() -> None:
+    r = Renderer(width=8, height=4, bg=" ")
+    scene = Scene(width=8, height=4, fps=0.0, duration=1.0)
+    with pytest.raises(ValueError, match="fps"):
+        r.play(scene)

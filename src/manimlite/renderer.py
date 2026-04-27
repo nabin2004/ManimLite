@@ -89,6 +89,21 @@ class Renderer:
         scene.root.draw(canvas, 0.0, 0.0)
         self.show(frame)
 
+    def play(self, scene: Scene) -> None:
+        """Step scene time: update then draw each frame until scene.duration (first frame after update at t=0)."""
+        if scene.fps <= 0:
+            raise ValueError("scene.fps must be positive")
+        t = 0.0
+        dt = 1.0 / scene.fps
+        frames = max(1, int(scene.duration * scene.fps))
+        for _ in range(frames):
+            scene.root.update(t, dt)
+            frame = self.blank_frame()
+            canvas = AsciiFrameCanvas(self, frame)
+            scene.root.draw(canvas, 0.0, 0.0)
+            self.show(frame)
+            t += dt
+
     def show(self, frame: list[list[str]]) -> None:
         """Print the frame to the terminal."""
         for row in frame:

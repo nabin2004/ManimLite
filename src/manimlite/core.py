@@ -34,6 +34,11 @@ class Node:
         for child in self.children:
             child.draw(canvas, px, py)
 
+    def update(self, t: float, dt: float) -> None:
+        """Advance simulation time; subclasses override and call Node.update for children."""
+        for child in self.children:
+            child.update(t, dt)
+
 
 @dataclass(slots=True)
 class Circle(Node):
