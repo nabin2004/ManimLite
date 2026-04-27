@@ -1,8 +1,8 @@
-"""Draw a circle on the terminal grid - Phase 006 style."""
+"""Draw circles on the terminal grid using the scene graph (Node + Circle)."""
 
 from __future__ import annotations
 
-from manimlite import Renderer
+from manimlite import Circle, Renderer, Scene
 
 WIDTH, HEIGHT = 32, 16
 BG = " "
@@ -10,10 +10,10 @@ BG = " "
 
 def main() -> None:
     r = Renderer(width=WIDTH, height=HEIGHT, bg=BG)
-    frame = r.blank_frame()
-    r.circle(frame, cx=10, cy=8, r=4, ch="N")
-    r.circle(frame, cx=20, cy=8, r=4, ch="O")
-    r.show(frame)
+    scene = Scene(width=WIDTH, height=HEIGHT)
+    scene.add_node(Circle(x=10, y=8, r=4, ch="N"))
+    scene.add_node(Circle(x=20, y=8, r=4, ch="O"))
+    r.render(scene)
 
 
 if __name__ == "__main__":
