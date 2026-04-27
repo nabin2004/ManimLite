@@ -20,6 +20,14 @@ class Renderer:
             return
         frame[y][x] = ch[0]
 
+    def line(self, frame: list[list[str]], x1: int, y1: int, x2: int, y2: int, ch: str = "#") -> None:
+        """Draw a line from (x1, y1) to (x2, y2) using Bresenham's line algorithm."""
+        pass 
+
+    def circle(self, frame: list[list[str]], cx: int, cy: int, r: int, ch: str = "#") -> None:
+        """Draw a circle centered at (cx, cy) with radius r using the midpoint circle algorithm."""
+        pass
+
     def render(self, scene: Scene) -> None:
         """Render the scene to the terminal"""
         frame = self.blank_frame()

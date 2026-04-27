@@ -11,7 +11,7 @@ BG = " "
 def main() -> None:
     r = Renderer(width=WIDTH, height=HEIGHT, bg=BG)
     frame = r.blank_frame()
-    r.set_pixel(frame, 5, 3)
+    r.set_pixel(frame, 0, 0, ch="N")
     r.show(frame)
 
 
