@@ -13,7 +13,7 @@ def test_scene_and_timeline():
     scene.add_node(square)
 
     # Assert that the nodes were added to the root's children
-    assert scene.root.children == (circle, square)
+    assert scene.root.children == [circle, square]
 
     # Add animations to the timeline
     scene.add_animation(0, 1, circle, "animate_circle")

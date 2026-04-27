@@ -19,7 +19,7 @@ class Drawable(Protocol):
 class Node:
     """Base graph node; subclasses add geometry, style, and children."""
 
-    children: tuple[Node, ...] = field(default_factory=tuple)
+    children: list[Node] = field(default_factory=list)
 
     def draw(self, canvas: Any) -> None:
         """Draw this node and its children (stub)."""
