@@ -81,6 +81,72 @@ class CircleOutline:
         node.progress = max(0.0, min(1.0, t))
 
 
+class Parallel:
+    """Run several animators on the same node with the same segment-local ``t``."""
+
+    __slots__ = ("animators",)
+
+    def __init__(self, *animators: Any) -> None:
+        self.animators = animators
+
+    def apply(self, node: Node, t: float) -> None:
+        for anim in self.animators:
+            apply_fn = getattr(anim, "apply", None)
+            if apply_fn is not None:
+                apply_fn(node, t)
+
+
+class Sequence:
+    """Partition ``t ∈ [0, 1]`` into equal sub-segments and run exactly one child at a time.
+
+    Only the active sub-animator runs each frame; other properties keep their previous values.
+    Align segment boundaries so ``local_t=1`` of segment ``k`` matches ``local_t=0`` of ``k+1`` where needed.
+    """
+
+    __slots__ = ("animators",)
+
+    def __init__(self, *animators: Any) -> None:
+        self.animators = animators
+
+    def apply(self, node: Node, t: float) -> None:
+        n = len(self.animators)
+        if n == 0:
+            return
+        t = max(0.0, min(1.0, t))
+        segment = 1.0 / n
+        i = min(int(t / segment), n - 1)
+        local_t = (t - i * segment) / segment if segment > 0 else 0.0
+        apply_fn = getattr(self.animators[i], "apply", None)
+        if apply_fn is not None:
+            apply_fn(node, local_t)
+
+
+@dataclass(slots=True)
+class Delay:
+    """Run ``animator`` only when ``start <= t <= end`` (``t`` is parent's segment-local time).
+
+    Outside that window this is a no-op (inner ``apply`` is not called). For a pinned start pose,
+    set initial node state or use another animator.
+    """
+
+    animator: Any
+    start: float
+    end: float
+
+    def __post_init__(self) -> None:
+        if not (0.0 <= self.start < self.end <= 1.0):
+            raise ValueError("Delay requires 0 <= start < end <= 1")
+
+    def apply(self, node: Node, t: float) -> None:
+        if t < self.start or t > self.end:
+            return
+        span = self.end - self.start
+        local_t = (t - self.start) / span
+        apply_fn = getattr(self.animator, "apply", None)
+        if apply_fn is not None:
+            apply_fn(node, local_t)
+
+
 @dataclass(slots=True)
 class Animation:
     """Concrete animation wrapper (fade, move, transform — TBD)."""
