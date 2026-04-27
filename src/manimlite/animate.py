@@ -1,11 +1,44 @@
-"""Animation descriptors and animator protocol (implementation pending)."""
+"""Animation helpers, animator protocol, and timeline evaluation."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Protocol, runtime_checkable
+from typing import Any, Callable, Protocol, runtime_checkable
 
-from manimlite.core import Node
+from manimlite.core import Circle, Node, Scene
+
+
+def lerp(a: float, b: float, t: float) -> float:
+    """Linear interpolation from ``a`` to ``b`` with ``t`` in [0, 1]."""
+    return a + (b - a) * t
+
+
+def smoothstep(t: float) -> float:
+    """Hermite ease in-out; clamps ``t`` to [0, 1]."""
+    t = max(0.0, min(1.0, t))
+    return t * t * (3.0 - 2.0 * t)
+
+
+def apply_timeline(
+    scene: Scene,
+    t: float,
+    *,
+    ease: Callable[[float], float] | None = smoothstep,
+) -> None:
+    """Apply all timeline entries at global scene time ``t`` (segment-local ``u`` then optional ``ease``)."""
+    for start, end, target, anim in scene.timeline.entries:
+        if end <= start:
+            continue
+        if t <= start:
+            u = 0.0
+        elif t >= end:
+            u = 1.0
+        else:
+            u = (t - start) / (end - start)
+        u_eased = ease(u) if ease is not None else u
+        apply_fn = getattr(anim, "apply", None)
+        if apply_fn is not None:
+            apply_fn(target, u_eased)
 
 
 @runtime_checkable
@@ -15,6 +48,27 @@ class Animator(Protocol):
     def apply(self, node: Node, t: float) -> None:
         """Apply eased progress ``t`` in [0, 1] to ``node``."""
         ...
+
+
+@dataclass(slots=True)
+class MoveX:
+    """Set ``node.x`` between ``x0`` (t=0) and ``x1`` (t=1)."""
+
+    x0: float
+    x1: float
+
+    def apply(self, node: Node, t: float) -> None:
+        node.x = lerp(self.x0, self.x1, t)
+
+
+@dataclass(slots=True)
+class CircleOutline:
+    """Set ``Circle.progress`` in [0, 1] from segment-local ``t``."""
+
+    def apply(self, node: Node, t: float) -> None:
+        if not isinstance(node, Circle):
+            raise TypeError("CircleOutline only applies to Circle nodes")
+        node.progress = max(0.0, min(1.0, t))
 
 
 @dataclass(slots=True)
@@ -33,4 +87,3 @@ class _NoopAnimator:
 
     def apply(self, node: Node, t: float) -> None:
         _ = node, t
-
