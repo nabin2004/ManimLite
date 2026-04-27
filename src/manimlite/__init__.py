@@ -6,6 +6,7 @@ __version__ = "0.1.0a0"
 
 from manimlite.audio import KittenVoiceOverBackend, VoiceOver
 from manimlite.core import Node, Scene, Timeline
+from manimlite.renderer import Renderer
 from manimlite.text import CodeBlock, MathExpr, Text
 
 __all__ = [
@@ -13,6 +14,7 @@ __all__ = [
     "KittenVoiceOverBackend",
     "MathExpr",
     "Node",
+    "Renderer",
     "Scene",
     "Text",
     "Timeline",
