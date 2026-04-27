@@ -47,12 +47,7 @@ class Circle(Node):
     r: float = 1.0
     ch: str = "#"
     progress: float = 1.0
-    """1.0 = full outline; lower values draw only the first ``progress`` fraction of samples (set 0 and step in ``update``)."""
-
-    def update(self, t: float, dt: float) -> None:
-        if self.progress < 1.0:
-            self.progress = min(1.0, self.progress + dt)
-        Node.update(self, t, dt)
+    """1.0 = full outline; lower values draw a fraction of samples (drive with ``CircleOutline`` / timeline or set manually)."""
 
     def draw(self, canvas: Any, ox: float = 0.0, oy: float = 0.0) -> None:
         cx = ox + self.x

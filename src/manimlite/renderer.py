@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import time
 
+from manimlite.animate import apply_timeline
 from manimlite.core import Scene
 
 
@@ -85,7 +86,8 @@ class Renderer:
             x += 1
 
     def render(self, scene: Scene) -> None:
-        """Render the scene to the terminal"""
+        """Render one still at global time 0 (applies timeline at ``t=0``)."""
+        apply_timeline(scene, 0.0)
         frame = self.blank_frame()
         canvas = AsciiFrameCanvas(self, frame)
         scene.root.draw(canvas, 0.0, 0.0)
@@ -99,15 +101,16 @@ class Renderer:
         """
         if scene.fps <= 0:
             raise ValueError("scene.fps must be positive")
-        t = 0.0
         dt = 1.0 / scene.fps
-        frames = max(1, int(scene.duration * scene.fps))
+        n_frames = max(1, round(scene.duration * scene.fps))
         if realtime:
             print("\033[?25l", end="", flush=True)
         try:
-            for _ in range(frames):
+            for i in range(n_frames):
                 start = time.perf_counter()
-                scene.root.update(t, dt)
+                t_frame = min(scene.duration, (i + 1) * dt)
+                apply_timeline(scene, t_frame)
+                scene.root.update(t_frame, dt)
                 frame = self.blank_frame()
                 canvas = AsciiFrameCanvas(self, frame)
                 scene.root.draw(canvas, 0.0, 0.0)
@@ -115,7 +118,6 @@ class Renderer:
                 if realtime:
                     elapsed = time.perf_counter() - start
                     time.sleep(max(0.0, dt - elapsed))
-                t += dt
         finally:
             if realtime:
                 print("\033[?25h", end="", flush=True)
