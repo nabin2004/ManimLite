@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 
 import pytest
 
-from manimlite.animate import CircleOutline, MoveX
+from manimlite.animate import CircleOutline, MoveX, apply_timeline
 from manimlite.core import Circle, Node, Scene
 from manimlite.renderer import AsciiFrameCanvas, Renderer
 
@@ -89,12 +89,15 @@ def test_play_calls_update_once_per_frame(capsys) -> None:
 
 def test_circle_progress_partial_draw() -> None:
     r = Renderer(width=32, height=16, bg=" ")
+    scene = Scene(width=32, height=16)
+    c = Circle(x=10, y=8, r=3, ch="N", progress=1.0)
+    scene.add_animation(0.0, 1.0, c, CircleOutline())
+    apply_timeline(scene, 0.0, ease=None)
     frame = r.blank_frame()
     canvas = AsciiFrameCanvas(r, frame)
-    c = Circle(x=10, y=8, r=3, ch="N", progress=0.0)
     c.draw(canvas, 0.0, 0.0)
     assert "N" not in "".join("".join(row) for row in frame)
-    c.progress = 1.0
+    apply_timeline(scene, 1.0, ease=None)
     frame = r.blank_frame()
     canvas = AsciiFrameCanvas(r, frame)
     c.draw(canvas, 0.0, 0.0)
@@ -121,6 +124,18 @@ def test_render_applies_timeline_at_zero(capsys) -> None:
     r.render(scene)
     _ = capsys.readouterr()
     assert n.x == 10.0
+
+
+def test_play_logs_timeline_to_stderr_when_debug(capsys) -> None:
+    r = Renderer(width=8, height=4, bg=" ", debug=True)
+    scene = Scene(width=8, height=4, fps=10.0, duration=0.1)
+    n = Node()
+    scene.add_node(n)
+    scene.add_animation(0.0, 1.0, n, MoveX(0.0, 1.0))
+    r.play(scene, realtime=False)
+    err = capsys.readouterr().err
+    assert "[t=" in err
+    assert "MoveX" in err
 
 
 def test_play_move_x_reaches_end(capsys) -> None:

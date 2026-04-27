@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import sys
 import time
+from typing import Any
 
 from manimlite.animate import apply_timeline
-from manimlite.core import Scene
+from manimlite.core import Node, Scene
 
 
 class AsciiFrameCanvas:
@@ -20,12 +22,43 @@ class AsciiFrameCanvas:
 
 
 class Renderer:
-    def __init__(self, width: int = 1920, height: int = 1080, fps: float = 30.0, bg: str = "black"):
+    def __init__(
+        self,
+        width: int = 1920,
+        height: int = 1080,
+        fps: float = 30.0,
+        bg: str = "black",
+        *,
+        debug: bool = False,
+    ):
         self.width = width
         self.height = height
         self.fps = fps
         self.bg = bg
+        self.debug = debug
         self.scene = Scene(width=width, height=height, fps=fps)
+
+    @staticmethod
+    def _log_timeline_apply(
+        t: float,
+        start: float,
+        end: float,
+        target: Node,
+        anim: Any,
+        u_eased: float,
+    ) -> None:
+        parts = [
+            f"[t={t:.3f}]",
+            f"{type(anim).__name__}",
+            f"segment=[{start:.3f},{end:.3f}]",
+            f"target_id={id(target)}",
+            f"u={u_eased:.3f}",
+        ]
+        if hasattr(target, "x"):
+            parts.append(f"x={target.x!r}")
+        if hasattr(target, "progress"):
+            parts.append(f"progress={target.progress!r}")
+        print(" ".join(parts), file=sys.stderr)
 
     def blank_frame(self) -> list[list[str]]:
         """Create a blank frame with the background character."""
@@ -87,20 +120,25 @@ class Renderer:
 
     def render(self, scene: Scene) -> None:
         """Render one still at global time 0 (applies timeline at ``t=0``)."""
-        apply_timeline(scene, 0.0)
+        on_apply = self._log_timeline_apply if self.debug else None
+        apply_timeline(scene, 0.0, on_apply=on_apply)
         frame = self.blank_frame()
         canvas = AsciiFrameCanvas(self, frame)
         scene.root.draw(canvas, 0.0, 0.0)
         self.show(frame, ansi_clear=False)
 
-    def play(self, scene: Scene, *, realtime: bool = True) -> None:
+    def play(self, scene: Scene, *, realtime: bool = True, debug: bool | None = None) -> None:
         """Step scene time: update then draw each frame until scene.duration (first frame after update at t=0).
 
         With ``realtime=True`` (default): clear screen + home cursor each frame, pace with ``sleep`` for ``scene.fps``,
         hide terminal cursor during playback. Use ``realtime=False`` for tests or headless runs.
+
+        With ``debug=True`` (or ``Renderer(..., debug=True)`` when ``debug`` is ``None``), log each timeline ``apply`` to stderr.
         """
         if scene.fps <= 0:
             raise ValueError("scene.fps must be positive")
+        dbg = self.debug if debug is None else debug
+        on_apply = self._log_timeline_apply if dbg else None
         dt = 1.0 / scene.fps
         n_frames = max(1, round(scene.duration * scene.fps))
         if realtime:
@@ -109,7 +147,7 @@ class Renderer:
             for i in range(n_frames):
                 start = time.perf_counter()
                 t_frame = min(scene.duration, (i + 1) * dt)
-                apply_timeline(scene, t_frame)
+                apply_timeline(scene, t_frame, on_apply=on_apply)
                 scene.root.update(t_frame, dt)
                 frame = self.blank_frame()
                 canvas = AsciiFrameCanvas(self, frame)

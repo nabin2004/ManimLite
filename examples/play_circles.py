@@ -1,4 +1,8 @@
-"""Time-stepped scene: timeline-driven outline reveal and horizontal move (interpolation)."""
+"""Time-stepped scene: timeline-driven outline reveal and horizontal move (interpolation).
+
+``progress=0.0`` on circles is initial setup so the first frame matches a hidden outline before
+``apply_timeline`` advances time; motion over the clip is only from ``CircleOutline`` and ``MoveX``.
+"""
 
 from __future__ import annotations
 

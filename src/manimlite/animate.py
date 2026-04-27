@@ -7,6 +7,9 @@ from typing import Any, Callable, Protocol, runtime_checkable
 
 from manimlite.core import Circle, Node, Scene
 
+# (global_t, start, end, target, animator, u_eased) — invoked after ``apply`` succeeds.
+TimelineOnApply = Callable[[float, float, float, Node, Any, float], None]
+
 
 def lerp(a: float, b: float, t: float) -> float:
     """Linear interpolation from ``a`` to ``b`` with ``t`` in [0, 1]."""
@@ -24,8 +27,13 @@ def apply_timeline(
     t: float,
     *,
     ease: Callable[[float], float] | None = smoothstep,
+    on_apply: TimelineOnApply | None = None,
 ) -> None:
-    """Apply all timeline entries at global scene time ``t`` (segment-local ``u`` then optional ``ease``)."""
+    """Apply all timeline entries at global scene time ``t`` (segment-local ``u`` then optional ``ease``).
+
+    If ``on_apply`` is set, it is called after each successful ``anim.apply`` with
+    ``(t, start, end, target, anim, u_eased)`` for debugging or tooling.
+    """
     for start, end, target, anim in scene.timeline.entries:
         if end <= start:
             continue
@@ -39,6 +47,8 @@ def apply_timeline(
         apply_fn = getattr(anim, "apply", None)
         if apply_fn is not None:
             apply_fn(target, u_eased)
+            if on_apply is not None:
+                on_apply(t, start, end, target, anim, u_eased)
 
 
 @runtime_checkable
