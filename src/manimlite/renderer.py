@@ -8,8 +8,8 @@ class Renderer:
         self.bg = bg
         self.scene = Scene(width=width, height=height, fps=fps)
 
-    def blank_frame(self) -> None:
-        """Create a blank frame with the bacckground character."""
+    def blank_frame(self) -> list[list[str]]:
+        """Create a blank frame with the background character."""
         return [[self.bg for _ in range(self.width)] for _ in range(self.height)]
     
     def render(self, scene: Scene) -> None:
