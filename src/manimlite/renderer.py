@@ -22,11 +22,49 @@ class Renderer:
 
     def line(self, frame: list[list[str]], x1: int, y1: int, x2: int, y2: int, ch: str = "#") -> None:
         """Draw a line from (x1, y1) to (x2, y2) using Bresenham's line algorithm."""
-        pass 
+        dx = abs(x2 - x1)
+        dy = abs(y2 - y1)
+
+
+        sx = 1 if x1 < x2 else -1
+        sy = 1 if y1 < y2 else -1
+
+        err = dx - dy
+
+        while True:
+            self.set_pixel(frame, x1, y1, ch)
+            if x1 == x2 and y1 == y2:
+                break
+            e2 = 2 * err
+            if e2 > -dy:
+                err -= dy
+                x1 += sx
+            if e2 < dx:
+                err += dx
+                y1 += sy
 
     def circle(self, frame: list[list[str]], cx: int, cy: int, r: int, ch: str = "#") -> None:
         """Draw a circle centered at (cx, cy) with radius r using the midpoint circle algorithm."""
-        pass
+        x = 0
+        y = r
+        d = 1 - r
+
+        while x <= y:
+            self.set_pixel(frame, cx + x, cy + y, ch)
+            self.set_pixel(frame, cx - x, cy + y, ch)
+            self.set_pixel(frame, cx + x, cy - y, ch)
+            self.set_pixel(frame, cx - x, cy - y, ch)
+            self.set_pixel(frame, cx + y, cy + x, ch)
+            self.set_pixel(frame, cx - y, cy + x, ch)
+            self.set_pixel(frame, cx + y, cy - x, ch)
+            self.set_pixel(frame, cx - y, cy - x, ch)
+
+            if d < 0:
+                d += 2 * x + 3
+            else:
+                d += 2 * (x - y) + 5
+                y -= 1
+            x += 1
 
     def render(self, scene: Scene) -> None:
         """Render the scene to the terminal"""
