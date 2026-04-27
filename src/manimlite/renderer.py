@@ -11,7 +11,15 @@ class Renderer:
     def blank_frame(self) -> list[list[str]]:
         """Create a blank frame with the background character."""
         return [[self.bg for _ in range(self.width)] for _ in range(self.height)]
-    
+
+    def set_pixel(self, frame: list[list[str]], x: int, y: int, ch: str = "#") -> None:
+        """Write one character to the frame; out-of-bounds writes are clipped."""
+        if not ch:
+            return
+        if not (0 <= x < self.width and 0 <= y < self.height):
+            return
+        frame[y][x] = ch[0]
+
     def render(self, scene: Scene) -> None:
         """Render the scene to the terminal"""
         frame = self.blank_frame()
