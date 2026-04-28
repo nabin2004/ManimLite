@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
 
+from manimlite.canvas import Canvas
 from manimlite.core import Node
 
 
@@ -16,7 +16,7 @@ class Text(Node):
     font_size: float = 24.0
     color: str = "#FFFFFF"
 
-    def draw(self, canvas: Any, ox: float = 0.0, oy: float = 0.0) -> None:
+    def draw(self, canvas: Canvas, ox: float = 0.0, oy: float = 0.0) -> None:
         """Rasterize text via Skia (stub)."""
         _ = canvas, ox, oy
         Node.draw(self, canvas, ox, oy)
@@ -30,9 +30,20 @@ class MathExpr(Node):
     font_size: float = 28.0
     color: str = "#FFFFFF"
 
-    def draw(self, canvas: Any, ox: float = 0.0, oy: float = 0.0) -> None:
-        """Render Typst → SVG → Skia (stub)."""
-        _ = canvas, ox, oy
+    def draw(self, canvas: Canvas, ox: float = 0.0, oy: float = 0.0) -> None:
+        """Typst → cached SVG; Skia canvases implement ``draw_svg_bytes``."""
+        px = ox + self.x
+        py = oy + self.y
+        if self.typst_source.strip():
+            from manimlite.typst_cache import cached_typst_svg_path
+
+            svg_path = cached_typst_svg_path(self.typst_source)
+            if svg_path is not None:
+                data = svg_path.read_bytes()
+                place = getattr(canvas, "draw_svg_bytes", None)
+                if place is not None:
+                    scale = max(self.font_size, 1.0) / 28.0
+                    place(data, px, py, scale)
         Node.draw(self, canvas, ox, oy)
 
 
@@ -44,7 +55,7 @@ class CodeBlock(Node):
     language: str = "python"
     font_size: float = 14.0
 
-    def draw(self, canvas: Any, ox: float = 0.0, oy: float = 0.0) -> None:
+    def draw(self, canvas: Canvas, ox: float = 0.0, oy: float = 0.0) -> None:
         """Highlight and draw code (stub)."""
         _ = canvas, ox, oy
         Node.draw(self, canvas, ox, oy)

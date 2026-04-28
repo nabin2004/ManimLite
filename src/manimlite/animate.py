@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Callable, Protocol, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 from manimlite.core import Circle, Node, Scene
 
@@ -29,7 +30,9 @@ def apply_timeline(
     ease: Callable[[float], float] | None = smoothstep,
     on_apply: TimelineOnApply | None = None,
 ) -> None:
-    """Apply all timeline entries at global scene time ``t`` (segment-local ``u`` then optional ``ease``).
+    """Apply all timeline entries at global scene time ``t``.
+
+    Maps global time to segment-local ``u``, then optionally applies ``ease``.
 
     If ``on_apply`` is set, it is called after each successful ``anim.apply`` with
     ``(t, start, end, target, anim, u_eased)`` for debugging or tooling.
@@ -100,7 +103,8 @@ class Sequence:
     """Partition ``t ∈ [0, 1]`` into equal sub-segments and run exactly one child at a time.
 
     Only the active sub-animator runs each frame; other properties keep their previous values.
-    Align segment boundaries so ``local_t=1`` of segment ``k`` matches ``local_t=0`` of ``k+1`` where needed.
+    Align segment boundaries so ``local_t=1`` of segment ``k`` matches
+    ``local_t=0`` of ``k+1`` where needed.
     """
 
     __slots__ = ("animators",)

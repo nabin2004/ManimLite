@@ -1,26 +1,13 @@
-"""Vector primitives: circle, line, polygon (implementation pending)."""
+"""Vector primitives: lines and polygons (:class:`~manimlite.core.Circle` is canonical)."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
 
-from manimlite.core import Node
+from manimlite.canvas import Canvas
 
-
-@dataclass(slots=True)
-class Circle(Node):
-    """Circle centered in local coordinates."""
-
-    radius: float = 100.0
-    fill_color: str = "#FFFFFF"
-    stroke_color: str | None = None
-    stroke_width: float = 0.0
-
-    def draw(self, canvas: Any, ox: float = 0.0, oy: float = 0.0) -> None:
-        """Draw circle via Skia (stub)."""
-        _ = canvas, ox, oy
-        Node.draw(self, canvas, ox, oy)
+# Canonical circle (grid + upcoming vector backends) lives in ``core``.
+from manimlite.core import Circle, Node  # Circle: canonical (see core)
 
 
 @dataclass(slots=True)
@@ -34,9 +21,19 @@ class Line(Node):
     stroke_color: str = "#FFFFFF"
     stroke_width: float = 2.0
 
-    def draw(self, canvas: Any, ox: float = 0.0, oy: float = 0.0) -> None:
-        """Draw line via Skia (stub)."""
-        _ = canvas, ox, oy
+    def draw(self, canvas: Canvas, ox: float = 0.0, oy: float = 0.0) -> None:
+        px = ox + self.x
+        py = oy + self.y
+        stroke_line = getattr(canvas, "stroke_line", None)
+        if stroke_line is not None:
+            stroke_line(
+                px + self.x0,
+                py + self.y0,
+                px + self.x1,
+                py + self.y1,
+                self.stroke_color,
+                self.stroke_width,
+            )
         Node.draw(self, canvas, ox, oy)
 
 
@@ -49,7 +46,20 @@ class Polygon(Node):
     stroke_color: str | None = None
     stroke_width: float = 0.0
 
-    def draw(self, canvas: Any, ox: float = 0.0, oy: float = 0.0) -> None:
-        """Draw polygon via Skia (stub)."""
-        _ = canvas, ox, oy
+    def draw(self, canvas: Canvas, ox: float = 0.0, oy: float = 0.0) -> None:
+        px = ox + self.x
+        py = oy + self.y
+        fill_polygon = getattr(canvas, "fill_polygon", None)
+        if fill_polygon is not None and len(self.vertices) >= 3:
+            fill_polygon(
+                self.vertices,
+                fill_color=self.fill_color,
+                stroke_color=self.stroke_color,
+                stroke_width=self.stroke_width,
+                ox=px,
+                oy=py,
+            )
         Node.draw(self, canvas, ox, oy)
+
+
+__all__ = ["Circle", "Line", "Polygon"]

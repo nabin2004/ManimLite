@@ -1,11 +1,25 @@
 from __future__ import annotations
 
+import hashlib
 import sys
 import time
 from typing import Any
 
 from manimlite.animate import apply_timeline
 from manimlite.core import Node, Scene
+from manimlite.engine import step_frame
+
+
+def ascii_frame_text(frame: list[list[str]]) -> str:
+    """Join frame rows into one string (row-major, newline between rows)."""
+
+    return "\n".join("".join(row) for row in frame)
+
+
+def ascii_frame_sha256(frame: list[list[str]]) -> str:
+    """Deterministic digest of an ASCII frame (for snapshot tests)."""
+
+    return hashlib.sha256(ascii_frame_text(frame).encode()).hexdigest()
 
 
 class AsciiFrameCanvas:
@@ -18,6 +32,7 @@ class AsciiFrameCanvas:
         self._frame = frame
 
     def set_pixel(self, x: int, y: int, ch: str = "#") -> None:
+        """Satisfies :class:`~manimlite.canvas.Canvas` for raster ASCII."""
         self._renderer.set_pixel(self._frame, x, y, ch)
 
 
@@ -72,7 +87,15 @@ class Renderer:
             return
         frame[y][x] = ch[0]
 
-    def line(self, frame: list[list[str]], x1: int, y1: int, x2: int, y2: int, ch: str = "#") -> None:
+    def line(
+        self,
+        frame: list[list[str]],
+        x1: int,
+        y1: int,
+        x2: int,
+        y2: int,
+        ch: str = "#",
+    ) -> None:
         """Draw a line from (x1, y1) to (x2, y2) using Bresenham's line algorithm."""
         dx = abs(x2 - x1)
         dy = abs(y2 - y1)
@@ -118,22 +141,28 @@ class Renderer:
                 y -= 1
             x += 1
 
-    def render(self, scene: Scene) -> None:
+    def render(self, scene: Scene, *, show_output: bool = True) -> None:
         """Render one still at global time 0 (applies timeline at ``t=0``)."""
         on_apply = self._log_timeline_apply if self.debug else None
         apply_timeline(scene, 0.0, on_apply=on_apply)
         frame = self.blank_frame()
         canvas = AsciiFrameCanvas(self, frame)
         scene.root.draw(canvas, 0.0, 0.0)
-        self.show(frame, ansi_clear=False)
+        if show_output:
+            self.show(frame, ansi_clear=False)
 
-    def play(self, scene: Scene, *, realtime: bool = True, debug: bool | None = None) -> None:
-        """Step scene time: update then draw each frame until scene.duration (first frame after update at t=0).
+    def play(
+        self,
+        scene: Scene,
+        *,
+        realtime: bool = True,
+        debug: bool | None = None,
+        show_output: bool = True,
+    ) -> None:
+        """Playback: ``apply_timeline`` + draw each frame until ``scene.duration``.
 
-        With ``realtime=True`` (default): clear screen + home cursor each frame, pace with ``sleep`` for ``scene.fps``,
-        hide terminal cursor during playback. Use ``realtime=False`` for tests or headless runs.
-
-        With ``debug=True`` (or ``Renderer(..., debug=True)`` when ``debug`` is ``None``), log each timeline ``apply`` to stderr.
+        ``realtime=True``: terminal cursor + sleep pacing. ``realtime=False``: no wall clock.
+        ``show_output=False``: skip printing frames. ``debug``: log applies to stderr.
         """
         if scene.fps <= 0:
             raise ValueError("scene.fps must be positive")
@@ -147,12 +176,12 @@ class Renderer:
             for i in range(n_frames):
                 start = time.perf_counter()
                 t_frame = min(scene.duration, (i + 1) * dt)
-                apply_timeline(scene, t_frame, on_apply=on_apply)
-                scene.root.update(t_frame, dt)
+                step_frame(scene, t_frame, dt, on_apply=on_apply)
                 frame = self.blank_frame()
                 canvas = AsciiFrameCanvas(self, frame)
                 scene.root.draw(canvas, 0.0, 0.0)
-                self.show(frame, ansi_clear=realtime)
+                if show_output:
+                    self.show(frame, ansi_clear=realtime)
                 if realtime:
                     elapsed = time.perf_counter() - start
                     time.sleep(max(0.0, dt - elapsed))
