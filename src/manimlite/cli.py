@@ -10,6 +10,14 @@ import typer
 app = typer.Typer(no_args_is_help=True, help="ManimLite — lightweight animation CLI.")
 
 
+@app.command("backends")
+def list_backends() -> None:
+    """List named render targets (ASCII terminal vs Skia frame buffer)."""
+
+    typer.echo("ascii — manimlite.Renderer (terminal grid)")
+    typer.echo("skia  — manimlite.SkiaRenderer (RGBA ndarray via skia-python)")
+
+
 @app.command()
 def render(
     scene_file: Annotated[

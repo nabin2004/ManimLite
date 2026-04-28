@@ -16,12 +16,19 @@ from manimlite.animate import (
     smoothstep,
 )
 from manimlite.audio import KittenVoiceOverBackend, VoiceOver
+from manimlite.canvas import Canvas, NullCanvas, RecordingCanvas
 from manimlite.core import Circle, Node, Scene, Timeline
-from manimlite.renderer import Renderer
+from manimlite.engine import step_frame
+from manimlite.render import SkiaCanvas, SkiaRenderer
+from manimlite.renderer import Renderer, ascii_frame_sha256, ascii_frame_text
 from manimlite.text import CodeBlock, MathExpr, Text
+from manimlite.typst_cache import cached_typst_svg_path, typst_cache_key
 
 __all__ = [
     "Animator",
+    "Canvas",
+    "NullCanvas",
+    "RecordingCanvas",
     "Circle",
     "CircleOutline",
     "CodeBlock",
@@ -34,11 +41,18 @@ __all__ = [
     "Renderer",
     "Scene",
     "Sequence",
+    "SkiaCanvas",
+    "SkiaRenderer",
     "Text",
     "apply_timeline",
+    "ascii_frame_sha256",
+    "ascii_frame_text",
+    "cached_typst_svg_path",
+    "step_frame",
     "lerp",
     "smoothstep",
     "Timeline",
+    "typst_cache_key",
     "VoiceOver",
     "__version__",
 ]
