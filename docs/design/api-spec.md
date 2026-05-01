@@ -1,11 +1,11 @@
 # Public API specification (contract)
 
-**Status:** Pre-alpha — names are stable enough for docs; behavior is mostly stubbed.
+**Status:** Pre-alpha — core Skia / Typst / PyAV paths are functional; some areas remain stubs.
 
 ## Package entry
 
 - **`import manimlite`**
-- **Re-exported symbols (intended public):** `Scene`, `Node`, `Timeline`, `Text`, `MathExpr`, `CodeBlock`, `VoiceOver`, `KittenVoiceOverBackend`, `__version__`
+- **Re-exported symbols (intended public):** `Scene`, `Node`, `Timeline`, `Text`, `MathExpr`, `CodeBlock`, `PyAVEncoder`, `SkiaRenderer`, `MoveX`, `MoveY`, `VoiceOver`, `KittenVoiceOverBackend`, `__version__` (among others; see `manimlite.__all__`)
 
 Additional symbols remain importable from submodules (`shapes`, `animate`, etc.) but may move until v0.2.
 
@@ -30,7 +30,7 @@ Additional symbols remain importable from submodules (`shapes`, `animate`, etc.)
 ## Shapes (`manimlite.shapes`)
 
 - `Circle(radius, fill_color, stroke_color?, stroke_width)`
-- `Line(x0, y0, x1, y1, stroke_color, stroke_width)`
+- `Line(x0=, y0=, x1=, y1=, stroke_color, stroke_width)` — prefer keywords; positionals bind `Node` fields first.
 - `Polygon(vertices, fill_color, stroke_color?, stroke_width)`
 
 ## Text (`manimlite.text`)
@@ -41,6 +41,7 @@ Additional symbols remain importable from submodules (`shapes`, `animate`, etc.)
 
 ## Animation (`manimlite.animate`)
 
+- **`MoveX(x0, x1)`**, **`MoveY(y0, y1)`** — set `node.x` / `node.y` over the segment.
 - `Animation(name)` with `as_animator() -> Animator`
 - **`Animator` protocol:** `apply(node, t: float) -> None`
 
@@ -52,8 +53,8 @@ Additional symbols remain importable from submodules (`shapes`, `animate`, etc.)
 
 ## Render / export
 
-- `SkiaRenderer(scene).render_frame(time) -> Any`
-- `PyAVEncoder(scene, output_path).encode(frame_source) -> None`
+- `SkiaRenderer(clear_color=(r,g,b)).render_frame(scene, time) -> ndarray` — H×W×4 RGBA `uint8`.
+- `PyAVEncoder(scene, output_path, renderer=SkiaRenderer()).encode(verbose=...) -> Path` — muxes H.264 MP4 via PyAV.
 
 ## Audio (`manimlite.audio` and top-level re-exports)
 
@@ -64,7 +65,7 @@ Additional symbols remain importable from submodules (`shapes`, `animate`, etc.)
 
 ## CLI
 
-- `manimlite render <scene.py>`
+- `manimlite render <scene.py> [-o OUT] [--width W] [--height H] [--fps F] [-q]` — loads `build_scene()` or module-level `scene`; optional `get_skia_renderer()` in the same module for custom `SkiaRenderer`.
 
 ## Versioning policy (planned)
 

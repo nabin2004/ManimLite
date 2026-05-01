@@ -13,21 +13,37 @@
 
 Installing `[tts]` may pull a **large** dependency tree (for example **PyTorch** and friends) as required by upstream **kittentts** 0.8.x — keep it optional. Core animation deps stay separate.
 
-**Status:** pre-alpha — API and internals are stubs; see [docs/](docs/) for requirements and design.
+**Status:** pre-alpha — core rendering pipeline (Skia + Typst + PyAV) is functional; see [docs/](docs/) for requirements and design.
 
 **Tutorial:** step-by-step build from ASCII to PyAV-oriented design in [learn/](learn/) (phases `000`–`100`).
 
-## Quick start (placeholder)
+## Quick start
 
 ```bash
-uv sync --extra dev --extra tts
-manimlite render examples/hello_circle.py
+# Install (requires Python 3.11+)
+uv pip install -e ".[dev]"
+
+# Install Typst CLI for math rendering
+curl -fsSL https://github.com/typst/typst/releases/latest/download/typst-x86_64-unknown-linux-musl.tar.xz \
+  | tar -xJ --strip-components=1 -C ~/.local/bin/
+
+# Polished 720p showcase (recommended)
+manimlite render examples/showcase_intro.py -o showcase.mp4
+
+# Full-stack demo (text + math + code + circle)
+manimlite render examples/math_and_text.py -o output.mp4
+
+# Or run directly
+python examples/showcase_intro.py
+python examples/math_and_text.py
 ```
 
-Implementation of `render` and the pipeline is tracked in the roadmap.
+See the [Setup Guide](docs/guides/setup.md) for platform-specific instructions.
 
 ## Documentation
 
+- [Setup Guide](docs/guides/setup.md) — installing skia-python and Typst
+- [Math Rendering Guide](docs/guides/math-rendering.md) — using Typst for math
 - [Learn path (phases 000–100)](learn/README.md)
 - [Proposal](docs/proposal.md)
 - [Roadmap](docs/roadmap.md)

@@ -14,10 +14,10 @@
 4. **Encode** — feed `numpy`/`bytes` RGB(A) buffers into PyAV video stream; set time_base from fps.
 5. **Mux** — attach audio if present; finalize MP4.
 
-## Frame buffer format (planned)
+## Frame buffer format (implemented)
 
 - **Color space:** sRGB
-- **Layout:** row-major RGB888 or RGBA8888 (TBD based on Skia surface → NumPy zero-copy path)
+- **Layout:** Skia image snapshot → NumPy row-major **RGBA8888** `uint8` (`SkiaRenderer.render_frame`). Encoder strips alpha to **RGB24** for libx264.
 
 ## Typst integration
 
