@@ -2,7 +2,7 @@
 
 ## Goal of this phase
 
-Map the ManimLite repo’s **optional** `[tts]` story to the tutorial: local synthesis without cloud keys.
+Map the Typmotion repo’s **optional** `[tts]` story to the tutorial: local synthesis without cloud keys.
 
 ## Problem being solved
 
@@ -10,7 +10,7 @@ Piper (GPL) vs **Kitten TTS (Apache-2.0)** license fit matters for MIT cores; ke
 
 ## Implementation
 
-`VoiceOver` remains backend-agnostic. A `KittenVoiceOverBackend` (see repo `src/manimlite/audio/voiceover.py`) wraps the upstream wheel.
+`VoiceOver` remains backend-agnostic. A `KittenVoiceOverBackend` (see repo `src/typmotion/audio/voiceover.py`) wraps the upstream wheel.
 
 **Do not** import TTS in core animation tests; mock bytes in unit tests.
 

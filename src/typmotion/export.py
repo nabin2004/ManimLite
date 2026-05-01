@@ -9,8 +9,8 @@ from pathlib import Path
 import numpy as np
 import numpy.typing as npt
 
-from manimlite.core import Scene
-from manimlite.render import SkiaRenderer
+from typmotion.core import Scene
+from typmotion.render import SkiaRenderer
 
 
 @dataclass(slots=True)

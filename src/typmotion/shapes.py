@@ -1,12 +1,12 @@
-"""Vector primitives: lines, polygons, curves, and canonical :class:`~manimlite.core.Circle`."""
+"""Vector primitives: lines, polygons, curves, and canonical :class:`~typmotion.core.Circle`."""
 
 from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
 
-from manimlite.canvas import Canvas
-from manimlite.core import Circle, Node
+from typmotion.canvas import Canvas
+from typmotion.core import Circle, Node
 
 PathCommands = list[tuple[str, tuple[float, ...]]]
 
@@ -16,7 +16,7 @@ class Line(Node):
     """Line segment from start to end in local space.
 
     Use keyword arguments for geometry fields so positional args do not bind
-    :class:`~manimlite.core.Node` fields ``x``, ``y``, ``children``.
+    :class:`~typmotion.core.Node` fields ``x``, ``y``, ``children``.
     """
 
     x0: float = 0.0

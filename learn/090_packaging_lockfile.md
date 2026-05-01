@@ -14,7 +14,7 @@ Key ideas only:
 
 ```toml
 [project]
-name = "manimlite"
+name = "typmotion"
 dependencies = [ "numpy", "av", ... ]
 
 [project.optional-dependencies]

@@ -6,7 +6,7 @@ import math
 from dataclasses import dataclass, field
 from typing import Any, Protocol, runtime_checkable
 
-from manimlite.canvas import Canvas
+from typmotion.canvas import Canvas
 
 
 @runtime_checkable

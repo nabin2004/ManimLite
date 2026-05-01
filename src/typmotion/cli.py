@@ -1,28 +1,29 @@
-"""Command-line interface for ManimLite."""
+"""Command-line interface for Typmotion."""
 
 from __future__ import annotations
 
 import importlib.util
 import sys
 from pathlib import Path
+from types import ModuleType
 from typing import Annotated
 
 import typer
 
-from manimlite.core import Scene
+from typmotion.core import Scene
 
-app = typer.Typer(no_args_is_help=True, help="ManimLite — lightweight animation CLI.")
+app = typer.Typer(no_args_is_help=True, help="Typmotion — lightweight animation CLI.")
 
 
 @app.command("backends")
 def list_backends() -> None:
     """List named render targets (ASCII terminal vs Skia frame buffer)."""
 
-    typer.echo("ascii — manimlite.Renderer (terminal grid)")
-    typer.echo("skia  — manimlite.SkiaRenderer (RGBA ndarray via skia-python)")
+    typer.echo("ascii — typmotion.Renderer (terminal grid)")
+    typer.echo("skia  — typmotion.SkiaRenderer (RGBA ndarray via skia-python)")
 
 
-def _import_scene_module(scene_file: Path):
+def _import_scene_module(scene_file: Path) -> ModuleType:
     """Load ``scene_file`` as a module (``_user_scene``)."""
     spec = importlib.util.spec_from_file_location("_user_scene", str(scene_file))
     if spec is None or spec.loader is None:
@@ -33,8 +34,8 @@ def _import_scene_module(scene_file: Path):
     return mod
 
 
-def _scene_from_module(mod, scene_file: Path) -> Scene:
-    """Return a :class:`~manimlite.core.Scene` from a loaded user module.
+def _scene_from_module(mod: ModuleType, scene_file: Path) -> Scene:
+    """Return a :class:`~typmotion.core.Scene` from a loaded user module.
 
     Looks for (in order):
 
@@ -84,8 +85,8 @@ def render(
     ] = False,
 ) -> None:
     """Render a scene file to MP4 video."""
-    from manimlite.export import PyAVEncoder
-    from manimlite.render import SkiaRenderer
+    from typmotion.export import PyAVEncoder
+    from typmotion.render import SkiaRenderer
 
     mod = _import_scene_module(scene_file)
     scene = _scene_from_module(mod, scene_file)
@@ -112,7 +113,7 @@ def render(
 
 
 def main() -> None:
-    """Entry point for ``python -m manimlite`` style invocation."""
+    """Entry point for ``python -m typmotion`` style invocation."""
     app()
 
 

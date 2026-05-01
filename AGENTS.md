@@ -1,6 +1,6 @@
-# Agent / LLM authoring guide (ManimLite)
+# Agent / LLM authoring guide (Typmotion)
 
-This file helps humans and **LLM agents** write scenes that match ManimLite’s intended public API.
+This file helps humans and **LLM agents** write scenes that match Typmotion’s intended public API.
 
 ## Design principles
 
@@ -12,7 +12,7 @@ This file helps humans and **LLM agents** write scenes that match ManimLite’s 
 
 ## Architecture: three layers (normative)
 
-ManimLite separates **structure**, **time scheduling**, and **how values change**. Keep these boundaries when generating scenes.
+Typmotion separates **structure**, **time scheduling**, and **how values change**. Keep these boundaries when generating scenes.
 
 ### Layer 1 — Structure (scene graph)
 
@@ -43,7 +43,7 @@ ManimLite separates **structure**, **time scheduling**, and **how values change*
 
 ## Naming
 
-- Module names: `snake_case` (`manimlite.core`).
+- Module names: `snake_case` (`typmotion.core`).
 - Public classes: `PascalCase` (`Circle`, `MathExpr`).
 - Time in **seconds** as `float`.
 
@@ -63,7 +63,7 @@ ManimLite separates **structure**, **time scheduling**, and **how values change*
 ## Example shape (conceptual)
 
 ```python
-from manimlite import Scene, Circle, Timeline
+from typmotion import Scene, Circle, Timeline
 
 scene = Scene(width=1920, height=1080, fps=30, duration=3.0)
 # Nodes and timeline entries are added explicitly (API TBD in implementation).

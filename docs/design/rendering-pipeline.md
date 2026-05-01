@@ -23,7 +23,7 @@
 
 1. Build a minimal Typst document wrapping user expression (font/size/color injected).
 2. Run Typst CLI or library (implementation choice) with stdin/stdout or temp **RAM** fs if required.
-3. Parse SVG; **hash** normalized SVG string + typst version → disk cache path `~/.cache/manimlite/typst/<hash>.svg`.
+3. Parse SVG; **hash** normalized SVG string + typst version → disk cache path `~/.cache/typmotion/typst/<hash>.svg`.
 4. Parse SVG paths into Skia paths (or rasterize SVG to texture once).
 
 ## Encoder settings (defaults, tunable later)

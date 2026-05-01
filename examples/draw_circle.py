@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from manimlite import Circle, Renderer, Scene
+from typmotion import Circle, Renderer, Scene
 
 WIDTH, HEIGHT = 32, 16
 BG = " "

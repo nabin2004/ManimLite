@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking
+
+- **Project rename:** The Python package is now **`typmotion`** (`pip install typmotion`, `import typmotion`, CLI **`typmotion`**). It replaces **`manimlite`**. Typst SVG cache moved to `~/.cache/typmotion/typst/` with marker `typmotion_typst_v1` (prior cached SVGs under `~/.cache/manimlite/` are not reused).
+
 ### Added
 
 - **README demo:** tracked `docs/assets/readme-demo.mp4` (720p showcase) with a `.gitignore` exception for `docs/assets/**/*.mp4`; README embeds the clip for GitHub viewers.
@@ -14,9 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Principles examples:** `examples/principles/*.py` gallery (referenced from README and setup guide).
 - **Skia text and code:** `SkiaCanvas.draw_text`; `Text.draw` draws labels on Skia; `CodeBlock.draw` uses Pygments token colors and monospace `draw_text` per character.
 - **Video export:** `PyAVEncoder(scene, output_path, renderer=…).encode()` streams frames from `SkiaRenderer` into an H.264 **MP4** via PyAV (RGB pad to even dimensions, `libx264`, `yuv420p`).
-- **CLI:** `manimlite render <scene.py> [-o OUT] [--width …] [--height …] [--fps …] [-q]` loads `build_scene()` or module `scene`, optional **`get_skia_renderer()`** hook for custom `SkiaRenderer(clear_color=…)`.
-- **Animator:** `MoveY(y0, y1)` (symmetric with `MoveX`); exported from `manimlite`.
-- **Public exports:** `PyAVEncoder`, `MoveY` in `manimlite.__all__`.
+- **CLI:** `typmotion render <scene.py> [-o OUT] [--width …] [--height …] [--fps …] [-q]` loads `build_scene()` or module `scene`, optional **`get_skia_renderer()`** hook for custom `SkiaRenderer(clear_color=…)`.
+- **Animator:** `MoveY(y0, y1)` (symmetric with `MoveX`); exported from `typmotion`.
+- **Public exports:** `PyAVEncoder`, `MoveY` in `typmotion.__all__`.
 - **Examples:** `examples/showcase_intro.py` (720p reel), `examples/math_and_text.py`, `examples/check_skia_typst.py` (pipeline smoke check), `examples/engine_step.py`, `examples/showcase_play_circles.py`.
 - **Docs:** `docs/guides/setup.md`, `docs/guides/math-rendering.md`, `docs/guides/principles-examples.md`; README quick start for Skia/Typst/PyAV path.
 - **Tests:** `tests/unit/test_text_code_export.py` (Text, CodeBlock, encoder, `draw_text`); `MoveX`+`MoveY` parallel test.
@@ -25,13 +29,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`apply_timeline(..., on_apply=...)`:** optional callback after each successful `anim.apply` (signature includes global `t`, segment bounds, target, animator, `u_eased`) for tooling.
 - **`Renderer(..., debug=True)`** and **`play(..., debug=True)`:** log each timeline application to **stderr** (animator type, segment, target id, `u`, and `x` / `progress` when present).
 - **Timeline-driven animation:** `Scene.add_animation(start, end, target, animator)` appends to `scene.timeline`. `apply_timeline(scene, t, *, ease=smoothstep)` walks entries in order (skips `end <= start`); maps global `t` to segment-local `u ∈ [0, 1]`; passes `ease(u)` to `apply` (use `ease=None` for linear). `Renderer.render` applies the timeline at `t=0` before drawing. `Renderer.play` uses `n_frames = max(1, round(duration * fps))` and `t_frame = min(duration, (i + 1) * dt)` per frame, then `apply_timeline`, `root.update`, and `draw`.
-- **`lerp`**, **`smoothstep`**, **`MoveX`**, **`CircleOutline`**, **`Animator`** (protocol): exported from `manimlite`. `CircleOutline` applies only to `Circle` (otherwise `TypeError`).
+- **`lerp`**, **`smoothstep`**, **`MoveX`**, **`CircleOutline`**, **`Animator`** (protocol): exported from `typmotion`. `CircleOutline` applies only to `Circle` (otherwise `TypeError`).
 - **Composable animators:** **`Parallel(*animators)`** (same `t` to each child), **`Sequence(*animators)`** (equal time slices, one child active), **`Delay(animator, start, end)`** (inner `apply` only when `start <= t <= end` within the parent segment, `0 <= start < end <= 1`). Documented in `AGENTS.md`.
 - **`Renderer.play(scene, *, realtime=True)`** and **`Node.update(t, dt)`:** non-positive `scene.fps` raises `ValueError`. Realtime playback clears the terminal each frame, paces with `sleep`, and hides/restores the cursor; `realtime=False` for tests and headless runs.
 - **`examples/play_circles.py`:** declarative outline reveal (`CircleOutline`) and horizontal move (`MoveX`). **`examples/draw_circle.py`:** single-frame `render` with full circles by default.
 - **Scene graph (terminal):** `Node` has `x`, `y`, `add()`, and `draw(canvas, ox, oy)` with parent-origin propagation; `Scene.add_node` delegates to `root.add()`.
 - **`AsciiFrameCanvas`:** binds a `Renderer` and character grid so nodes call `set_pixel`.
-- **`Circle`** (grid outline via polygon sampling in `core`); `manimlite.shapes.Circle` remains the Skia-oriented stub.
+- **`Circle`** (grid outline via polygon sampling in `core`); `typmotion.shapes.Circle` remains the Skia-oriented stub.
 - Tests: timeline at `t=0`, `MoveX` end state, play/update, circle progress via `apply_timeline`, timeline debug stderr, composable animators (`tests/unit/test_compose.py`), scene graph rendering.
 
 ### Fixed
@@ -41,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **Camera defaults:** when `Camera.x` / `Camera.y` are unset (`nan`), the Skia renderer pins the viewport center to the **scene** center so world `(0, 0)` aligns with the top-left of the scene.
-- **Export / CLI:** `PyAVEncoder.encode` and `manimlite render` are implemented (previously stubs).
+- **Export / CLI:** `PyAVEncoder.encode` and `typmotion render` are implemented (previously stubs).
 - **`Circle.progress`:** outline fraction is no longer advanced automatically in `update`; drive it with `CircleOutline` / timeline or set it manually.
 - **`Drawable`:** `draw` takes accumulated origin `ox`, `oy`.
 - **`text` / `shapes` stubs:** `draw` matches `Node`; stubs call `Node.draw` for children.
@@ -51,5 +55,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added (earlier)
 
-- Repository scaffold: `src/manimlite` package stubs, tests layout, CI skeleton.
+- Repository scaffold: `src/typmotion` package stubs, tests layout, CI skeleton.
 - SDRE documentation: SRS, SDD, supporting design docs, ADRs, proposal, roadmap.

@@ -14,5 +14,5 @@ Render math via **Typst**, producing **SVG** imported into Skia, with a **conten
 ## Consequences
 
 - **Positive:** Drastically smaller toolchain than TeX Live; faster iteration.
-- **Negative:** Not LaTeX-compatible; users must learn Typst syntax subset supported by ManimLite wrappers.
+- **Negative:** Not LaTeX-compatible; users must learn Typst syntax subset supported by Typmotion wrappers.
 - **Follow-up:** Ship pinned Typst version; structured errors mapping Typst diagnostics to user source.

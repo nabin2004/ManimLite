@@ -33,7 +33,7 @@ print("ok", sys.version.split()[0])
 
 ## Explanation
 
-We use 3.11+ for **better error messages**, `slots` on dataclasses later, and modern typing. The real `ManimLite` repo uses `uv`; for learning, plain venv is enough.
+We use 3.11+ for **better error messages**, `slots` on dataclasses later, and modern typing. The real `Typmotion` repo uses `uv`; for learning, plain venv is enough.
 
 ## Limitations
 

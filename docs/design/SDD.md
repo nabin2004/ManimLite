@@ -1,6 +1,6 @@
 # Software Design Document (SDD)
 
-**Project:** ManimLite  
+**Project:** Typmotion  
 **Style:** Arc42-inspired (adapted)  
 **Version:** 0.1  
 **Status:** Draft  
@@ -36,17 +36,17 @@ See [SRS.md](../requirements/SRS.md).
 flowchart LR
     Educator["Educator_or_Developer"]
     Agent["LLM_Agent"]
-    ManimLite["ManimLite_lib_CLI"]
+    Typmotion["Typmotion_lib_CLI"]
     MP4["MP4_output"]
     Voices["Voice_models_cache"]
 
-    Educator -->|"writes_scene_py"| ManimLite
-    Agent -->|"generates_scene_py"| ManimLite
-    ManimLite -->|"writes"| MP4
-    ManimLite -->|"optional_download"| Voices
+    Educator -->|"writes_scene_py"| Typmotion
+    Agent -->|"generates_scene_py"| Typmotion
+    Typmotion -->|"writes"| MP4
+    Typmotion -->|"optional_download"| Voices
 ```
 
-**Scope boundary:** ManimLite does not host video, manage courses, or edit slide decks.
+**Scope boundary:** Typmotion does not host video, manage courses, or edit slide decks.
 
 ---
 
@@ -64,15 +64,15 @@ flowchart LR
 
 | Module / package | Responsibility |
 | ---------------- | ---------------- |
-| `manimlite.core` | `Scene`, `Node`, `Timeline`, `Drawable` protocol |
-| `manimlite.shapes` | Vector primitives |
-| `manimlite.text` | Text, math, code |
-| `manimlite.animate` | `Animation`, `Animator` |
-| `manimlite.easing` | Scalar easing curves |
-| `manimlite.render` | Skia frame renderer |
-| `manimlite.export` | PyAV encoder/muxer |
-| `manimlite.audio` | pydub mixer, Kitten TTS voice-over backend |
-| `manimlite.cli` | Typer CLI |
+| `typmotion.core` | `Scene`, `Node`, `Timeline`, `Drawable` protocol |
+| `typmotion.shapes` | Vector primitives |
+| `typmotion.text` | Text, math, code |
+| `typmotion.animate` | `Animation`, `Animator` |
+| `typmotion.easing` | Scalar easing curves |
+| `typmotion.render` | Skia frame renderer |
+| `typmotion.export` | PyAV encoder/muxer |
+| `typmotion.audio` | pydub mixer, Kitten TTS voice-over backend |
+| `typmotion.cli` | Typer CLI |
 
 ---
 
@@ -88,7 +88,7 @@ sequenceDiagram
     participant R as SkiaRenderer
     participant E as PyAVEncoder
 
-    User->>CLI: manimlite_render_scene.py
+    User->>CLI: typmotion_render_scene.py
     CLI->>Scene: load_build_scene
     loop each_frame_t
         Scene->>R: render_frame_t
@@ -120,7 +120,7 @@ sequenceDiagram
 ## 7. Deployment view
 
 - **Dev:** `uv sync --extra dev --extra tts`
-- **End user (future):** `pip install manimlite[tts]`
+- **End user (future):** `pip install typmotion[tts]`
 - **Container (v0.4+):** slim image with Typst + Kitten TTS wheels + cached HF models
 
 ---
@@ -129,7 +129,7 @@ sequenceDiagram
 
 - **Caching:** Typst SVG keyed by hash(typst_source, engine_version, theme)
 - **Logging:** structured logs for render phases (load, raster, encode)
-- **Errors:** `ManimLiteError` hierarchy (to be implemented)
+- **Errors:** `TypmotionError` hierarchy (to be implemented)
 
 ---
 

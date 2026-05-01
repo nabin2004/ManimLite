@@ -37,7 +37,7 @@ print("overlap?", is_parallel(a, b))
 
 ## Explanation
 
-ManimCE’s `Play`/`Wait` is one encoding; ManimLite prefers an explicit time axis: **if intervals overlap, effects overlap**.
+ManimCE’s `Play`/`Wait` is one encoding; Typmotion prefers an explicit time axis: **if intervals overlap, effects overlap**.
 
 ## Limitations
 

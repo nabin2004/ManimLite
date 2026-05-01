@@ -18,8 +18,8 @@ from __future__ import annotations
 import os
 import sys
 
-from manimlite import Circle, CircleOutline, MoveX, Renderer, Scene, step_frame
-from manimlite.renderer import AsciiFrameCanvas, ascii_frame_text
+from typmotion import Circle, CircleOutline, MoveX, Renderer, Scene, step_frame
+from typmotion.renderer import AsciiFrameCanvas, ascii_frame_text
 
 WIDTH, HEIGHT = 32, 16
 BG = " "

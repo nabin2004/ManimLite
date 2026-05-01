@@ -9,8 +9,8 @@ from typing import Any, cast
 import numpy as np
 import numpy.typing as npt
 
-from manimlite.core import Scene
-from manimlite.engine import step_frame
+from typmotion.core import Scene
+from typmotion.engine import step_frame
 
 
 def _clamp01(x: float) -> float:

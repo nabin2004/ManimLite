@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from manimlite.animate import TimelineOnApply, apply_timeline, smoothstep
-from manimlite.core import Scene
+from typmotion.animate import TimelineOnApply, apply_timeline, smoothstep
+from typmotion.core import Scene
 
 
 def step_frame(

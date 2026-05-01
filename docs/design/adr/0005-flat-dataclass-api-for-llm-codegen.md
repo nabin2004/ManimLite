@@ -9,11 +9,11 @@ ManimCE’s inheritance-heavy API is powerful but error-prone for LLM-generated 
 
 ## Decision
 
-ManimLite’s public API should favor:
+Typmotion’s public API should favor:
 
 - **`@dataclass` nodes** with explicit fields
 - **`Timeline` tuples** instead of implicit animation stacks
-- **Small re-export surface** from `manimlite` package
+- **Small re-export surface** from `typmotion` package
 
 ## Consequences
 

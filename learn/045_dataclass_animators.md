@@ -33,7 +33,7 @@ class MoveX:
 
 ## Explanation
 
-`MoveX` is a **value object**; `Obj` is the mutable world state. This separation maps cleanly to ManimLite’s public API.
+`MoveX` is a **value object**; `Obj` is the mutable world state. This separation maps cleanly to Typmotion’s public API.
 
 ## Limitations
 

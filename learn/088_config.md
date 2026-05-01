@@ -2,7 +2,7 @@
 
 ## Goal of this phase
 
-Layer configuration: **defaults** in code, **overrides** from CLI, optional **.manimlite.toml** later.
+Layer configuration: **defaults** in code, **overrides** from CLI, optional **.typmotion.toml** later.
 
 ## Problem being solved
 

@@ -1,5 +1,5 @@
-from manimlite.animate import Animation, MoveX
-from manimlite.core import Node, Scene
+from typmotion.animate import Animation, MoveX
+from typmotion.core import Node, Scene
 
 
 def test_scene_and_timeline():

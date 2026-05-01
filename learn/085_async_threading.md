@@ -26,4 +26,4 @@ Multiprocess render needs picklable state or shared memory; avoid until necessar
 
 ## Next phase preview
 
-Phase 086 — A **CLI** `manimlite render file.py:SceneName`.
+Phase 086 — A **CLI** `typmotion render file.py:SceneName`.

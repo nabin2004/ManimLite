@@ -14,7 +14,7 @@ def _cache_root() -> Path:
     base = os.environ.get("MANIMLITE_CACHE_HOME", "")
     if base:
         return Path(base).expanduser() / "typst"
-    return Path.home() / ".cache" / "manimlite" / "typst"
+    return Path.home() / ".cache" / "typmotion" / "typst"
 
 
 def _typst_stub(source: str) -> str:
@@ -29,7 +29,7 @@ $
 """
 
 
-def typst_cache_key(source: str, *, engine_marker: str = "manimlite_typst_v1") -> str:
+def typst_cache_key(source: str, *, engine_marker: str = "typmotion_typst_v1") -> str:
     h = hashlib.sha256()
     h.update(engine_marker.encode())
     h.update(b"\n")
@@ -37,7 +37,7 @@ def typst_cache_key(source: str, *, engine_marker: str = "manimlite_typst_v1") -
     return h.hexdigest()
 
 
-def cached_typst_svg_path(source: str, *, engine_marker: str = "manimlite_typst_v1") -> Path | None:
+def cached_typst_svg_path(source: str, *, engine_marker: str = "typmotion_typst_v1") -> Path | None:
     """Return path to ``.svg`` compiled from ``source``, or ``None`` if ``typst`` is unavailable.
 
     Cached by :func:`typst_cache_key`. Idempotent: same source returns the same file.

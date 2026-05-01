@@ -6,7 +6,7 @@ diagonal slash, dot-grid atmosphere, and a floating glyph that breathes.
 Run::
 
     python examples/showcase_intro.py
-    manimlite render examples/showcase_intro.py -o showcase.mp4
+    typmotion render examples/showcase_intro.py -o showcase.mp4
 
 Requires: skia-python, ``typst`` on ``PATH``.
 """
@@ -17,11 +17,11 @@ import math
 import sys
 from pathlib import Path
 
-from manimlite import MoveX, MoveY, Parallel, Scene, SkiaRenderer
-from manimlite.export import PyAVEncoder
-from manimlite.core import Node
-from manimlite.shapes import Line, Polygon
-from manimlite.text import CodeBlock, MathExpr, Text
+from typmotion import MoveX, MoveY, Parallel, Scene, SkiaRenderer
+from typmotion.export import PyAVEncoder
+from typmotion.core import Node
+from typmotion.shapes import Line, Polygon
+from typmotion.text import CodeBlock, MathExpr, Text
 
 # ---------------------------------------------------------------------------
 # Layout constants
@@ -247,7 +247,7 @@ def build_scene() -> Scene:
 
     # Title — biggest, arrives first
     title = Text(
-        content="ManimLite",
+        content="Typmotion",
         x=80.0,
         y=104.0,
         font_size=58.0,
@@ -292,7 +292,7 @@ def build_scene() -> Scene:
     # Code block — rises from below the rule
     snippet = CodeBlock(
         code=(
-            'from manimlite import Scene, MoveX, Text\n\n'
+            'from typmotion import Scene, MoveX, Text\n\n'
             "scene = Scene(width=1280, height=720, fps=30, duration=3.0)\n"
             "label = Text('Hello', x=80, y=120, font_size=42)\n"
             "scene.add_node(label)\n"
@@ -311,7 +311,7 @@ def build_scene() -> Scene:
     # -----------------------------------------------------------------------
 
     footer = Text(
-        content="Render:  manimlite render examples/showcase_intro.py",
+        content="Render:  typmotion render examples/showcase_intro.py",
         x=80.0,
         y=666.0,
         font_size=14.0,
@@ -329,7 +329,7 @@ def build_scene() -> Scene:
 # ---------------------------------------------------------------------------
 
 def get_skia_renderer() -> SkiaRenderer:
-    """Optional hook for ``manimlite render`` — matches :func:`main` clear color."""
+    """Optional hook for ``typmotion render`` — matches :func:`main` clear color."""
     return SkiaRenderer(clear_color=BG)
 
 

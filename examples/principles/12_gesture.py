@@ -9,15 +9,15 @@ import math
 import sys
 from pathlib import Path
 
-from manimlite import Scene, SkiaRenderer
-from manimlite.export import PyAVEncoder
+from typmotion import Scene, SkiaRenderer
+from typmotion.export import PyAVEncoder
 
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 2.5
 BG = (18, 14, 22)
 
-from manimlite.composition import GesturePath
+from typmotion.composition import GesturePath
 
 
 def build_scene() -> Scene:

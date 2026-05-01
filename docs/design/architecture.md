@@ -2,7 +2,7 @@
 
 ## Context (C4 Level 1)
 
-Educators and tooling produce Python scene files. ManimLite reads them and writes MP4 (and optionally uses Kitten TTS models from the Hugging Face cache when the `tts` extra is installed).
+Educators and tooling produce Python scene files. Typmotion reads them and writes MP4 (and optionally uses Kitten TTS models from the Hugging Face cache when the `tts` extra is installed).
 
 ## Containers (C4 Level 2)
 
@@ -10,8 +10,8 @@ Educators and tooling produce Python scene files. ManimLite reads them and write
 flowchart TB
     subgraph devMachine [Dev_machine]
         ScenePy["scene_py"]
-        CLI["manimlite_CLI"]
-        Lib["manimlite_library"]
+        CLI["typmotion_CLI"]
+        Lib["typmotion_library"]
         Cache["cache_typst_svg_voices"]
         ScenePy --> CLI
         CLI --> Lib

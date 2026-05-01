@@ -2,9 +2,9 @@ from dataclasses import dataclass, field
 
 import pytest
 
-from manimlite.animate import CircleOutline, MoveX, apply_timeline
-from manimlite.core import Circle, Node, Scene
-from manimlite.renderer import AsciiFrameCanvas, Renderer
+from typmotion.animate import CircleOutline, MoveX, apply_timeline
+from typmotion.core import Circle, Node, Scene
+from typmotion.renderer import AsciiFrameCanvas, Renderer
 
 
 @dataclass(slots=True)

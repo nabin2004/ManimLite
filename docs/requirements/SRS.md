@@ -1,6 +1,6 @@
 # Software Requirements Specification (SRS)
 
-**Project:** ManimLite  
+**Project:** Typmotion  
 **Document:** SRS  
 **Style:** IEEE 830–style (adapted)  
 **Version:** 0.1  
@@ -12,11 +12,11 @@
 
 ### 1.1 Purpose
 
-This document specifies the functional and non-functional requirements for **ManimLite**, a lightweight Python animation engine for educational video, optimized for small install size, fast cold rendering, and LLM-generated scene code.
+This document specifies the functional and non-functional requirements for **Typmotion**, a lightweight Python animation engine for educational video, optimized for small install size, fast cold rendering, and LLM-generated scene code.
 
 ### 1.2 Scope
 
-ManimLite shall provide:
+Typmotion shall provide:
 
 - A **scene graph** of drawable nodes
 - A **timeline** of animations over wall-clock time
@@ -47,7 +47,7 @@ Section 2 describes the product at a high level. Section 3 lists specific requir
 
 ### 2.1 Product perspective
 
-ManimLite is a standalone library and CLI. It is positioned as an alternative to ManimCE for **2D educational** animations where install size and cold start matter. It does not embed a slide framework; output is primarily **MP4** (optional WAV sidecar if needed).
+Typmotion is a standalone library and CLI. It is positioned as an alternative to ManimCE for **2D educational** animations where install size and cold start matter. It does not embed a slide framework; output is primarily **MP4** (optional WAV sidecar if needed).
 
 ### 2.2 Product functions
 
@@ -107,7 +107,7 @@ ManimLite is a standalone library and CLI. It is positioned as an alternative to
 | FR-9 | The system shall support **syntax-highlighted code** via Pygments. |
 | FR-10 | The system shall provide **animation descriptors** and an **Animator** protocol applying eased progress in `[0, 1]` to a target node. |
 | FR-11 | The system shall provide **easing functions** (at minimum linear and a smooth ease-in-out). |
-| FR-12 | The system shall expose a **CLI**: `manimlite render <scene.py>` producing a video file path. |
+| FR-12 | The system shall expose a **CLI**: `typmotion render <scene.py>` producing a video file path. |
 | FR-13 | The system shall support **optional voice-over**: given text, voice id, and start time, synthesize audio via **Kitten TTS** (default local backend) and place it on the master audio timeline. |
 | FR-14 | The system shall **mix** narration and optional background audio with **pydub** before muxing. |
 | FR-15 | The system shall define a **`VoiceOverBackend`** protocol to allow alternate backends without breaking the public narration API. |
@@ -118,14 +118,14 @@ ManimLite is a standalone library and CLI. It is positioned as an alternative to
 | ----- | ------------- |
 | NFR-1 | **Cold render latency:** for a reference 10 s scene (defined in test fixtures), median wall time ≤ **5 s** on a “commodity laptop” profile (to be benchmarked in CI nightly or manual job). |
 | NFR-2 | **Install size:** core dependency set (excluding optional Kitten TTS / HF models) shall target ≤ **100 MB** on disk after `pip/uv install`. |
-| NFR-3 | **LLM ergonomics:** public API shall prefer **dataclasses**, explicit **constructors**, and **≤20** top-level symbols re-exported from `manimlite` (subject to revision with ADR). |
+| NFR-3 | **LLM ergonomics:** public API shall prefer **dataclasses**, explicit **constructors**, and **≤20** top-level symbols re-exported from `typmotion` (subject to revision with ADR). |
 | NFR-4 | **Reproducibility:** releases shall ship with a **lockfile** (`uv.lock`) and pinned optional extras where feasible. |
 | NFR-5 | **License compliance:** `LICENSE` MIT; third-party licenses documented; optional TTS stack documented (Apache-2.0 Kitten + transitive deps). |
 
 ### 3.3 External interface requirements
 
-- **Python API:** package `manimlite` under `src/`, typed (`py.typed`).
-- **CLI:** Typer-based entry point `manimlite`.
+- **Python API:** package `typmotion` under `src/`, typed (`py.typed`).
+- **CLI:** Typer-based entry point `typmotion`.
 - **Inputs:** Python scene module/path; Typst source strings; optional audio files.
 - **Outputs:** MP4 file path; optional logs; optional WAV for debugging.
 
