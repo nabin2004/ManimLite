@@ -9,6 +9,7 @@ from manimlite.animate import (
     CircleOutline,
     Delay,
     MoveX,
+    MoveY,
     Parallel,
     Sequence,
     apply_timeline,
@@ -22,6 +23,7 @@ from manimlite.engine import step_frame
 from manimlite.render import SkiaCanvas, SkiaRenderer
 from manimlite.renderer import Renderer, ascii_frame_sha256, ascii_frame_text
 from manimlite.text import CodeBlock, MathExpr, Text
+from manimlite.export import PyAVEncoder
 from manimlite.typst_cache import cached_typst_svg_path, typst_cache_key
 
 __all__ = [
@@ -36,8 +38,10 @@ __all__ = [
     "KittenVoiceOverBackend",
     "MathExpr",
     "MoveX",
+    "MoveY",
     "Node",
     "Parallel",
+    "PyAVEncoder",
     "Renderer",
     "Scene",
     "Sequence",
