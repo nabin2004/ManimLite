@@ -1,0 +1,13 @@
+learn/
+docs/
+tests/
+src/
+.github/
+.vscode/
+.gitignore
+.editorconfig
+.pre-commit-config.yaml
+.pytest.ini
+.mypy.ini
+.ruff.toml
+.gitignore
