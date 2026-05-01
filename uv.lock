@@ -1041,6 +1041,58 @@ wheels = [
 ]
 
 [[package]]
+name = "manimlite"
+version = "0.1.0a0"
+source = { editable = "." }
+dependencies = [
+    { name = "av" },
+    { name = "ipython" },
+    { name = "numpy" },
+    { name = "pydub" },
+    { name = "pygments" },
+    { name = "skia-python" },
+    { name = "typer" },
+]
+
+[package.optional-dependencies]
+dev = [
+    { name = "mypy" },
+    { name = "pre-commit" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "ruff" },
+]
+docs = [
+    { name = "mkdocs" },
+    { name = "mkdocs-material" },
+]
+tts = [
+    { name = "kittentts" },
+    { name = "soundfile" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "av", specifier = ">=12.0" },
+    { name = "ipython", specifier = ">=9.13.0" },
+    { name = "kittentts", marker = "extra == 'tts'", url = "https://github.com/KittenML/KittenTTS/releases/download/0.8.1/kittentts-0.8.1-py3-none-any.whl" },
+    { name = "mkdocs", marker = "extra == 'docs'", specifier = ">=1.6" },
+    { name = "mkdocs-material", marker = "extra == 'docs'", specifier = ">=9.5" },
+    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.11" },
+    { name = "numpy", specifier = ">=1.26" },
+    { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=3.8" },
+    { name = "pydub", specifier = ">=0.25.1" },
+    { name = "pygments", specifier = ">=2.17" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3" },
+    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=5.0" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.6" },
+    { name = "skia-python", specifier = ">=120.0" },
+    { name = "soundfile", marker = "extra == 'tts'", specifier = ">=0.12" },
+    { name = "typer", specifier = ">=0.12" },
+]
+provides-extras = ["tts", "docs", "dev"]
+
+[[package]]
 name = "markdown"
 version = "3.10.2"
 source = { registry = "https://pypi.org/simple" }
@@ -3004,58 +3056,6 @@ sdist = { url = "https://files.pythonhosted.org/packages/55/e3/70399cb7dd41c10ac
 wheels = [
     { url = "https://files.pythonhosted.org/packages/dc/9b/47798a6c91d8bdb567fe2698fe81e0c6b7cb7ef4d13da4114b41d239f65d/typing_inspection-0.4.2-py3-none-any.whl", hash = "sha256:4ed1cacbdc298c220f1bd249ed5287caa16f34d44ef4e9c3d0cbad5b521545e7", size = 14611, upload-time = "2025-10-01T02:14:40.154Z" },
 ]
-
-[[package]]
-name = "typmotion"
-version = "0.1.0a0"
-source = { editable = "." }
-dependencies = [
-    { name = "av" },
-    { name = "ipython" },
-    { name = "numpy" },
-    { name = "pydub" },
-    { name = "pygments" },
-    { name = "skia-python" },
-    { name = "typer" },
-]
-
-[package.optional-dependencies]
-dev = [
-    { name = "mypy" },
-    { name = "pre-commit" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "ruff" },
-]
-docs = [
-    { name = "mkdocs" },
-    { name = "mkdocs-material" },
-]
-tts = [
-    { name = "kittentts" },
-    { name = "soundfile" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "av", specifier = ">=12.0" },
-    { name = "ipython", specifier = ">=9.13.0" },
-    { name = "kittentts", marker = "extra == 'tts'", url = "https://github.com/KittenML/KittenTTS/releases/download/0.8.1/kittentts-0.8.1-py3-none-any.whl" },
-    { name = "mkdocs", marker = "extra == 'docs'", specifier = ">=1.6" },
-    { name = "mkdocs-material", marker = "extra == 'docs'", specifier = ">=9.5" },
-    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.11" },
-    { name = "numpy", specifier = ">=1.26" },
-    { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=3.8" },
-    { name = "pydub", specifier = ">=0.25.1" },
-    { name = "pygments", specifier = ">=2.17" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3" },
-    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=5.0" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.6" },
-    { name = "skia-python", specifier = ">=120.0" },
-    { name = "soundfile", marker = "extra == 'tts'", specifier = ">=0.12" },
-    { name = "typer", specifier = ">=0.12" },
-]
-provides-extras = ["tts", "docs", "dev"]
 
 [[package]]
 name = "uritemplate"

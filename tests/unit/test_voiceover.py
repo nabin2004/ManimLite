@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typmotion import KittenVoiceOverBackend, VoiceOver
+from manimlite import KittenVoiceOverBackend, VoiceOver
 
 
 def test_voiceover_default_voice_is_jasper() -> None:

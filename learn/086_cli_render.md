@@ -11,7 +11,7 @@ Sketch the CLI surface: input path, optional scene symbol, config overrides, out
 ## Implementation
 
 ```text
-typmotion render myscene.py --scene MyScene -o out.mp4 -r 30 -s 5
+manimlite render myscene.py --scene MyScene -o out.mp4 -r 30 -s 5
 ```
 
 `Typer` or `argparse` both work; keep flags explicit (LLM-friendlier than env vars).

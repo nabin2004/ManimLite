@@ -4,8 +4,8 @@
 
 ## Package entry
 
-- **`import typmotion`**
-- **Re-exported symbols (intended public):** `Scene`, `Node`, `Timeline`, `Text`, `MathExpr`, `CodeBlock`, `PyAVEncoder`, `SkiaRenderer`, `MoveX`, `MoveY`, `VoiceOver`, `KittenVoiceOverBackend`, `__version__` (among others; see `typmotion.__all__`)
+- **`import manimlite`**
+- **Re-exported symbols (intended public):** `Scene`, `Node`, `Timeline`, `Text`, `MathExpr`, `CodeBlock`, `PyAVEncoder`, `SkiaRenderer`, `MoveX`, `MoveY`, `VoiceOver`, `KittenVoiceOverBackend`, `__version__` (among others; see `manimlite.__all__`)
 
 Additional symbols remain importable from submodules (`shapes`, `animate`, etc.) but may move until v0.2.
 
@@ -27,25 +27,25 @@ Additional symbols remain importable from submodules (`shapes`, `animate`, etc.)
 - **Fields:** `entries: tuple[tuple[float, float, Node, Any], ...]`
 - **Methods:** `add(start, end, target, animator) -> Timeline`
 
-## Shapes (`typmotion.shapes`)
+## Shapes (`manimlite.shapes`)
 
 - `Circle(radius, fill_color, stroke_color?, stroke_width)`
 - `Line(x0=, y0=, x1=, y1=, stroke_color, stroke_width)` — prefer keywords; positionals bind `Node` fields first.
 - `Polygon(vertices, fill_color, stroke_color?, stroke_width)`
 
-## Text (`typmotion.text`)
+## Text (`manimlite.text`)
 
 - `Text(content, font_size, color)`
 - `MathExpr(typst_source, font_size, color)`
 - `CodeBlock(code, language, font_size)`
 
-## Animation (`typmotion.animate`)
+## Animation (`manimlite.animate`)
 
 - **`MoveX(x0, x1)`**, **`MoveY(y0, y1)`** — set `node.x` / `node.y` over the segment.
 - `Animation(name)` with `as_animator() -> Animator`
 - **`Animator` protocol:** `apply(node, t: float) -> None`
 
-## Easing (`typmotion.easing`)
+## Easing (`manimlite.easing`)
 
 - `linear(t)`
 - `ease_in_out_quad(t)`
@@ -56,7 +56,7 @@ Additional symbols remain importable from submodules (`shapes`, `animate`, etc.)
 - `SkiaRenderer(clear_color=(r,g,b)).render_frame(scene, time) -> ndarray` — H×W×4 RGBA `uint8`.
 - `PyAVEncoder(scene, output_path, renderer=SkiaRenderer()).encode(verbose=...) -> Path` — muxes H.264 MP4 via PyAV.
 
-## Audio (`typmotion.audio` and top-level re-exports)
+## Audio (`manimlite.audio` and top-level re-exports)
 
 - `VoiceOver(text, voice="Jasper", start=0.0)` — `voice` is a Kitten built-in name when using `KittenVoiceOverBackend`
 - `KittenVoiceOverBackend(model_name="KittenML/kitten-tts-nano-0.8-int8", speed=1.0, clean_text=False)`
@@ -65,7 +65,7 @@ Additional symbols remain importable from submodules (`shapes`, `animate`, etc.)
 
 ## CLI
 
-- `typmotion render <scene.py> [-o OUT] [--width W] [--height H] [--fps F] [-q]` — loads `build_scene()` or module-level `scene`; optional `get_skia_renderer()` in the same module for custom `SkiaRenderer`.
+- `manimlite render <scene.py> [-o OUT] [--width W] [--height H] [--fps F] [-q]` — loads `build_scene()` or module-level `scene`; optional `get_skia_renderer()` in the same module for custom `SkiaRenderer`.
 
 ## Versioning policy (planned)
 

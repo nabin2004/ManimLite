@@ -1,6 +1,6 @@
-# Contributing to Typmotion
+# Contributing to ManimLite
 
-Thank you for your interest in Typmotion.
+Thank you for your interest in ManimLite.
 
 ## Development setup
 

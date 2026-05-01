@@ -24,7 +24,7 @@ def frame_times_cfr(n: int, duration: float) -> list[float]:
 
 ## Explanation
 
-Typmotion should pick one time mapping and test it. Constant **Δt = 1/fps** is another common form; both work if **consistent** with the encoder’s `time_base`.
+ManimLite should pick one time mapping and test it. Constant **Δt = 1/fps** is another common form; both work if **consistent** with the encoder’s `time_base`.
 
 ## Limitations
 

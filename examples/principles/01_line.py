@@ -9,15 +9,15 @@ import math
 import sys
 from pathlib import Path
 
-from typmotion import Scene, SkiaRenderer
-from typmotion.export import PyAVEncoder
+from manimlite import Scene, SkiaRenderer
+from manimlite.export import PyAVEncoder
 
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 3.0
 BG = (18, 22, 34)
 
-from typmotion.shapes import BezierCurve, Line
+from manimlite.shapes import BezierCurve, Line
 
 
 def build_scene() -> Scene:

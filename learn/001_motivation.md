@@ -2,7 +2,7 @@
 
 ## Goal of this phase
 
-Name the **concrete problems** Typmotion-style engines try to fix: install size, cold start, I/O-bound encoding, and LLM-unfriendly APIs.
+Name the **concrete problems** ManimLite-style engines try to fix: install size, cold start, I/O-bound encoding, and LLM-unfriendly APIs.
 
 ## Problem being solved
 
@@ -21,7 +21,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True, slots=True)
 class Budget:
-    """Targets for a future Typmotion benchmark (illustrative numbers)."""
+    """Targets for a future ManimLite benchmark (illustrative numbers)."""
 
     max_cold_start_s: float = 5.0  # 10s scene, laptop-class CPU
     max_core_install_mb: int = 100
@@ -34,7 +34,7 @@ class Budget:
 
 Manim Community Edition is excellent, but its ecosystem often pulls **TeX**, **Cairo**, and **disk + subprocess ffmpeg** workflows. For many **2D educational** clips, most wall time is **not** animation math—it is **toolchain and I/O**.
 
-Typmotion aims to keep the **animation model** simple while making the **render/export path** cheap: in-memory frames, in-process mux/encode, flat APIs.
+ManimLite aims to keep the **animation model** simple while making the **render/export path** cheap: in-memory frames, in-process mux/encode, flat APIs.
 
 ## Limitations
 

@@ -9,17 +9,17 @@ import math
 import sys
 from pathlib import Path
 
-from typmotion import Scene, SkiaRenderer
-from typmotion.export import PyAVEncoder
+from manimlite import Scene, SkiaRenderer
+from manimlite.export import PyAVEncoder
 
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 2.4
 BG = (14, 16, 24)
 
-from typmotion import MoveY, Parallel, SquashStretch
-from typmotion.core import Node
-from typmotion.shapes import Ellipse
+from manimlite import MoveY, Parallel, SquashStretch
+from manimlite.core import Node
+from manimlite.shapes import Ellipse
 
 
 def build_scene() -> Scene:

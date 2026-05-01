@@ -1,4 +1,4 @@
-# Typmotion — Project Proposal
+# ManimLite — Project Proposal
 
 **Unofficial Lightweight Animation Engine**  
 Inspired by ManimCE | Built for Speed & LLM Codegen
@@ -13,7 +13,7 @@ Inspired by ManimCE | Built for Speed & LLM Codegen
 
 ## Executive Summary
 
-Typmotion is a proposed lightweight Python animation engine designed as an alternative to ManimCE for educational content creation.
+ManimLite is a proposed lightweight Python animation engine designed as an alternative to ManimCE for educational content creation.
 
 It focuses on:
 
@@ -23,7 +23,7 @@ It focuses on:
 
 **Core idea:** The rendering stack is the bottleneck, not animation logic.
 
-By replacing heavy dependencies (LaTeX, Cairo, disk-based rendering pipeline), Typmotion aims to deliver equivalent educational animation quality with drastically lower overhead.
+By replacing heavy dependencies (LaTeX, Cairo, disk-based rendering pipeline), ManimLite aims to deliver equivalent educational animation quality with drastically lower overhead.
 
 **Voice-over:** Local narration via **Kitten TTS** (optional dependency, Apache-2.0), mixed into the output timeline without a cloud API.
 
@@ -69,7 +69,7 @@ Result:
 - Debug-heavy workflow
 - Poor first-pass success rate
 
-Typmotion fixes this with a flat, typed API.
+ManimLite fixes this with a flat, typed API.
 
 ---
 
@@ -78,7 +78,7 @@ Typmotion fixes this with a flat, typed API.
 | Library       | Language | Install | Cold Start | Math           | LLM-Friendly | Use Case          |
 | ------------- | -------- | ------- | ---------- | -------------- | ------------ | ----------------- |
 | ManimCE       | Python   | ~3 GB   | 30–90s     | Full LaTeX     | Low          | General animation |
-| Typmotion     | Python   | ~80 MB  | 2–5s       | Typst/SVG      | High         | Edu animations    |
+| ManimLite     | Python   | ~80 MB  | 2–5s       | Typst/SVG      | High         | Edu animations    |
 | Remotion      | JS       | ~500 MB | 3–8s       | MathJax        | Medium       | React video       |
 | Motion Canvas | TS       | ~400 MB | 2–4s       | KaTeX          | Medium       | CS videos         |
 | D3.js         | JS       | ~2 MB   | \<1s        | None           | High         | Data viz          |
@@ -87,7 +87,7 @@ Typmotion fixes this with a flat, typed API.
 
 ### Key Positioning
 
-Typmotion is:
+ManimLite is:
 
 - Python-native
 - Lightweight (\<100 MB core)

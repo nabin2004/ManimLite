@@ -3,7 +3,7 @@
 Run::
 
     python examples/math_and_text.py                     # renders to math_and_text.mp4
-    typmotion render examples/math_and_text.py           # same, via CLI
+    manimlite render examples/math_and_text.py           # same, via CLI
 
 Requires: skia-python, typst CLI on PATH.
 """
@@ -13,15 +13,15 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from typmotion import (
+from manimlite import (
     Circle,
     CircleOutline,
     MoveX,
     Scene,
     SkiaRenderer,
 )
-from typmotion.export import PyAVEncoder
-from typmotion.text import CodeBlock, MathExpr, Text
+from manimlite.export import PyAVEncoder
+from manimlite.text import CodeBlock, MathExpr, Text
 
 WIDTH, HEIGHT = 1280, 720
 FPS = 30.0
@@ -33,7 +33,7 @@ def build_scene() -> Scene:
     scene = Scene(width=WIDTH, height=HEIGHT, fps=FPS, duration=DURATION)
 
     title = Text(
-        content="Typmotion MVP",
+        content="ManimLite MVP",
         x=80,
         y=40,
         font_size=48.0,

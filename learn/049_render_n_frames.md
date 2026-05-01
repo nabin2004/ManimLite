@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
 ## Explanation
 
-Off-by-one is the #1 video bug. Typmotion should document its chosen mapping (ceil vs floor) in one place; here we just illustrate the *need* for a spec.
+Off-by-one is the #1 video bug. ManimLite should document its chosen mapping (ceil vs floor) in one place; here we just illustrate the *need* for a spec.
 
 ## Limitations
 

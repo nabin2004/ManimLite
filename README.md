@@ -1,8 +1,8 @@
-# Typmotion
+# ManimLite
 
 Lightweight **motion graphics** for explainers and teaching clips: **Typst** math → SVG, **Skia** rasterization, **PyAV** MP4 export, optional **[Kitten TTS](https://github.com/KittenML/KittenTTS)** narration. Scene APIs favor explicit timelines and small composable primitives— approachable for humans and for LLM-assisted authoring.
 
-The GitHub repo may still appear as **`ManimLite`** until it is renamed; install and import the project as **`typmotion`**.
+Install and import as **`manimlite`** (`pip install -e ".[dev]"` from this repo).
 
 | Goal | Target |
 |------|--------|
@@ -28,7 +28,7 @@ Short reel rendered from [`examples/showcase_intro.py`](examples/showcase_intro.
 Regenerate locally:
 
 ```bash
-typmotion render examples/showcase_intro.py -o docs/assets/readme-demo.mp4
+manimlite render examples/showcase_intro.py -o docs/assets/readme-demo.mp4
 ```
 
 Running `python examples/showcase_intro.py` writes `showcase_intro.mp4` in the current working directory; move or rename it if you are refreshing the committed demo.
@@ -46,10 +46,10 @@ curl -fsSL https://github.com/typst/typst/releases/latest/download/typst-x86_64-
   | tar -xJ --strip-components=1 -C ~/.local/bin/
 
 # Polished 720p showcase (recommended)
-typmotion render examples/showcase_intro.py -o showcase.mp4
+manimlite render examples/showcase_intro.py -o showcase.mp4
 
 # Full-stack demo (text + math + code + circle)
-typmotion render examples/math_and_text.py -o output.mp4
+manimlite render examples/math_and_text.py -o output.mp4
 
 # Or run directly
 python examples/showcase_intro.py

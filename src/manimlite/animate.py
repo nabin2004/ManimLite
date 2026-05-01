@@ -7,8 +7,8 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any, Protocol, runtime_checkable
 
-from typmotion.core import Circle, Node, Scene
-from typmotion.easing import cubic_bezier, ease_out_back, ease_out_elastic
+from manimlite.core import Circle, Node, Scene
+from manimlite.easing import cubic_bezier, ease_out_back, ease_out_elastic
 
 # (global_t, start, end, target, animator, u_eased) — invoked after ``apply`` succeeds.
 TimelineOnApply = Callable[[float, float, float, Node, Any, float], None]

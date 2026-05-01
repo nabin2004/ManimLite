@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from typmotion.animate import CircleOutline, MoveX
-from typmotion.canvas import NullCanvas, RecordingCanvas
-from typmotion.core import Circle, Node, Scene
-from typmotion.engine import step_frame
-from typmotion.renderer import AsciiFrameCanvas, Renderer
+from manimlite.animate import CircleOutline, MoveX
+from manimlite.canvas import NullCanvas, RecordingCanvas
+from manimlite.core import Circle, Node, Scene
+from manimlite.engine import step_frame
+from manimlite.renderer import AsciiFrameCanvas, Renderer
 
 
 def _paired_scenes():

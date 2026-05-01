@@ -3,7 +3,7 @@ requires = ["hatchling>=1.24"]
 build-backend = "hatchling.build"
 
 [project]
-name = "typmotion"
+name = "manimlite"
 version = "0.1.0a0"
 description = "Lightweight motion graphics for explainers — Typst math, Skia rendering, PyAV MP4 export — built for speed and LLM-friendly scene code."
 readme = "README.md"
@@ -50,10 +50,9 @@ dev = [
 ]
 
 [project.scripts]
-typmotion = "typmotion.cli:app"
+manimlite = "manimlite.cli:app"
 
 [project.urls]
-# Repository folder may still be "ManimLite" on GitHub until renamed; package name is typmotion.
 Homepage = "https://github.com/nabin2004/ManimLite"
 Documentation = "https://github.com/nabin2004/ManimLite/tree/main/docs"
 Repository = "https://github.com/nabin2004/ManimLite"
@@ -63,7 +62,7 @@ Issues = "https://github.com/nabin2004/ManimLite/issues"
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/typmotion"]
+packages = ["src/manimlite"]
 
 [tool.ruff]
 target-version = "py311"
@@ -81,7 +80,7 @@ python_version = "3.11"
 strict = true
 warn_return_any = true
 warn_unused_ignores = true
-packages = ["typmotion"]
+packages = ["manimlite"]
 mypy_path = "src"
 explicit_package_bases = true
 

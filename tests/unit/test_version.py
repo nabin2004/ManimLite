@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import typmotion
+import manimlite
 
 
 def test_version_is_set() -> None:
-    assert typmotion.__version__
+    assert manimlite.__version__

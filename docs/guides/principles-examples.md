@@ -3,12 +3,12 @@
 Scripts in [`examples/principles/`](../../examples/principles/) illustrate drawing and animation fundamentals. Each file is self-contained: run it from the repo root with Python and it encodes an MP4 **next to the script** (those outputs are gitignored).
 
 ```bash
-cd /path/to/Typmotion
+cd /path/to/ManimLite
 python examples/principles/04_value.py
 # produces examples/principles/04_value.mp4
 ```
 
-Requires the same setup as the rest of Typmotion ([Setup Guide](setup.md)): editable install, skia-python, PyAV, optional Typst for math-heavy scenes.
+Requires the same setup as the rest of ManimLite ([Setup Guide](setup.md)): editable install, skia-python, PyAV, optional Typst for math-heavy scenes.
 
 ## Drawing principles (01–12)
 

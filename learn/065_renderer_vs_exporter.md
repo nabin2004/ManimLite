@@ -30,7 +30,7 @@ def export(renderer, scene, times, out_path):
 
 ## Explanation
 
-This matches Typmotion’s `render` vs `export` modules: **two layers**, one policy (no per-frame temp files in hot path).
+This matches ManimLite’s `render` vs `export` modules: **two layers**, one policy (no per-frame temp files in hot path).
 
 ## Limitations
 

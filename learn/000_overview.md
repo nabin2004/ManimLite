@@ -13,7 +13,7 @@ Without a map, “build an engine from scratch” becomes either too abstract or
 There is no executable code here—only the contract for the series.
 
 ```text
-Rules (non-negotiable for Typmotion direction):
+Rules (non-negotiable for ManimLite direction):
 1. No LaTeX / TeX Live in the tutorial’s learning path.
 2. No subprocess-based video encoding (no `ffmpeg` CLI as the render path).
 3. No writing every frame to disk as PNG/JPG in the hot path (disk frame pipeline).
@@ -29,7 +29,7 @@ Later bands add **animation as time**, **scene graphs**, **renderer protocols**,
 
 ## Limitations
 
-This is a **pedagogical** sequence, not a drop-in replacement for the `typmotion` package’s production code. Some phases show “bad” code on purpose so the next phase can fix it.
+This is a **pedagogical** sequence, not a drop-in replacement for the `manimlite` package’s production code. Some phases show “bad” code on purpose so the next phase can fix it.
 
 ## Next phase preview
 

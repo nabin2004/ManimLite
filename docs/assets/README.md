@@ -9,5 +9,5 @@ All other `*.mp4` outputs (CLI renders, `examples/principles/*.mp4`, etc.) remai
 Regenerate:
 
 ```bash
-typmotion render examples/showcase_intro.py -o docs/assets/readme-demo.mp4
+manimlite render examples/showcase_intro.py -o docs/assets/readme-demo.mp4
 ```

@@ -38,7 +38,7 @@ def _fail(msg: str) -> bool:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Verify Typmotion Skia + Typst pipeline.")
+    parser = argparse.ArgumentParser(description="Verify ManimLite Skia + Typst pipeline.")
     parser.add_argument(
         "--mp4",
         action="store_true",
@@ -47,7 +47,7 @@ def main() -> int:
     args = parser.parse_args()
 
     failed = False
-    print("Typmotion pipeline check\n")
+    print("ManimLite pipeline check\n")
 
     # 1) skia-python
     print("1. skia-python")
@@ -96,11 +96,11 @@ def main() -> int:
             failed |= _fail(f"typst --version: {exc}")
 
     # 3) Typst cache + MathExpr on Skia
-    print("\n3. Typmotion: typst cache + SkiaRenderer")
-    from typmotion.core import Scene
-    from typmotion.render import SkiaRenderer
-    from typmotion.text import CodeBlock, MathExpr, Text
-    from typmotion.typst_cache import cached_typst_svg_path
+    print("\n3. ManimLite: typst cache + SkiaRenderer")
+    from manimlite.core import Scene
+    from manimlite.render import SkiaRenderer
+    from manimlite.text import CodeBlock, MathExpr, Text
+    from manimlite.typst_cache import cached_typst_svg_path
 
     if typst is None:
         _warn("Skipping MathExpr / cache checks (no typst)")
@@ -121,7 +121,7 @@ def main() -> int:
             _ok(f"MathExpr + SkiaRenderer frame ink = {ink}")
 
     # 4) Text + CodeBlock
-    print("\n4. Typmotion: Text + CodeBlock")
+    print("\n4. ManimLite: Text + CodeBlock")
     t_scene = Scene(width=320, height=72, fps=30.0)
     t_scene.add_node(Text(content="Hello", x=12, y=12, font_size=22.0, color="#FFFFFF"))
     t_frame = SkiaRenderer().render_frame(t_scene, 0.0)
@@ -151,9 +151,9 @@ def main() -> int:
     # 5) Optional PyAV
     if args.mp4:
         print("\n5. PyAV encode (short MP4)")
-        from typmotion.animate import CircleOutline, MoveX
-        from typmotion.core import Circle
-        from typmotion.export import PyAVEncoder
+        from manimlite.animate import CircleOutline, MoveX
+        from manimlite.core import Circle
+        from manimlite.export import PyAVEncoder
 
         e_scene = Scene(width=320, height=240, fps=10.0, duration=0.4)
         e_scene.add_node(Text(content="MP4", x=40, y=100, font_size=36.0))

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typmotion import Renderer
+from manimlite import Renderer
 
 WIDTH, HEIGHT = 32, 16
 BG = " "

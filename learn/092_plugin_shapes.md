@@ -2,7 +2,7 @@
 
 ## Goal of this phase
 
-Allow third-party packages to register new drawables: `typmotion.plugins` entry points or a simple `register_shape("heart", factory)`.
+Allow third-party packages to register new drawables: `manimlite.plugins` entry points or a simple `register_shape("heart", factory)`.
 
 ## Problem being solved
 

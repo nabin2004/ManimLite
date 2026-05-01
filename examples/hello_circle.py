@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from typmotion import Scene
-from typmotion.shapes import Circle
+from manimlite import Scene
+from manimlite.shapes import Circle
 
 
 def build_scene() -> Scene:

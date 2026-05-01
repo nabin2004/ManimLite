@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from typmotion.canvas import Canvas
-from typmotion.core import Node
+from manimlite.canvas import Canvas
+from manimlite.core import Node
 
 
 @dataclass(slots=True)

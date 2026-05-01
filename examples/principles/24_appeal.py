@@ -9,18 +9,18 @@ import math
 import sys
 from pathlib import Path
 
-from typmotion import Scene, SkiaRenderer
-from typmotion.export import PyAVEncoder
+from manimlite import Scene, SkiaRenderer
+from manimlite.export import PyAVEncoder
 
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 3.0
 BG = (14, 18, 28)
 
-from typmotion import MoveY, Parallel, ScaleY
-from typmotion.form import Sphere
-from typmotion.shapes import Line
-from typmotion.value import GradientOverlay
+from manimlite import MoveY, Parallel, ScaleY
+from manimlite.form import Sphere
+from manimlite.shapes import Line
+from manimlite.value import GradientOverlay
 
 
 def build_scene() -> Scene:

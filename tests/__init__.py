@@ -1,1 +1,1 @@
-"""Test suite for Typmotion."""
+"""Test suite for ManimLite."""

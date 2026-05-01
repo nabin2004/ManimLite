@@ -4,7 +4,7 @@
 | ---- | ---------- |
 | **Animator** | Object that applies eased progress in `[0, 1]` to a `Node` over a timeline segment. |
 | **Cold render** | First render of a scene in a fresh process, including dependency and cache warm-up relevant to that run. |
-| **ManimCE** | Manim Community Edition, the reference ecosystem Typmotion is inspired by (not affiliated). |
+| **ManimCE** | Manim Community Edition, the reference ecosystem ManimLite is inspired by (not affiliated). |
 | **Node** | Element of the scene graph; may have children and local drawing behavior. |
 | **Kitten TTS** | Lightweight local neural TTS (ONNX, Apache-2.0). Default implementation is `KittenVoiceOverBackend` when the `tts` extra is installed. |
 | **PyAV** | Python bindings to **libav**/**FFmpeg** libraries for in-process demux/mux/encode. |

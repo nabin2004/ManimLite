@@ -18,7 +18,7 @@ A learning sequence must simplify; without a “what we left out” section, rea
 
 ## Explanation
 
-Use this `learn/` path to **build mental models**, then read `src/typmotion/` to see actual stubs and the CI-enforced style.
+Use this `learn/` path to **build mental models**, then read `src/manimlite/` to see actual stubs and the CI-enforced style.
 
 ## Limitations
 

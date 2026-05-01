@@ -6,7 +6,7 @@ Outline shipping: **wheels** on PyPI, **sdist**, and optional **Docker** with pi
 
 ## Problem being solved
 
-“Clone from source” is fine for devs; teachers want `pip install typmotion`.
+“Clone from source” is fine for devs; teachers want `pip install manimlite`.
 
 ## Implementation
 

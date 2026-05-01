@@ -45,7 +45,7 @@ htmlcov/
 .mypy_cache/
 .ruff_cache/
 
-# Typmotion outputs (small README demos under docs/assets/ are tracked)
+# ManimLite outputs (small README demos under docs/assets/ are tracked)
 *.mp4
 !docs/assets/**/*.mp4
 *.wav

@@ -1,10 +1,10 @@
-"""Typmotion — lightweight educational animation engine (pre-alpha stubs)."""
+"""ManimLite — lightweight educational animation engine (pre-alpha stubs)."""
 
 from __future__ import annotations
 
 __version__ = "0.1.0a0"
 
-from typmotion.animate import (
+from manimlite.animate import (
     Animator,
     Anticipate,
     Blur,
@@ -33,9 +33,9 @@ from typmotion.animate import (
     lerp,
     smoothstep,
 )
-from typmotion.audio import KittenVoiceOverBackend, VoiceOver
-from typmotion.canvas import Canvas, NullCanvas, RecordingCanvas
-from typmotion.composition import (
+from manimlite.audio import KittenVoiceOverBackend, VoiceOver
+from manimlite.canvas import Canvas, NullCanvas, RecordingCanvas
+from manimlite.composition import (
     PHI,
     TAU,
     GesturePath,
@@ -45,8 +45,8 @@ from typmotion.composition import (
     distribute_evenly,
     stack_vertical,
 )
-from typmotion.core import Camera, Circle, Node, Scene, Timeline
-from typmotion.easing import (
+from manimlite.core import Camera, Circle, Node, Scene, Timeline
+from manimlite.easing import (
     cubic_bezier,
     ease_in_back,
     ease_in_out_cubic,
@@ -57,13 +57,13 @@ from typmotion.easing import (
     linear,
     overshoot,
 )
-from typmotion.engine import step_frame
-from typmotion.export import PyAVEncoder
-from typmotion.form import Cube, Cylinder, Sphere
-from typmotion.perspective import PerspectiveGrid
-from typmotion.render import SkiaCanvas, SkiaRenderer
-from typmotion.renderer import Renderer, ascii_frame_sha256, ascii_frame_text
-from typmotion.shapes import (
+from manimlite.engine import step_frame
+from manimlite.export import PyAVEncoder
+from manimlite.form import Cube, Cylinder, Sphere
+from manimlite.perspective import PerspectiveGrid
+from manimlite.render import SkiaCanvas, SkiaRenderer
+from manimlite.renderer import Renderer, ascii_frame_sha256, ascii_frame_text
+from manimlite.shapes import (
     Arc,
     BezierCurve,
     Ellipse,
@@ -73,9 +73,9 @@ from typmotion.shapes import (
     Rectangle,
     RegularPolygon,
 )
-from typmotion.text import CodeBlock, MathExpr, Text
-from typmotion.typst_cache import cached_typst_svg_path, typst_cache_key
-from typmotion.value import GradientOverlay, Shadow
+from manimlite.text import CodeBlock, MathExpr, Text
+from manimlite.typst_cache import cached_typst_svg_path, typst_cache_key
+from manimlite.value import GradientOverlay, Shadow
 
 __all__ = [
     "Animator",

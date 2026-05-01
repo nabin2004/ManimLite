@@ -6,7 +6,7 @@ timeline + ``apply_timeline``; ``step_frame`` also runs ``Node.update`` for non-
 
 from __future__ import annotations
 
-from typmotion import Circle, CircleOutline, Scene, step_frame
+from manimlite import Circle, CircleOutline, Scene, step_frame
 
 
 def main() -> None:

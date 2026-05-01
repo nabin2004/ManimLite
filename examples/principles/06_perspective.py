@@ -9,16 +9,16 @@ import math
 import sys
 from pathlib import Path
 
-from typmotion import Scene, SkiaRenderer
-from typmotion.export import PyAVEncoder
+from manimlite import Scene, SkiaRenderer
+from manimlite.export import PyAVEncoder
 
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 2.5
 BG = (14, 16, 24)
 
-from typmotion.perspective import PerspectiveGrid
-from typmotion.shapes import Polygon
+from manimlite.perspective import PerspectiveGrid
+from manimlite.shapes import Polygon
 
 
 def build_scene() -> Scene:

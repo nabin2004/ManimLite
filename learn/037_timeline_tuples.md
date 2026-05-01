@@ -34,7 +34,7 @@ class Timeline:
 
 ## Explanation
 
-This mirrors Typmotion’s `Timeline` type: *immutable append* is easy to reason about, friendly to parallel tooling.
+This mirrors ManimLite’s `Timeline` type: *immutable append* is easy to reason about, friendly to parallel tooling.
 
 ## Limitations
 

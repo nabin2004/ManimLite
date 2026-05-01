@@ -1,4 +1,4 @@
-# Typmotion — learn path (phases 000–100)
+# ManimLite — learn path (phases 000–100)
 
 Files use **three-digit** prefixes (`000_` … `100_`) so they sort correctly beside `100_…`.
 

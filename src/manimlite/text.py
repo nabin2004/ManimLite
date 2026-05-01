@@ -6,8 +6,8 @@ from dataclasses import dataclass
 
 from pygments.token import Token
 
-from typmotion.canvas import Canvas
-from typmotion.core import Node
+from manimlite.canvas import Canvas
+from manimlite.core import Node
 
 _TOKEN_COLORS: dict[type, str] = {
     Token.Keyword: "#C678DD",
@@ -66,7 +66,7 @@ class MathExpr(Node):
         """Typst → cached SVG; Skia canvases implement ``draw_svg_bytes``."""
         if not self.typst_source.strip():
             return
-        from typmotion.typst_cache import cached_typst_svg_path
+        from manimlite.typst_cache import cached_typst_svg_path
 
         svg_path = cached_typst_svg_path(self.typst_source)
         if svg_path is None:

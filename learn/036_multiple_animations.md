@@ -56,7 +56,7 @@ A **timeline** (Phase 037) is the user-visible fix: each channel has a schedule.
 
 ## Limitations
 
-No graph solving for conflicting constraints—Typmotion stays explicit.
+No graph solving for conflicting constraints—ManimLite stays explicit.
 
 ## Next phase preview
 

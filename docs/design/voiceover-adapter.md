@@ -14,12 +14,12 @@
 - **License:** Apache-2.0 (per upstream).
 - Models are pulled from **Hugging Face Hub** (e.g. `KittenML/kitten-tts-nano-0.8-int8`, ~25 MB int8) into the default HF cache unless `cache_dir` is set on the backend (future).
 - **Voices:** built-in names such as `Jasper`, `Luna`, `Bella`, … (see upstream `available_voices`).
-- **Output:** 24 kHz samples; Typmotion wraps synthesis as **in-memory WAV** via `soundfile` for pydub / PyAV.
+- **Output:** 24 kHz samples; ManimLite wraps synthesis as **in-memory WAV** via `soundfile` for pydub / PyAV.
 
 ## Public API (sketch)
 
 ```python
-from typmotion import Scene, VoiceOver, KittenVoiceOverBackend
+from manimlite import Scene, VoiceOver, KittenVoiceOverBackend
 
 scene = Scene()
 vo = VoiceOver(

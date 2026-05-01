@@ -14,11 +14,11 @@ A generic `Exception` is an LLM trap—typed errors and messages speed debugging
 from __future__ import annotations
 
 
-class TypmotionError(Exception):
+class ManimLiteError(Exception):
     """Base."""
 
 
-class TimelineError(TypmotionError):
+class TimelineError(ManimLiteError):
     pass
 
 

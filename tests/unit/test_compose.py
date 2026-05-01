@@ -1,6 +1,6 @@
 import pytest
 
-from typmotion.animate import (
+from manimlite.animate import (
     CircleOutline,
     Delay,
     MoveX,
@@ -9,7 +9,7 @@ from typmotion.animate import (
     Sequence,
     apply_timeline,
 )
-from typmotion.core import Circle, Node, Scene
+from manimlite.core import Circle, Node, Scene
 
 
 def test_parallel_movex_and_circle_outline() -> None:

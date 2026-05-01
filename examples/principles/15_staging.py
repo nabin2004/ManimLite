@@ -8,17 +8,17 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from typmotion import Scene, SkiaRenderer
-from typmotion.export import PyAVEncoder
+from manimlite import Scene, SkiaRenderer
+from manimlite.export import PyAVEncoder
 
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 3.0
 BG = (12, 14, 22)
 
-from typmotion import CameraZoom, FadeOut
-from typmotion.core import Node
-from typmotion.shapes import Ellipse, Rectangle
+from manimlite import CameraZoom, FadeOut
+from manimlite.core import Node
+from manimlite.shapes import Ellipse, Rectangle
 
 
 def build_scene() -> Scene:

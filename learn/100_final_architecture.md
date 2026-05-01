@@ -2,7 +2,7 @@
 
 ## Goal of this phase
 
-Close the loop: a **coherent** system description matching the `typmotion` package layout and the constraints from Phase 000.
+Close the loop: a **coherent** system description matching the `manimlite` package layout and the constraints from Phase 000.
 
 ## Problem being solved
 
@@ -12,14 +12,14 @@ You should leave with one mental model that maps 1:1 to directories you will edi
 
 **Modules (roughly):**
 
-- `typmotion.core` — `Scene`, `Node`, `Timeline`, `Drawable`
-- `typmotion.shapes` — `Circle`, `Line`, `Rect`…
-- `typmotion.text` — `Text`, `MathExpr` (Typst), `CodeBlock` (Pygments)
-- `typmotion.animate` — animators, easing
-- `typmotion.render` — Skia (prod) / numpy (debug)
-- `typmotion.export` — PyAV in-process
-- `typmotion.audio` — mix + TTS adapter(s)
-- `typmotion.cli` — user entrypoint
+- `manimlite.core` — `Scene`, `Node`, `Timeline`, `Drawable`
+- `manimlite.shapes` — `Circle`, `Line`, `Rect`…
+- `manimlite.text` — `Text`, `MathExpr` (Typst), `CodeBlock` (Pygments)
+- `manimlite.animate` — animators, easing
+- `manimlite.render` — Skia (prod) / numpy (debug)
+- `manimlite.export` — PyAV in-process
+- `manimlite.audio` — mix + TTS adapter(s)
+- `manimlite.cli` — user entrypoint
 
 **Data path:**
 
@@ -43,4 +43,4 @@ Everything here remains **staged** until the implementation work lands; see [roa
 
 ## Next phase preview
 
-**Done.** Re-read [README](README.md) for the index, then open `src/typmotion/` and align your experiments with the repo’s types and ADRs in [`docs/design/adr/`](../docs/design/adr/).
+**Done.** Re-read [README](README.md) for the index, then open `src/manimlite/` and align your experiments with the repo’s types and ADRs in [`docs/design/adr/`](../docs/design/adr/).
