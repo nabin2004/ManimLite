@@ -1,4 +1,4 @@
-"""Text, math (Typst), and syntax-highlighted code blocks (implementation pending)."""
+"""Text, math (Typst), and syntax-highlighted code blocks."""
 
 from __future__ import annotations
 
@@ -47,13 +47,11 @@ class Text(Node):
     font_size: float = 24.0
     color: str = "#FFFFFF"
 
-    def draw(self, canvas: Canvas, ox: float = 0.0, oy: float = 0.0) -> None:
+    def draw_world(self, canvas: Canvas, px: float, py: float) -> None:
         """Rasterize text via Skia."""
-        px, py = ox + self.x, oy + self.y
         draw_text = getattr(canvas, "draw_text", None)
         if draw_text is not None and self.content:
             draw_text(self.content, px, py, self.font_size, self.color)
-        Node.draw(self, canvas, ox, oy)
 
 
 @dataclass(slots=True)
@@ -64,21 +62,20 @@ class MathExpr(Node):
     font_size: float = 28.0
     color: str = "#FFFFFF"
 
-    def draw(self, canvas: Canvas, ox: float = 0.0, oy: float = 0.0) -> None:
+    def draw_world(self, canvas: Canvas, px: float, py: float) -> None:
         """Typst → cached SVG; Skia canvases implement ``draw_svg_bytes``."""
-        px = ox + self.x
-        py = oy + self.y
-        if self.typst_source.strip():
-            from manimlite.typst_cache import cached_typst_svg_path
+        if not self.typst_source.strip():
+            return
+        from manimlite.typst_cache import cached_typst_svg_path
 
-            svg_path = cached_typst_svg_path(self.typst_source)
-            if svg_path is not None:
-                data = svg_path.read_bytes()
-                place = getattr(canvas, "draw_svg_bytes", None)
-                if place is not None:
-                    scale = max(self.font_size, 1.0) / 28.0
-                    place(data, px, py, scale)
-        Node.draw(self, canvas, ox, oy)
+        svg_path = cached_typst_svg_path(self.typst_source)
+        if svg_path is None:
+            return
+        data = svg_path.read_bytes()
+        place = getattr(canvas, "draw_svg_bytes", None)
+        if place is not None:
+            scale = max(self.font_size, 1.0) / 28.0
+            place(data, px, py, scale)
 
 
 @dataclass(slots=True)
@@ -89,17 +86,14 @@ class CodeBlock(Node):
     language: str = "python"
     font_size: float = 14.0
 
-    def draw(self, canvas: Canvas, ox: float = 0.0, oy: float = 0.0) -> None:
+    def draw_world(self, canvas: Canvas, px: float, py: float) -> None:
         """Tokenize with Pygments and draw each token in its highlight color."""
-        px, py = ox + self.x, oy + self.y
         draw_text = getattr(canvas, "draw_text", None)
         if draw_text is None or not self.code:
-            Node.draw(self, canvas, ox, oy)
             return
 
         from pygments import lex
         from pygments.lexers import get_lexer_by_name
-        from pygments.token import Token
 
         lexer = get_lexer_by_name(self.language, stripall=True)
         line_height = self.font_size * 1.4
@@ -122,5 +116,3 @@ class CodeBlock(Node):
                         font_family="monospace",
                     )
                     cursor_x += self.font_size * 0.6
-
-        Node.draw(self, canvas, ox, oy)

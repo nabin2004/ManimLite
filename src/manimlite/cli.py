@@ -5,9 +5,11 @@ from __future__ import annotations
 import importlib.util
 import sys
 from pathlib import Path
-from typing import Annotated, Optional
+from typing import Annotated
 
 import typer
+
+from manimlite.core import Scene
 
 app = typer.Typer(no_args_is_help=True, help="ManimLite — lightweight animation CLI.")
 
@@ -31,7 +33,7 @@ def _import_scene_module(scene_file: Path):
     return mod
 
 
-def _scene_from_module(mod, scene_file: Path) -> "Scene":
+def _scene_from_module(mod, scene_file: Path) -> Scene:
     """Return a :class:`~manimlite.core.Scene` from a loaded user module.
 
     Looks for (in order):
@@ -39,7 +41,6 @@ def _scene_from_module(mod, scene_file: Path) -> "Scene":
     1. ``build_scene()`` callable
     2. Module-level ``scene``
     """
-    from manimlite.core import Scene
 
     if hasattr(mod, "build_scene") and callable(mod.build_scene):
         obj = mod.build_scene()
@@ -62,19 +63,19 @@ def render(
         typer.Argument(help="Path to scene .py", exists=True, readable=True),
     ],
     output: Annotated[
-        Optional[Path],
+        Path | None,
         typer.Option("--output", "-o", help="Output MP4 path (default: <scene_name>.mp4)"),
     ] = None,
     width: Annotated[
-        Optional[int],
+        int | None,
         typer.Option(help="Override scene width"),
     ] = None,
     height: Annotated[
-        Optional[int],
+        int | None,
         typer.Option(help="Override scene height"),
     ] = None,
     fps: Annotated[
-        Optional[float],
+        float | None,
         typer.Option(help="Override scene FPS"),
     ] = None,
     quiet: Annotated[

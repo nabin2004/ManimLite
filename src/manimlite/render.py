@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, cast
+from typing import Any, cast
 
 import numpy as np
 import numpy.typing as npt
@@ -11,39 +12,102 @@ import numpy.typing as npt
 from manimlite.core import Scene
 from manimlite.engine import step_frame
 
-if TYPE_CHECKING:
-    import skia
+
+def _clamp01(x: float) -> float:
+    return max(0.0, min(1.0, x))
 
 
-def _hex_to_color(s: str) -> int:
+def _hex_to_rgba(s: str) -> tuple[int, int, int, int]:
+    """Parse ``#RGB``, ``#RRGGBB``, or ``#RRGGBBAA`` into RGBA bytes."""
     h = s.strip().lstrip("#")
-    if len(h) == 6:
+    if len(h) == 3:
+        r = int((h[0] + h[0]), 16)
+        g = int((h[1] + h[1]), 16)
+        b = int((h[2] + h[2]), 16)
+        a = 255
+    elif len(h) == 6:
         r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+        a = 255
+    elif len(h) == 8:
+        r, g, b, a = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16), int(h[6:8], 16)
     else:
-        r, g, b = 255, 255, 255
+        r, g, b, a = 255, 255, 255, 255
+    return r, g, b, a
+
+
+def _skia_color_from_hex(s: str, alpha_mult: float = 1.0) -> int:
     import skia as _skia
 
-    return cast(int, _skia.Color(r, g, b, 255))
+    r, g, b, a = _hex_to_rgba(s)
+    aa = int(round(_clamp01(alpha_mult * (a / 255.0)) * 255.0))
+    return cast(int, _skia.Color(r, g, b, aa))
 
 
 class SkiaCanvas:
-    """Maps ``Canvas.set_pixel`` to Skia fills; optional vector hooks for lines/polygons."""
+    """Skia drawing surface with optional node transform stack and vector helpers."""
 
-    __slots__ = ("_canvas", "_paint")
+    __slots__ = ("_canvas", "_paint", "_alpha_stack", "_blur_stack")
 
-    def __init__(self, surface: skia.Surface) -> None:
+    def __init__(self, surface: Any) -> None:
         import skia
 
         self._canvas = surface.getCanvas()
         self._paint = skia.Paint()
         self._paint.setAntiAlias(True)
+        self._alpha_stack: list[float] = [1.0]
+        self._blur_stack: list[float] = [0.0]
+
+    def _effective_alpha(self) -> float:
+        return max(0.0, min(1.0, self._alpha_stack[-1]))
+
+    def _effective_blur(self) -> float:
+        return max(0.0, self._blur_stack[-1])
+
+    def _apply_paint_filters(self, paint: Any) -> None:
+        import skia
+
+        blur = self._effective_blur()
+        if blur > 1e-6:
+            filt = skia.ImageFilters.Blur(blur, blur, skia.TileMode.kClamp)
+            paint.setImageFilter(filt)
+
+    def push_node_transform(
+        self,
+        px: float,
+        py: float,
+        rotation_rad: float,
+        sx: float,
+        sy: float,
+        alpha: float,
+        blur_sigma: float,
+    ) -> None:
+        """Enter node-local coordinates with pivot ``(px, py)``."""
+        self._canvas.save()
+        self._alpha_stack.append(self._alpha_stack[-1] * _clamp01(alpha))
+        self._blur_stack.append(max(self._blur_stack[-1], max(0.0, blur_sigma)))
+        self._canvas.translate(px, py)
+        self._canvas.rotate(math.degrees(rotation_rad))
+        if sx != 0.0 and sy != 0.0:
+            self._canvas.scale(float(sx), float(sy))
+
+    def pop_transform(self) -> None:
+        self._canvas.restore()
+        if len(self._alpha_stack) > 1:
+            self._alpha_stack.pop()
+        if len(self._blur_stack) > 1:
+            self._blur_stack.pop()
 
     def set_pixel(self, x: int, y: int, ch: str = "#") -> None:
         import skia
 
+        self._paint.reset()
+        self._paint.setAntiAlias(True)
         self._paint.setStyle(skia.Paint.kFill_Style)
-        self._paint.setColor(skia.ColorWHITE)
-        _ = ch  # ASCII token; future: map to palette
+        r, g, b, _a = _hex_to_rgba("#FFFFFF")
+        aa = int(round(self._effective_alpha() * 255.0))
+        self._paint.setColor(skia.Color(r, g, b, aa))
+        self._apply_paint_filters(self._paint)
+        _ = ch
         rect = skia.Rect(float(x), float(y), float(x + 1), float(y + 1))
         self._canvas.drawRect(rect, self._paint)
 
@@ -55,16 +119,125 @@ class SkiaCanvas:
         y1: float,
         color: str,
         width: float,
+        *,
+        dash_pattern: tuple[float, ...] | None = None,
     ) -> None:
         import skia
 
+        self._paint.reset()
+        self._paint.setAntiAlias(True)
         self._paint.setStrokeWidth(max(width, 0.001))
         self._paint.setStyle(skia.Paint.kStroke_Style)
-        self._paint.setColor(_hex_to_color(color))
+        self._paint.setColor(_skia_color_from_hex(color, self._effective_alpha()))
+        if dash_pattern:
+            effect = skia.DashPathEffect.Make(list(dash_pattern), 0.0)
+            self._paint.setPathEffect(effect)
+        self._apply_paint_filters(self._paint)
         p = skia.Path()
         p.moveTo(x0, y0)
         p.lineTo(x1, y1)
         self._canvas.drawPath(p, self._paint)
+
+    def stroke_bezier(
+        self,
+        p0: tuple[float, float],
+        p1: tuple[float, float],
+        p2: tuple[float, float],
+        p3: tuple[float, float],
+        color: str,
+        width: float,
+        *,
+        dash_pattern: tuple[float, ...] | None = None,
+    ) -> None:
+        import skia
+
+        self._paint.reset()
+        self._paint.setAntiAlias(True)
+        self._paint.setStrokeWidth(max(width, 0.001))
+        self._paint.setStyle(skia.Paint.kStroke_Style)
+        self._paint.setColor(_skia_color_from_hex(color, self._effective_alpha()))
+        if dash_pattern:
+            self._paint.setPathEffect(skia.DashPathEffect.Make(list(dash_pattern), 0.0))
+        self._apply_paint_filters(self._paint)
+        path = skia.Path()
+        path.moveTo(p0[0], p0[1])
+        path.cubicTo(p1[0], p1[1], p2[0], p2[1], p3[0], p3[1])
+        self._canvas.drawPath(path, self._paint)
+
+    def stroke_arc(
+        self,
+        cx: float,
+        cy: float,
+        radius: float,
+        start_angle: float,
+        sweep_angle: float,
+        color: str,
+        width: float,
+        *,
+        dash_pattern: tuple[float, ...] | None = None,
+    ) -> None:
+        """Stroke circular arc from ``start_angle`` over ``sweep_angle`` (radians)."""
+        import skia
+
+        rect = skia.Rect.MakeXYWH(cx - radius, cy - radius, 2 * radius, 2 * radius)
+        self._paint.reset()
+        self._paint.setAntiAlias(True)
+        self._paint.setStrokeWidth(max(width, 0.001))
+        self._paint.setStyle(skia.Paint.kStroke_Style)
+        self._paint.setColor(_skia_color_from_hex(color, self._effective_alpha()))
+        if dash_pattern:
+            self._paint.setPathEffect(skia.DashPathEffect.Make(list(dash_pattern), 0.0))
+        self._apply_paint_filters(self._paint)
+        path = skia.Path()
+        path.addArc(rect, math.degrees(start_angle), math.degrees(sweep_angle))
+        self._canvas.drawPath(path, self._paint)
+
+    def stroke_path(
+        self,
+        commands: list[tuple[str, tuple[float, ...]]],
+        color: str,
+        width: float,
+        *,
+        fill_color: str | None = None,
+        ox: float = 0.0,
+        oy: float = 0.0,
+        dash_pattern: tuple[float, ...] | None = None,
+    ) -> None:
+        import skia
+
+        path = skia.Path()
+        for cmd, args in commands:
+            if cmd == "M":
+                path.moveTo(ox + args[0], oy + args[1])
+            elif cmd == "L":
+                path.lineTo(ox + args[0], oy + args[1])
+            elif cmd == "C":
+                path.cubicTo(
+                    ox + args[0],
+                    oy + args[1],
+                    ox + args[2],
+                    oy + args[3],
+                    ox + args[4],
+                    oy + args[5],
+                )
+            elif cmd == "Z":
+                path.close()
+        if fill_color:
+            fill = skia.Paint()
+            fill.setAntiAlias(True)
+            fill.setStyle(skia.Paint.kFill_Style)
+            fill.setColor(_skia_color_from_hex(fill_color, self._effective_alpha()))
+            self._apply_paint_filters(fill)
+            self._canvas.drawPath(path, fill)
+        self._paint.reset()
+        self._paint.setAntiAlias(True)
+        self._paint.setStrokeWidth(max(width, 0.001))
+        self._paint.setStyle(skia.Paint.kStroke_Style)
+        self._paint.setColor(_skia_color_from_hex(color, self._effective_alpha()))
+        if dash_pattern:
+            self._paint.setPathEffect(skia.DashPathEffect.Make(list(dash_pattern), 0.0))
+        self._apply_paint_filters(self._paint)
+        self._canvas.drawPath(path, self._paint)
 
     def fill_polygon(
         self,
@@ -89,7 +262,8 @@ class SkiaCanvas:
         fill = skia.Paint()
         fill.setAntiAlias(True)
         fill.setStyle(skia.Paint.kFill_Style)
-        fill.setColor(_hex_to_color(fill_color))
+        fill.setColor(_skia_color_from_hex(fill_color, self._effective_alpha()))
+        self._apply_paint_filters(fill)
         self._canvas.drawPath(pth, fill)
 
         if stroke_color is not None and stroke_width > 0.0:
@@ -97,8 +271,130 @@ class SkiaCanvas:
             outline.setAntiAlias(True)
             outline.setStyle(skia.Paint.kStroke_Style)
             outline.setStrokeWidth(stroke_width)
-            outline.setColor(_hex_to_color(stroke_color))
+            outline.setColor(_skia_color_from_hex(stroke_color, self._effective_alpha()))
+            self._apply_paint_filters(outline)
             self._canvas.drawPath(pth, outline)
+
+    def fill_round_rect(
+        self,
+        left: float,
+        top: float,
+        right: float,
+        bottom: float,
+        radius: float,
+        *,
+        fill_color: str,
+        stroke_color: str | None = None,
+        stroke_width: float = 0.0,
+    ) -> None:
+        import skia
+
+        rect = skia.Rect.MakeLTRB(left, top, right, bottom)
+        rr = skia.RRect.MakeRectXY(rect, radius, radius)
+        fill = skia.Paint()
+        fill.setAntiAlias(True)
+        fill.setStyle(skia.Paint.kFill_Style)
+        fill.setColor(_skia_color_from_hex(fill_color, self._effective_alpha()))
+        self._apply_paint_filters(fill)
+        self._canvas.drawRRect(rr, fill)
+        if stroke_color is not None and stroke_width > 0.0:
+            outline = skia.Paint()
+            outline.setAntiAlias(True)
+            outline.setStyle(skia.Paint.kStroke_Style)
+            outline.setStrokeWidth(stroke_width)
+            outline.setColor(_skia_color_from_hex(stroke_color, self._effective_alpha()))
+            self._apply_paint_filters(outline)
+            self._canvas.drawRRect(rr, outline)
+
+    def fill_ellipse(
+        self,
+        cx: float,
+        cy: float,
+        rx: float,
+        ry: float,
+        *,
+        fill_color: str,
+        stroke_color: str | None = None,
+        stroke_width: float = 0.0,
+    ) -> None:
+        import skia
+
+        rect = skia.Rect.MakeXYWH(cx - rx, cy - ry, 2 * rx, 2 * ry)
+        oval = skia.RRect.MakeOval(rect)
+        fill = skia.Paint()
+        fill.setAntiAlias(True)
+        fill.setStyle(skia.Paint.kFill_Style)
+        fill.setColor(_skia_color_from_hex(fill_color, self._effective_alpha()))
+        self._apply_paint_filters(fill)
+        self._canvas.drawRRect(oval, fill)
+        if stroke_color is not None and stroke_width > 0.0:
+            outline = skia.Paint()
+            outline.setAntiAlias(True)
+            outline.setStyle(skia.Paint.kStroke_Style)
+            outline.setStrokeWidth(stroke_width)
+            outline.setColor(_skia_color_from_hex(stroke_color, self._effective_alpha()))
+            self._apply_paint_filters(outline)
+            self._canvas.drawRRect(oval, outline)
+
+
+    def fill_linear_gradient_rect(
+        self,
+        left: float,
+        top: float,
+        right: float,
+        bottom: float,
+        stops: tuple[tuple[float, str], ...],
+        *,
+        angle_rad: float = 0.0,
+    ) -> None:
+        import skia
+
+        cx = (left + right) / 2.0
+        cy = (top + bottom) / 2.0
+        dx = math.cos(angle_rad) * (right - left) / 2.0
+        dy = math.sin(angle_rad) * (bottom - top) / 2.0
+        if not stops:
+            return
+        positions = [s for s, _ in stops]
+        colors = [_skia_color_from_hex(c, self._effective_alpha()) for _, c in stops]
+        shader = skia.GradientShader.MakeLinear(
+            (skia.Point(cx - dx, cy - dy), skia.Point(cx + dx, cy + dy)),
+            colors,
+            positions,
+            skia.TileMode.kClamp,
+        )
+        paint = skia.Paint()
+        paint.setAntiAlias(True)
+        paint.setShader(shader)
+        self._apply_paint_filters(paint)
+        rect = skia.Rect.MakeLTRB(left, top, right, bottom)
+        self._canvas.drawRect(rect, paint)
+
+    def fill_radial_gradient_disc(
+        self,
+        cx: float,
+        cy: float,
+        radius: float,
+        stops: tuple[tuple[float, str], ...],
+    ) -> None:
+        import skia
+
+        if not stops:
+            return
+        positions = [s for s, _ in stops]
+        colors = [_skia_color_from_hex(c, self._effective_alpha()) for _, c in stops]
+        shader = skia.GradientShader.MakeRadial(
+            skia.Point(cx, cy),
+            radius,
+            colors,
+            positions,
+            skia.TileMode.kClamp,
+        )
+        paint = skia.Paint()
+        paint.setAntiAlias(True)
+        paint.setShader(shader)
+        self._apply_paint_filters(paint)
+        self._canvas.drawCircle(cx, cy, radius, paint)
 
     def draw_text(
         self,
@@ -110,17 +406,16 @@ class SkiaCanvas:
         *,
         font_family: str = "sans-serif",
     ) -> None:
-        """Draw a single-line text string at ``(x, y)``."""
         import skia
 
         typeface = skia.Typeface(font_family)
         font = skia.Font(typeface, font_size)
-        paint = skia.Paint(AntiAlias=True, Color=_hex_to_color(color))
+        col = _skia_color_from_hex(color, self._effective_alpha())
+        paint = skia.Paint(AntiAlias=True, Color=col)
+        self._apply_paint_filters(paint)
         self._canvas.drawString(text, x, y + font_size, font, paint)
 
     def draw_svg_bytes(self, data: bytes, ox: float, oy: float, scale: float = 1.0) -> None:
-        """Rasterize SVG (e.g. Typst output) into local coordinates."""
-
         import skia
 
         stream = skia.MemoryStream(data)
@@ -144,14 +439,27 @@ class SkiaRenderer:
         import skia
 
         surface = skia.Surface(scene.width, scene.height)
+        raw = surface.getCanvas()
         r, g, b = self.clear_color
-        surface.getCanvas().clear(skia.Color(r, g, b, 255))
+        raw.clear(skia.Color(r, g, b, 255))
 
         dt = 1.0 / scene.fps if scene.fps > 0 else 1.0 / 30.0
         step_frame(scene, t, dt)
 
+        cam = scene.camera
+        fx = cam.x if math.isfinite(cam.x) else scene.width / 2.0
+        fy = cam.y if math.isfinite(cam.y) else scene.height / 2.0
+        raw.save()
+        raw.translate(scene.width / 2.0, scene.height / 2.0)
+        raw.rotate(math.degrees(cam.rotation))
+        z = cam.zoom if abs(cam.zoom) > 1e-9 else 1.0
+        raw.scale(z, z)
+        raw.translate(-fx, -fy)
+
         canvas = SkiaCanvas(surface)
         scene.root.draw(canvas, 0.0, 0.0)
+
+        raw.restore()
 
         img = surface.makeImageSnapshot()
         return np.asarray(img)

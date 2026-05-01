@@ -1,4 +1,4 @@
-"""Scene graph, timeline, and core composition types (implementation pending)."""
+"""Scene graph, timeline, and core composition types."""
 
 from __future__ import annotations
 
@@ -19,22 +19,61 @@ class Drawable(Protocol):
 
 
 @dataclass(slots=True)
+class Camera:
+    """Virtual camera — viewport pan/zoom/rotate applied before rendering.
+
+    ``(x, y)`` is the **world-space point** pinned to the viewport center (after
+    zoom and rotation). Defaults are non-finite so the renderer uses the scene
+    center ``(width/2, height/2)``, matching layouts that put ``(0, 0)`` at the
+    top-left of the frame.
+    """
+
+    x: float = float("nan")
+    y: float = float("nan")
+    zoom: float = 1.0
+    rotation: float = 0.0
+
+
+@dataclass(slots=True)
 class Node:
     """Base graph node; subclasses add geometry, style, and children."""
 
     x: float = 0.0
     y: float = 0.0
+    scale_x: float = 1.0
+    scale_y: float = 1.0
+    rotation: float = 0.0
+    opacity: float = 1.0
+    blur_sigma: float = 0.0
     children: list[Node] = field(default_factory=list)
 
     def add(self, node: Node) -> None:
         self.children.append(node)
 
     def draw(self, canvas: Canvas, ox: float = 0.0, oy: float = 0.0) -> None:
-        """Propagate origin so child positions are relative to this node."""
+        """Apply transforms when backend supports ``push_node_transform``."""
         px = ox + self.x
         py = oy + self.y
-        for child in self.children:
-            child.draw(canvas, px, py)
+        push = getattr(canvas, "push_node_transform", None)
+        pop = getattr(canvas, "pop_transform", None)
+        if push is not None:
+            push(px, py, self.rotation, self.scale_x, self.scale_y, self.opacity, self.blur_sigma)
+            self.draw_world(canvas, 0.0, 0.0)
+            for child in self.children:
+                child.draw(canvas, 0.0, 0.0)
+            if pop is not None:
+                pop()
+        else:
+            self.draw_world(canvas, px, py)
+            for child in self.children:
+                child.draw(canvas, px, py)
+
+    def draw_world(self, canvas: Canvas, px: float, py: float) -> None:
+        """Draw this node's own geometry at anchor ``(px, py)`` (scene coords).
+
+        Subclasses override this instead of ``draw``. Default does nothing.
+        """
+        _ = canvas, px, py
 
     def update(self, t: float, dt: float) -> None:
         """Advance simulation time; subclasses override and call Node.update for children."""
@@ -63,18 +102,15 @@ class Circle(Node):
     def radius(self, value: float) -> None:
         self.r = float(value)
 
-    def draw(self, canvas: Canvas, ox: float = 0.0, oy: float = 0.0) -> None:
-        cx = ox + self.x
-        cy = oy + self.y
+    def draw_world(self, canvas: Canvas, px: float, py: float) -> None:
         n = max(8, int(self.r * 8))
         p = max(0.0, min(1.0, self.progress))
         k = int(n * p)
         for i in range(k):
             ang = 2 * math.pi * i / n
-            px = int(round(cx + self.r * math.cos(ang)))
-            py = int(round(cy + self.r * math.sin(ang)))
-            canvas.set_pixel(px, py, self.ch)
-        Node.draw(self, canvas, cx, cy)
+            ix = int(round(px + self.r * math.cos(ang)))
+            iy = int(round(py + self.r * math.sin(ang)))
+            canvas.set_pixel(ix, iy, self.ch)
 
 
 @dataclass(slots=True)
@@ -105,7 +141,7 @@ class Timeline:
 
 @dataclass(slots=True)
 class Scene:
-    """Root container: resolution, timing, graph, and timeline."""
+    """Root container: resolution, timing, graph, timeline, and optional camera."""
 
     width: int = 1920
     height: int = 1080
@@ -113,13 +149,14 @@ class Scene:
     duration: float = 5.0
     root: Node = field(default_factory=Node)
     timeline: Timeline = field(default_factory=Timeline)
+    camera: Camera = field(default_factory=Camera)
 
     def narrate(self, voice_over: Any) -> None:
         """Register narration for mixing into the output audio (stub)."""
         _ = voice_over
 
     def add_node(self, node: Node) -> None:
-        """Add a node to the scene graph """
+        """Add a node to the scene graph."""
         self.root.add(node)
 
     def add_animation(self, start: float, end: float, target: Node, animator: Any) -> None:
