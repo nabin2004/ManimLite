@@ -4,6 +4,7 @@ from manimlite.animate import (
     CircleOutline,
     Delay,
     MoveX,
+    MoveY,
     Parallel,
     Sequence,
     apply_timeline,
@@ -47,3 +48,13 @@ def test_delay_runs_inner_mid_window() -> None:
 def test_delay_invalid_range_raises() -> None:
     with pytest.raises(ValueError, match="Delay"):
         Delay(CircleOutline(), 0.5, 0.5)
+
+
+def test_parallel_movex_and_movey() -> None:
+    n = Node(x=0.0, y=0.0)
+    scene = Scene()
+    scene.add_node(n)
+    scene.add_animation(0.0, 1.0, n, Parallel(MoveX(0.0, 10.0), MoveY(0.0, 20.0)))
+    apply_timeline(scene, 0.5, ease=None)
+    assert n.x == 5.0
+    assert n.y == 10.0

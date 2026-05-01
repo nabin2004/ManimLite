@@ -75,6 +75,17 @@ class MoveX:
 
 
 @dataclass(slots=True)
+class MoveY:
+    """Set ``node.y`` between ``y0`` (t=0) and ``y1`` (t=1)."""
+
+    y0: float
+    y1: float
+
+    def apply(self, node: Node, t: float) -> None:
+        node.y = lerp(self.y0, self.y1, t)
+
+
+@dataclass(slots=True)
 class CircleOutline:
     """Set ``Circle.progress`` in [0, 1] from segment-local ``t``."""
 
