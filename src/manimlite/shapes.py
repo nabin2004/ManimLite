@@ -12,7 +12,12 @@ from manimlite.core import Circle, Node  # Circle: canonical (see core)
 
 @dataclass(slots=True)
 class Line(Node):
-    """Line segment from start to end in local space."""
+    """Line segment from start to end in local space.
+
+    Because :class:`Line` subclasses :class:`~manimlite.core.Node`, positional
+    arguments bind *Node* fields ``x``, ``y``, and ``children`` — use keyword
+    arguments for ``x0`` … ``y1`` (e.g. ``Line(x0=0, y0=0, x1=1, y1=1)``).
+    """
 
     x0: float = 0.0
     y0: float = 0.0

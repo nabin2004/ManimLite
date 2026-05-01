@@ -100,6 +100,24 @@ class SkiaCanvas:
             outline.setColor(_hex_to_color(stroke_color))
             self._canvas.drawPath(pth, outline)
 
+    def draw_text(
+        self,
+        text: str,
+        x: float,
+        y: float,
+        font_size: float,
+        color: str,
+        *,
+        font_family: str = "sans-serif",
+    ) -> None:
+        """Draw a single-line text string at ``(x, y)``."""
+        import skia
+
+        typeface = skia.Typeface(font_family)
+        font = skia.Font(typeface, font_size)
+        paint = skia.Paint(AntiAlias=True, Color=_hex_to_color(color))
+        self._canvas.drawString(text, x, y + font_size, font, paint)
+
     def draw_svg_bytes(self, data: bytes, ox: float, oy: float, scale: float = 1.0) -> None:
         """Rasterize SVG (e.g. Typst output) into local coordinates."""
 
