@@ -9,13 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **README demo:** tracked `docs/assets/readme-demo.mp4` (720p showcase) with a `.gitignore` exception for `docs/assets/**/*.mp4`; README embeds the clip for GitHub viewers.
+- **Docs:** `docs/guides/principles-examples.md` indexes `examples/principles/` (drawing 01–12, animation 13–24); `docs/assets/README.md` explains checked-in media.
+- **Principles examples:** `examples/principles/*.py` gallery (referenced from README and setup guide).
 - **Skia text and code:** `SkiaCanvas.draw_text`; `Text.draw` draws labels on Skia; `CodeBlock.draw` uses Pygments token colors and monospace `draw_text` per character.
 - **Video export:** `PyAVEncoder(scene, output_path, renderer=…).encode()` streams frames from `SkiaRenderer` into an H.264 **MP4** via PyAV (RGB pad to even dimensions, `libx264`, `yuv420p`).
 - **CLI:** `manimlite render <scene.py> [-o OUT] [--width …] [--height …] [--fps …] [-q]` loads `build_scene()` or module `scene`, optional **`get_skia_renderer()`** hook for custom `SkiaRenderer(clear_color=…)`.
 - **Animator:** `MoveY(y0, y1)` (symmetric with `MoveX`); exported from `manimlite`.
 - **Public exports:** `PyAVEncoder`, `MoveY` in `manimlite.__all__`.
 - **Examples:** `examples/showcase_intro.py` (720p reel), `examples/math_and_text.py`, `examples/check_skia_typst.py` (pipeline smoke check), `examples/engine_step.py`, `examples/showcase_play_circles.py`.
-- **Docs:** `docs/guides/setup.md`, `docs/guides/math-rendering.md`; README quick start for Skia/Typst/PyAV path.
+- **Docs:** `docs/guides/setup.md`, `docs/guides/math-rendering.md`, `docs/guides/principles-examples.md`; README quick start for Skia/Typst/PyAV path.
 - **Tests:** `tests/unit/test_text_code_export.py` (Text, CodeBlock, encoder, `draw_text`); `MoveX`+`MoveY` parallel test.
 - **`shapes.Line`:** docstring — use **keyword** args for `x0`…`y1`; positional args bind `Node` `x`, `y`, `children` first.
 - **Architecture notes in `AGENTS.md`:** three layers (structure / timeline / animators), timeline as the authority for motion over the clip, `Node.update` for non-spatial hooks only, anti-patterns (no motion in `update`, no drifting shape subclasses), and **`examples/play_circles.py`** as the canonical pattern.
@@ -31,8 +34,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`Circle`** (grid outline via polygon sampling in `core`); `manimlite.shapes.Circle` remains the Skia-oriented stub.
 - Tests: timeline at `t=0`, `MoveX` end state, play/update, circle progress via `apply_timeline`, timeline debug stderr, composable animators (`tests/unit/test_compose.py`), scene graph rendering.
 
+### Fixed
+
+- **Skia:** `GradientShader.MakeLinear` uses a **sequence** of two endpoints `(Point, Point)` for current skia-python bindings.
+
 ### Changed
 
+- **Camera defaults:** when `Camera.x` / `Camera.y` are unset (`nan`), the Skia renderer pins the viewport center to the **scene** center so world `(0, 0)` aligns with the top-left of the scene.
 - **Export / CLI:** `PyAVEncoder.encode` and `manimlite render` are implemented (previously stubs).
 - **`Circle.progress`:** outline fraction is no longer advanced automatically in `update`; drive it with `CircleOutline` / timeline or set it manually.
 - **`Drawable`:** `draw` takes accumulated origin `ox`, `oy`.

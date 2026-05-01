@@ -101,6 +101,7 @@ manimlite render examples/math_and_text.py -o output.mp4
 | `typst: command not found` | Install Typst and add its directory to `PATH` |
 | `libEGL.so: cannot open shared object` | Install `libegl1` (Ubuntu) or `mesa-libEGL` (Fedora) |
 | Math expressions render as blank | Check `typst --version` works; check `~/.cache/manimlite/typst/` for cached SVGs |
+| `TypeError: MakeLinear(): incompatible function arguments` | Upgrade ManimLite — linear gradients pass a **sequence** of two `skia.Point`s per current skia-python bindings; ensure `skia-python>=120` per `pyproject.toml`. |
 
 ## Optional: custom Skia background in the CLI
 
@@ -112,3 +113,14 @@ def get_skia_renderer() -> SkiaRenderer:
 ```
 
 `manimlite render` calls it when present so MP4 matches `python your_scene.py`.
+
+## 5. Principles gallery
+
+Short drawing and animation demos live in `examples/principles/`. Run any script from the repo root; it writes `<name>.mp4` beside the script:
+
+```bash
+python examples/principles/04_value.py
+```
+
+See [Principles examples](principles-examples.md) for the full index.
+

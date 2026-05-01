@@ -45,8 +45,9 @@ htmlcov/
 .mypy_cache/
 .ruff_cache/
 
-# ManimLite outputs
+# ManimLite outputs (small README demos under docs/assets/ are tracked)
 *.mp4
+!docs/assets/**/*.mp4
 *.wav
 *.mkv
 *.webm
