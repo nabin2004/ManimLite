@@ -45,6 +45,7 @@ class Node:
     rotation: float = 0.0
     opacity: float = 1.0
     blur_sigma: float = 0.0
+    world_z: float = 0.0
     children: list[Node] = field(default_factory=list)
 
     def add(self, node: Node) -> None:
