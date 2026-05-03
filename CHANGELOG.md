@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **World coordinates:** `manimlite.world` — `WorldSpec`, `WorldPortal`, `world_to_screen` / `screen_to_world`, `world_pixel_affine_coeffs`, light-weight shell helpers (`world_shell`, `ground_strip`, `place_on_ground`, …) and fake-depth projection (`project_depth_fake`); `SemanticPart` / `WorldShellNodes` for simple character-style rigs. Scene graph: `Node.world_z` for depth ordering alongside `x` / `y`.
+- **Skia drawing:** `SkiaCanvas.fill_sector` (pie wedge) and `push_affine_2x3` / `pop_affine_2x3` for arbitrary 2×3 affines (used by world portal drawing).
+- **Shapes:** `Sector` and `SemiCircle` in `manimlite.shapes` (Skia-backed wedge fill via `fill_sector`).
+- **Timeline recipes:** `manimlite.recipes` — `add_blink`, `add_squash_stretch_drop` as thin wrappers over `Scene.add_animation`.
+- **Tests:** `tests/test_world_projection.py` (world ↔ pixel mapping, affine consistency, camera zoom).
+- **Examples:** `examples/WORLD_BUILDING.md`; `examples/principles/25_shape_sectors.py`, `26_world_viewport.py`; `examples/recipes/animated_character.py`, `spatial_landscape.py`; `examples/mlp_slides_typst.py`.
 - **README demo:** tracked `docs/assets/readme-demo.mp4` (720p showcase) with a `.gitignore` exception for `docs/assets/**/*.mp4`; README embeds the clip for GitHub viewers.
 - **Docs:** `docs/guides/principles-examples.md` indexes `examples/principles/` (drawing 01–12, animation 13–24); `docs/assets/README.md` explains checked-in media.
 - **Principles examples:** `examples/principles/*.py` gallery (referenced from README and setup guide).
