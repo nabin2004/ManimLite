@@ -97,6 +97,29 @@ class SkiaCanvas:
         if len(self._blur_stack) > 1:
             self._blur_stack.pop()
 
+    def push_affine_2x3(
+        self,
+        ax: float,
+        bx: float,
+        cx: float,
+        ay: float,
+        by: float,
+        cy: float,
+    ) -> None:
+        """Concat a 2×3 affine: ``x' = ax*x + bx*y + cx``, ``y' = ay*x + by*y + cy``."""
+
+        import skia
+
+        self._canvas.save()
+        self._alpha_stack.append(self._alpha_stack[-1])
+        self._blur_stack.append(self._blur_stack[-1])
+        m = skia.Matrix()
+        m.setAll(float(ax), float(bx), float(cx), float(ay), float(by), float(cy), 0.0, 0.0, 1.0)
+        self._canvas.concat(m)
+
+    def pop_affine_2x3(self) -> None:
+        self.pop_transform()
+
     def set_pixel(self, x: int, y: int, ch: str = "#") -> None:
         import skia
 
@@ -191,6 +214,66 @@ class SkiaCanvas:
         path = skia.Path()
         path.addArc(rect, math.degrees(start_angle), math.degrees(sweep_angle))
         self._canvas.drawPath(path, self._paint)
+
+    def fill_sector(
+        self,
+        cx: float,
+        cy: float,
+        radius: float,
+        start_angle: float,
+        sweep_angle: float,
+        *,
+        fill_color: str,
+        stroke_color: str | None = None,
+        stroke_width: float = 0.0,
+    ) -> None:
+        """Fill a circular sector (pie wedge) centered at ``(cx, cy)``.
+
+        Angles follow the same convention as :meth:`stroke_arc`: radians,
+        ``sweep_angle`` is added to ``start_angle`` (Skia draws the arc in
+        degrees internally).
+        """
+        import skia
+
+        r = max(radius, 0.0)
+        if r <= 0.0:
+            return
+
+        tau = 2.0 * math.pi
+        if abs(sweep_angle) >= tau - 1e-6:
+            self.fill_ellipse(
+                cx,
+                cy,
+                r,
+                r,
+                fill_color=fill_color,
+                stroke_color=stroke_color,
+                stroke_width=stroke_width,
+            )
+            return
+
+        rect = skia.Rect.MakeXYWH(cx - r, cy - r, 2 * r, 2 * r)
+        path = skia.Path()
+        path.moveTo(cx, cy)
+        path.lineTo(cx + r * math.cos(start_angle), cy + r * math.sin(start_angle))
+        path.arcTo(rect, math.degrees(start_angle), math.degrees(sweep_angle), False)
+        path.close()
+
+        fill = skia.Paint()
+        fill.setAntiAlias(True)
+        fill.setStyle(skia.Paint.kFill_Style)
+        fill.setColor(_skia_color_from_hex(fill_color, self._effective_alpha()))
+        self._apply_paint_filters(fill)
+        self._canvas.drawPath(path, fill)
+
+        if stroke_color is not None and stroke_width > 0.0:
+            outline = skia.Paint()
+            outline.setAntiAlias(True)
+            outline.setStyle(skia.Paint.kStroke_Style)
+            outline.setStrokeWidth(stroke_width)
+            outline.setColor(_skia_color_from_hex(stroke_color, self._effective_alpha()))
+            self._apply_paint_filters(outline)
+            self._canvas.drawPath(path, outline)
 
     def stroke_path(
         self,

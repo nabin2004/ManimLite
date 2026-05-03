@@ -122,6 +122,40 @@ class Arc(Node):
 
 
 @dataclass(slots=True)
+class Sector(Node):
+    """Filled circular sector (pie wedge) centered at the node's anchor."""
+
+    radius: float = 50.0
+    start_angle: float = 0.0
+    sweep_angle: float = math.pi / 2
+    fill_color: str = "#FFFFFF"
+    stroke_color: str | None = None
+    stroke_width: float = 0.0
+
+    def draw_world(self, canvas: Canvas, px: float, py: float) -> None:
+        fn = getattr(canvas, "fill_sector", None)
+        if fn is None:
+            return
+        fn(
+            px,
+            py,
+            self.radius,
+            self.start_angle,
+            self.sweep_angle,
+            fill_color=self.fill_color,
+            stroke_color=self.stroke_color if self.stroke_width > 0 else None,
+            stroke_width=self.stroke_width,
+        )
+
+
+@dataclass(slots=True)
+class SemiCircle(Sector):
+    """Half-disk; orient the flat diameter with ``start_angle``."""
+
+    sweep_angle: float = math.pi
+
+
+@dataclass(slots=True)
 class Path(Node):
     """Piecewise path: commands ``M``, ``L``, ``C``, ``Z`` with local coordinates."""
 
@@ -244,4 +278,6 @@ __all__ = [
     "Polygon",
     "Rectangle",
     "RegularPolygon",
+    "Sector",
+    "SemiCircle",
 ]
