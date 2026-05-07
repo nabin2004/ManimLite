@@ -1,7 +1,7 @@
 """Polished intro reel — richer geometry, two-tone accents, choreographed timing.
 
-Dark "editor" palette, 3-act animation structure, layered ring geometry,
-diagonal slash, dot-grid atmosphere, and a floating glyph that breathes.
+Brand ink (#1E1E1E) canvas with crimson (#A51C30) and cyan accents; 3-act structure,
+layered ring geometry, diagonal slash, dot-grid atmosphere, floating glyph.
 
 Run::
 
@@ -30,19 +30,27 @@ from manimlite.text import CodeBlock, MathExpr, Text
 WIDTH = 1280
 HEIGHT = 720
 FPS = 30.0
-DURATION = 11.0          # Extended slightly so the final breath has room
+DURATION = 11.0         
 
-# Palette — two distinct accent hues to create hierarchy
-BG          = (14, 18, 28)      # Deeper navy-black (not pure black)
+# Palette — brand ink + crimson; cyan secondary accent for hierarchy
+BG            = (30, 30, 30)     # #1E1E1E process black
 
-C_ACCENT_COOL = "#5DD2E8"       # Cyan  — UI bar, rule, rings
-C_ACCENT_WARM = "#F0C060"       # Gold  — glyph, hex, outer ring
+C_ACCENT_COOL = "#5DD2E8"        # Cyan — UI bar, rule, rings
+C_ACCENT_WARM = "#A51C30"        # Brand crimson — glyph, hex, warm ring
 C_TITLE       = "#EDF1FA"
-C_MUTED       = "#8FA3C4"
-C_TAGLINE     = "#5E7291"
-C_CODE_BG     = "#1E2537"
-C_PANEL_EDGE  = "#2E3C56"
-C_DOT         = "#2A3550"       # Atmosphere dots
+C_MUTED       = "#B4B8BF"        # Neutral secondary (lifted for ink BG)
+C_TAGLINE     = "#90949C"        # Neutral tertiary
+C_CODE_BG     = "#2C2C2C"        # Panel lift off canvas
+C_PANEL_EDGE  = "#4A4A4A"        # Panel / rule edge
+C_DOT         = "#333333"        # Atmosphere dots
+
+# Neutrals for non-panel deco (slightly above BG)
+C_PANEL_GLOW       = "#323232"   # Inner panel highlight
+C_SLASH            = "#3D3D3D"   # Diagonal compositional anchor
+C_GLYPH_FACE       = "#242424"   # Outer hex fill
+C_GLYPH_FACE_INNER = "#2E2E2E"   # Inner hex fill
+C_GLYPH_INNER_EDGE = "#6E2832"   # Dim crimson, inner hex stroke
+C_RING_MUTED       = "#454545"   # Outer halo ring
 
 
 # ---------------------------------------------------------------------------
@@ -155,7 +163,7 @@ def build_scene() -> Scene:
 
     # Diagonal slash — arrives early, anchors the right half
     slash = Node(x=0.0, y=0.0)
-    _diagonal_slash(slash, color="#29364F", width=2.5)
+    _diagonal_slash(slash, color=C_SLASH, width=2.5)
     scene.add_node(slash)
     scene.add_animation(0.1, 1.0, slash, MoveY(-80.0, 0.0))
 
@@ -173,7 +181,7 @@ def build_scene() -> Scene:
     panel.add(
         Polygon(
             vertices=((38.0, 82.0), (500.0, 76.0), (500.0, 200.0), (38.0, 204.0)),
-            fill_color="#242D42",
+            fill_color=C_PANEL_GLOW,
             stroke_color="",
             stroke_width=0.0,
         )
@@ -209,32 +217,32 @@ def build_scene() -> Scene:
     scene.add_node(rule)
     scene.add_animation(1.2, 2.2, rule, MoveX(-180.0, 68.0))
 
-    # Right glyph: hex + triple ring system, warm gold accent
+    # Right glyph: hex + triple ring system, crimson accent
     glyph = Node(x=1020.0, y=348.0)
-    # Inner hexagon — warm gold
+    # Outer hex — crimson stroke on dark face
     glyph.add(
         Polygon(
             vertices=_hexagon(72.0, phase=math.pi / 6),
-            fill_color="#1E2840",
+            fill_color=C_GLYPH_FACE,
             stroke_color=C_ACCENT_WARM,
             stroke_width=2.5,
         )
     )
-    # Inner hex fill accent (smaller hex, creates depth)
+    # Inner hex (depth) — dim crimson edge
     glyph.add(
         Polygon(
             vertices=_hexagon(40.0, phase=math.pi / 6),
-            fill_color="#252F48",
-            stroke_color="#A08040",
+            fill_color=C_GLYPH_FACE_INNER,
+            stroke_color=C_GLYPH_INNER_EDGE,
             stroke_width=1.2,
         )
     )
     # Ring 1: cool cyan, close
     _ring(glyph, 108.0, 72, color=C_ACCENT_COOL, width=1.8)
-    # Ring 2: warm gold, mid — counter-rotated for visual interest
+    # Ring 2: crimson, mid — counter-rotated for visual interest
     _ring(glyph, 134.0, 60, color=C_ACCENT_WARM, width=1.2, phase=math.pi / 60)
     # Ring 3: muted outer halo
-    _ring(glyph, 162.0, 96, color="#354460", width=1.0)
+    _ring(glyph, 162.0, 96, color=C_RING_MUTED, width=1.0)
     scene.add_node(glyph)
     # Arrives diagonally — sweeps in from bottom-right
     scene.add_animation(0.6, 2.4, glyph, Parallel(MoveX(1260.0, 1020.0), MoveY(500.0, 348.0)))
