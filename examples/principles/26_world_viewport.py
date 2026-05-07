@@ -3,6 +3,7 @@
 Run::
 
     python examples/principles/26_world_viewport.py
+    manimlite render examples/principles/26_world_viewport.py
 
 The scene stacks many world-unit props (sky markers, hill, trees, grass, fence, orbs).
 Requires: skia-python.
@@ -41,8 +42,8 @@ class SceneConfig:
     fps: float = 30.0
     duration: float = 15.0
     # RGBA — 4 channels required by SkiaRenderer
-    bg_rgba: tuple[int, int, int, int] = (14, 18, 28, 255)
-    letterbox_color: str = "#1E2538"
+    bg_rgba: tuple[int, int, int, int] = (30, 30, 30, 255)
+    letterbox_color: str = "#1E1E1E"
 
 
 @dataclass(frozen=True)
@@ -55,14 +56,14 @@ class WorldConfig:
     # above centre — in the sky region.
     ground_y: float = 2.5
     ground_strip_thickness: float = 0.08
-    ground_color: str = "#2C4C3E"
+    ground_color: str = "#2E3230"
 
 
 @dataclass(frozen=True)
 class DiscConfig:
     radius: float = 0.18
-    fill: str = "#F0C060"
-    stroke: str = "#FFD88A"
+    fill: str = "#A51C30"
+    stroke: str = "#C84A5C"
     stroke_width: float = 0.012
 
 
@@ -163,8 +164,8 @@ def _pine_tree(x: float, ground_y: float, *, scale: float = 1.0) -> Node:
             x=-trunk_w / 2.0, y=0.0,
             width=trunk_w, height=trunk_h,
             corner_radius=0.01 * s,
-            fill_color="#6B4423",
-            stroke_color="#3D2914",
+            fill_color="#5A4A40",
+            stroke_color="#3A3228",
             stroke_width=0.004,
         )
     )
@@ -175,8 +176,8 @@ def _pine_tree(x: float, ground_y: float, *, scale: float = 1.0) -> Node:
                 (-0.22 * s, trunk_h * 0.98),
                 (0.22 * s, trunk_h * 0.98),
             ),
-            fill_color="#3D7C47",
-            stroke_color="#1F4026",
+            fill_color="#2A3830",
+            stroke_color="#1A241F",
             stroke_width=0.006,
         )
     )
@@ -194,8 +195,8 @@ def _cloud(cx: float, cy: float) -> Node:
         group.add(
             Ellipse(
                 x=ox, y=oy, rx=rx, ry=ry,
-                fill_color="#D8E4F0",
-                stroke_color="#9BB0C8",
+                fill_color="#D0D4DC",
+                stroke_color="#90949C",
                 stroke_width=0.004,
             )
         )
@@ -216,7 +217,7 @@ def _add_stars(shell: WorldShellNodes) -> None:
         stars.add(
             Ellipse(
                 x=sx, y=sy, rx=0.028, ry=0.028,
-                fill_color="#E8EDF8",
+                fill_color="#E8EAED",
                 stroke_color=None,
                 stroke_width=0.0,
             )
@@ -236,7 +237,7 @@ def _add_hill(shell: WorldShellNodes, gy: float) -> None:
                 (_WORLD_HALF, gy - 0.05),
                 (_WORLD_HALF, gy + 0.85),
             ),
-            fill_color="#1A2E24",
+            fill_color="#262928",
             stroke_color=None,
             stroke_width=0.0,
         )
@@ -259,8 +260,8 @@ def _add_sun_and_clouds(shell: WorldShellNodes) -> None:
     sun.add(
         Ellipse(
             x=0.0, y=0.0, rx=0.34, ry=0.34,
-            fill_color="#F0D070",
-            stroke_color="#E8B85A",
+            fill_color="#C73E52",
+            stroke_color="#6E2832",
             stroke_width=0.01,
         )
     )
@@ -308,7 +309,7 @@ def _add_grass(shell: WorldShellNodes, gy: float) -> None:
             Line(
                 x0=gx, y0=gy,
                 x1=gx + 0.035, y1=gy - blade_len,
-                stroke_color="#5FA86F",
+                stroke_color="#4A6B78",
                 stroke_width=0.007,
             )
         )
@@ -324,8 +325,8 @@ def _add_fence(shell: WorldShellNodes, gy: float) -> None:
                 x=fx - 0.018, y=gy,
                 width=0.036, height=0.3,
                 corner_radius=0.004,
-                fill_color="#8B7355",
-                stroke_color="#5C4A36",
+                fill_color="#6B6358",
+                stroke_color="#4A4540",
                 stroke_width=0.003,
             )
         )
@@ -334,9 +335,9 @@ def _add_fence(shell: WorldShellNodes, gy: float) -> None:
 
 def _add_orbs(shell: WorldShellNodes, gy: float) -> None:
     _ORBS = (
-        (-2.45, 0.09,  "#7EC8E3", "#4FA8C5"),
-        (2.58,  0.075, "#E8A0C8", "#C070A0"),
-        (4.05,  0.055, "#C8E87E", "#90B050"),
+        (-2.45, 0.09,  "#5DD2E8", "#3D9CAD"),
+        (2.58,  0.075, "#C84A5C", "#A51C30"),
+        (4.05,  0.055, "#454545", "#5DD2E8"),
     )
     for x, radius, fill, stroke in _ORBS:
         shell.midground.add(_orb_on_ground(gy, x=x, radius=radius, fill=fill, stroke=stroke))
@@ -351,7 +352,7 @@ def _add_birds(shell: WorldShellNodes) -> None:
             Ellipse(
                 x=bx + 0.02 * i, y=by,
                 rx=0.06, ry=0.025,
-                fill_color="#2A3040",
+                fill_color="#3A3A3A",
                 stroke_color=None,
                 stroke_width=0.0,
             )
@@ -378,7 +379,10 @@ def _populate_world(shell: WorldShellNodes, spec: WorldSpec) -> None:
 # Scene assembly
 # ---------------------------------------------------------------------------
 
-def build_scene(cfg: SceneConfig = SCENE, world: WorldConfig = WORLD) -> tuple[Scene, WorldSpec]:
+def _build_scene_and_spec(
+    cfg: SceneConfig = SCENE,
+    world: WorldConfig = WORLD,
+) -> tuple[Scene, WorldSpec]:
     if cfg.width <= 0 or cfg.height <= 0:
         raise ValueError("width and height must be positive")
 
@@ -423,6 +427,12 @@ def build_scene(cfg: SceneConfig = SCENE, world: WorldConfig = WORLD) -> tuple[S
     shell.midground.add(disc)
 
     return scene, spec
+
+
+def build_scene() -> Scene:
+    """CLI hook for ``manimlite render`` (must return :class:`~manimlite.core.Scene` only)."""
+    scene, _ = _build_scene_and_spec()
+    return scene
 
 
 # ---------------------------------------------------------------------------
@@ -473,8 +483,13 @@ def get_renderer() -> SkiaRenderer:
     return SkiaRenderer(clear_color=SCENE.bg_rgba[:3])
 
 
+def get_skia_renderer() -> SkiaRenderer:
+    """Hook for ``manimlite render`` — matches :func:`get_renderer`."""
+    return get_renderer()
+
+
 def main() -> None:
-    scene, spec = build_scene()
+    scene, spec = _build_scene_and_spec()
     renderer = get_renderer()
 
     rgba = renderer.render_frame(scene, 0.0)

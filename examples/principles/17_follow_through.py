@@ -15,7 +15,7 @@ from manimlite.export import PyAVEncoder
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 2.4
-BG = (15, 17, 26)
+BG = (30, 30, 30)
 
 from manimlite import FollowThrough, MoveY
 from manimlite.shapes import Ellipse
@@ -23,7 +23,7 @@ from manimlite.shapes import Ellipse
 
 def build_scene() -> Scene:
     scene = Scene(width=WIDTH, height=HEIGHT, fps=FPS, duration=DURATION)
-    puck = Ellipse(x=480, y=160, rx=58, ry=58, fill_color="#61AFEF", stroke_color="#FFFFFF", stroke_width=2.5)
+    puck = Ellipse(x=480, y=160, rx=58, ry=58, fill_color="#5DD2E8", stroke_color="#FFFFFF", stroke_width=2.5)
     scene.add_node(puck)
     scene.add_animation(0.0, DURATION, puck, FollowThrough(MoveY(160.0, 360.0)))
     return scene

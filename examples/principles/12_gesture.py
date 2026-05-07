@@ -15,7 +15,7 @@ from manimlite.export import PyAVEncoder
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 2.5
-BG = (18, 14, 22)
+BG = (30, 30, 30)
 
 from manimlite.composition import GesturePath
 
@@ -23,7 +23,7 @@ from manimlite.composition import GesturePath
 def build_scene() -> Scene:
     scene = Scene(width=WIDTH, height=HEIGHT, fps=FPS, duration=DURATION)
     pts = ((-280, 120), (-120, 40), (40, -40), (220, -80), (420, 20), (620, 160))
-    scene.add_node(GesturePath(x=WIDTH / 2, y=HEIGHT / 2 + 40, control_points=pts, stroke_color="#FF8B7B", stroke_width=5.0, taper=True))
+    scene.add_node(GesturePath(x=WIDTH / 2, y=HEIGHT / 2 + 40, control_points=pts, stroke_color="#A51C30", stroke_width=5.0, taper=True))
     return scene
 
 def get_skia_renderer() -> SkiaRenderer:

@@ -15,7 +15,7 @@ from manimlite.export import PyAVEncoder
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 2.5
-BG = (15, 17, 26)
+BG = (30, 30, 30)
 
 from manimlite.composition import PHI, distribute_evenly
 from manimlite.shapes import RegularPolygon
@@ -26,7 +26,7 @@ def build_scene() -> Scene:
     nodes = []
     radii = (34.0, 34.0 * PHI, 34.0 * PHI * PHI)
     for r in radii:
-        n = RegularPolygon(x=0, y=300, sides=6, radius=r, fill_color="#61AFEF", stroke_color="#24365A", stroke_width=1.5)
+        n = RegularPolygon(x=0, y=300, sides=6, radius=r, fill_color="#5DD2E8", stroke_color="#3D3D3D", stroke_width=1.5)
         scene.add_node(n)
         nodes.append(n)
     distribute_evenly(nodes, "x", 180.0, WIDTH - 180.0)

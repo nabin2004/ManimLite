@@ -15,7 +15,7 @@ from manimlite.export import PyAVEncoder
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 3.0
-BG = (16, 18, 26)
+BG = (30, 30, 30)
 
 from manimlite import Blur
 from manimlite.shapes import Ellipse
@@ -24,7 +24,7 @@ from manimlite.shapes import Ellipse
 def build_scene() -> Scene:
     scene = Scene(width=WIDTH, height=HEIGHT, fps=FPS, duration=DURATION)
     sharp = Ellipse(x=280, y=280, rx=120, ry=120, fill_color="#5DD2E8", stroke_color="#FFFFFF", stroke_width=3.0)
-    soft = Ellipse(x=640, y=280, rx=120, ry=120, fill_color="#F0C060", stroke_color="#FFFFFF", stroke_width=3.0)
+    soft = Ellipse(x=640, y=280, rx=120, ry=120, fill_color="#A51C30", stroke_color="#FFFFFF", stroke_width=3.0)
     scene.add_node(sharp)
     scene.add_node(soft)
     scene.add_animation(0.0, DURATION, soft, Blur(0.0, 10.0))

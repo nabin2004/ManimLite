@@ -15,7 +15,7 @@ from manimlite.export import PyAVEncoder
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 2.6
-BG = (12, 14, 22)
+BG = (30, 30, 30)
 
 from manimlite import Rotate
 from manimlite.core import Node

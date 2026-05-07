@@ -15,17 +15,17 @@ from manimlite.export import PyAVEncoder
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 2.5
-BG = (18, 18, 22)
+BG = (30, 30, 30)
 
 from manimlite.shapes import Ellipse, Rectangle
 
 
 def build_scene() -> Scene:
     scene = Scene(width=WIDTH, height=HEIGHT, fps=FPS, duration=DURATION)
-    scene.add_node(Rectangle(x=80, y=120, width=780, height=300, corner_radius=10.0, fill_color="#F5F7FB", stroke_color="#C9D1E3", stroke_width=2.0))
-    scene.add_node(Rectangle(x=140, y=190, width=220, height=160, corner_radius=12.0, fill_color="#1E2537", stroke_color="#000000", stroke_width=1.0))
-    scene.add_node(Ellipse(x=620, y=260, rx=150, ry=150, fill_color="#E06C75", stroke_color="#FFFFFF", stroke_width=3.0))
-    scene.add_node(Ellipse(x=780, y=400, rx=22, ry=22, fill_color="#61AFEF", stroke_color="#FFFFFF", stroke_width=1.5))
+    scene.add_node(Rectangle(x=80, y=120, width=780, height=300, corner_radius=10.0, fill_color="#E8EAED", stroke_color="#B8BCC4", stroke_width=2.0))
+    scene.add_node(Rectangle(x=140, y=190, width=220, height=160, corner_radius=12.0, fill_color="#2C2C2C", stroke_color="#1E1E1E", stroke_width=1.0))
+    scene.add_node(Ellipse(x=620, y=260, rx=150, ry=150, fill_color="#A51C30", stroke_color="#FFFFFF", stroke_width=3.0))
+    scene.add_node(Ellipse(x=780, y=400, rx=22, ry=22, fill_color="#5DD2E8", stroke_color="#FFFFFF", stroke_width=1.5))
     return scene
 
 def get_skia_renderer() -> SkiaRenderer:

@@ -15,7 +15,7 @@ from manimlite.export import PyAVEncoder
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 2.4
-BG = (15, 17, 26)
+BG = (30, 30, 30)
 
 from manimlite import MoveX, Parallel, Rotate
 from manimlite.shapes import Rectangle
@@ -23,7 +23,7 @@ from manimlite.shapes import Rectangle
 
 def build_scene() -> Scene:
     scene = Scene(width=WIDTH, height=HEIGHT, fps=FPS, duration=DURATION)
-    body = Rectangle(x=200, y=260, width=180, height=90, corner_radius=18.0, fill_color="#3F6CAC", stroke_color="#FFFFFF", stroke_width=2.0)
+    body = Rectangle(x=200, y=260, width=180, height=90, corner_radius=18.0, fill_color="#2C3A42", stroke_color="#FFFFFF", stroke_width=2.0)
     scene.add_node(body)
     scene.add_animation(
         0.0,

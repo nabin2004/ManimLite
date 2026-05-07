@@ -15,7 +15,7 @@ from manimlite.export import PyAVEncoder
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 2.5
-BG = (10, 12, 18)
+BG = (30, 30, 30)
 
 from manimlite.form import Sphere
 from manimlite.shapes import Rectangle
@@ -31,7 +31,7 @@ def build_scene() -> Scene:
             width=float(WIDTH),
             height=float(HEIGHT),
             angle_rad=math.radians(115),
-            stops=((0.0, "#1E2537"), (1.0, "#0B0D12")),
+            stops=((0.0, "#2C2C2C"), (1.0, "#181818")),
         )
     )
     # Shadow shares the panel anchor so offset_x/y only nudge the silhouette down-right.
@@ -56,8 +56,8 @@ def build_scene() -> Scene:
             width=panel_w,
             height=panel_h,
             corner_radius=16.0,
-            fill_color="#2E3C56",
-            stroke_color="#8FA3C4",
+            fill_color="#3D3D3D",
+            stroke_color="#B4B8BF",
             stroke_width=1.5,
         )
     )

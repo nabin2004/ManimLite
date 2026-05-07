@@ -15,7 +15,7 @@ from manimlite.export import PyAVEncoder
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 2.2
-BG = (14, 16, 24)
+BG = (30, 30, 30)
 
 from manimlite import MoveArc, MoveX
 from manimlite.shapes import Ellipse
@@ -23,7 +23,7 @@ from manimlite.shapes import Ellipse
 
 def build_scene() -> Scene:
     scene = Scene(width=WIDTH, height=HEIGHT, fps=FPS, duration=DURATION)
-    arc_ball = Ellipse(x=140, y=360, rx=40, ry=40, fill_color="#F0C060", stroke_color="#FFFFFF", stroke_width=2.0)
+    arc_ball = Ellipse(x=140, y=360, rx=40, ry=40, fill_color="#A51C30", stroke_color="#FFFFFF", stroke_width=2.0)
     line_ball = Ellipse(x=140, y=460, rx=40, ry=40, fill_color="#5DD2E8", stroke_color="#FFFFFF", stroke_width=2.0)
     scene.add_node(arc_ball)
     scene.add_node(line_ball)

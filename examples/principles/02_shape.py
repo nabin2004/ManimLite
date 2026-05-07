@@ -15,16 +15,16 @@ from manimlite.export import PyAVEncoder
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 2.5
-BG = (14, 18, 28)
+BG = (30, 30, 30)
 
 from manimlite.shapes import Ellipse, Rectangle, RegularPolygon
 
 
 def build_scene() -> Scene:
     scene = Scene(width=WIDTH, height=HEIGHT, fps=FPS, duration=DURATION)
-    scene.add_node(Rectangle(x=120, y=160, width=220, height=140, corner_radius=18.0, fill_color="#3F6CAC", stroke_color="#7CADFF", stroke_width=2.0))
-    scene.add_node(Ellipse(x=520, y=240, rx=110, ry=70, fill_color="#E06C75", stroke_color="#FFFFFF", stroke_width=2.0))
-    scene.add_node(RegularPolygon(x=780, y=260, sides=5, radius=90.0, phase=-math.pi / 2, fill_color="#61AFEF", stroke_color="#24365A", stroke_width=2.0))
+    scene.add_node(Rectangle(x=120, y=160, width=220, height=140, corner_radius=18.0, fill_color="#2C3A42", stroke_color="#5DD2E8", stroke_width=2.0))
+    scene.add_node(Ellipse(x=520, y=240, rx=110, ry=70, fill_color="#A51C30", stroke_color="#FFFFFF", stroke_width=2.0))
+    scene.add_node(RegularPolygon(x=780, y=260, sides=5, radius=90.0, phase=-math.pi / 2, fill_color="#5DD2E8", stroke_color="#3D3D3D", stroke_width=2.0))
     return scene
 
 def get_skia_renderer() -> SkiaRenderer:
