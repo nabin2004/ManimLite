@@ -7,7 +7,7 @@ This file helps humans and **LLM agents** write scenes that match ManimLite’s 
 1. **Flat over deep inheritance** — prefer `@dataclass` nodes and explicit composition over subclass trees.
 2. **Explicit timelines** — animations are tuples `(start_time, end_time, target, animator)` attached to a scene, not implicit method call chains.
 3. **Typed surfaces** — use type hints on public constructors and protocols (`Drawable`, `Animator`).
-4. **Small vocabulary** — fewer top-level concepts than ManimCE: `Scene`, `Node`, `Timeline`, shapes, `Text` / `MathExpr` / `CodeBlock`, `VoiceOver`, `KittenVoiceOverBackend`.
+4. **Small vocabulary** — fewer top-level concepts than ManimCE: `Scene`, `Node`, `Timeline`, shapes, `Text` / `MathExpr` / `CodeBlock`, `SubtitleTrack` / `SubtitleCue`, `VoiceOver`, `KittenVoiceOverBackend`.
 5. **Determinism** — avoid hidden globals; scene parameters (resolution, fps, seed) should be explicit or passed into `Scene`.
 
 ## Architecture: three layers (normative)
@@ -69,5 +69,8 @@ scene = Scene(width=1920, height=1080, fps=30, duration=3.0)
 # Nodes and timeline entries are added explicitly (API TBD in implementation).
 _ = scene, Circle(radius=100.0), Timeline()
 ```
+
+
+- **Subtitles** — use `Scene.subtitle_track` with Typst strings (see [docs/guides/subtitles.md](docs/guides/subtitles.md)); do not use LaTeX for on-screen math.
 
 Refer to [docs/design/api-spec.md](docs/design/api-spec.md) for the authoritative public contract.

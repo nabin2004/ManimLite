@@ -18,7 +18,7 @@ Additional symbols remain importable from submodules (`shapes`, `animate`, etc.)
 
 ### `Scene`
 
-- **Constructor kwargs:** `width`, `height`, `fps`, `duration`, optional `root`, `timeline`
+- **Constructor kwargs:** `width`, `height`, `fps`, `duration`, optional `root`, `timeline`, optional `subtitle_track`
 - **Methods:**
   - `narrate(voice_over: VoiceOver) -> None` — register narration (implementation will append to an internal audio list)
 
@@ -43,6 +43,15 @@ Additional symbols remain importable from submodules (`shapes`, `animate`, etc.)
 - `Text(content, font_size, color)`
 - `MathExpr(typst_source, font_size, color)`
 - `CodeBlock(code, language, font_size)`
+
+
+## Subtitles (`manimlite.subtitles` and `Scene.subtitle_track`)
+
+- **Types:** `SubtitleCue(start, end, typst, plain=None, voice=None, settings=None)`, `SubtitleStyle`, `SubtitleTrack(cues, style)` — `voice` / `settings` apply only to WebVTT output
+- **Scene field:** `subtitle_track: SubtitleTrack | None` — burned into the frame **after** the camera pass (screen-fixed)
+- **Time:** active when `start <= t < end` (half-open)
+- **Helpers:** `validate_subtitle_track`, `active_subtitles`, `sort_cues`, `subtitle_typst_layout`, `write_webvtt` — spec-style timestamps (`.` ms separator, compact `MM:SS.mmm` under one hour); optional `<v …>` via `voice` and cue settings line via `settings`
+- **Typst cache:** `cached_typst_subtitle_svg_path`, `typst_subtitle_cache_key`, `subtitle_document_for_cache`
 
 ## Animation (`manimlite.animate`)
 
