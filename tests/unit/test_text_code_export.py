@@ -89,3 +89,24 @@ def test_skia_canvas_draw_text_method() -> None:
     canvas.draw_text("Hi", 5.0, 5.0, 14.0, "#FFFFFF")
     arr = np.asarray(surface.makeImageSnapshot())
     assert arr[..., :3].astype("int64").sum() > 0
+
+
+def test_pyav_encoder_writes_frames_dir(tmp_path: Path) -> None:
+    from manimlite.export import PyAVEncoder
+
+    scene = Scene(width=160, height=120, fps=10.0, duration=0.5)
+    c = Circle(x=80, y=60, r=30, progress=0.0)
+    scene.add_node(c)
+    scene.add_animation(0.0, 0.5, c, CircleOutline())
+
+    frames = tmp_path / "frames"
+    out = tmp_path / "test_output.mp4"
+    enc = PyAVEncoder(scene=scene, output_path=out, frames_dir=frames)
+    enc.encode(verbose=False)
+
+    n_frames = max(1, round(scene.duration * scene.fps))
+    paths = sorted(frames.glob("*.png"))
+    assert len(paths) == n_frames
+    for idx, p in enumerate(paths, start=1):
+        assert p.name == f"{idx:06d}.png"
+        assert p.stat().st_size > 50

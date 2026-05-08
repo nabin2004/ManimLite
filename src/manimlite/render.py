@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any, cast
 
 import numpy as np
 import numpy.typing as npt
 
+from manimlite.animate import smoothstep
 from manimlite.core import Scene
 from manimlite.engine import step_frame
 
@@ -518,7 +520,13 @@ class SkiaRenderer:
 
     clear_color: tuple[int, int, int] = (0, 0, 0)
 
-    def render_frame(self, scene: Scene, t: float) -> npt.NDArray[np.uint8]:
+    def render_frame(
+        self,
+        scene: Scene,
+        t: float,
+        *,
+        ease: Callable[[float], float] | None = smoothstep,
+    ) -> npt.NDArray[np.uint8]:
         import skia
 
         surface = skia.Surface(scene.width, scene.height)
@@ -527,7 +535,7 @@ class SkiaRenderer:
         raw.clear(skia.Color(r, g, b, 255))
 
         dt = 1.0 / scene.fps if scene.fps > 0 else 1.0 / 30.0
-        step_frame(scene, t, dt)
+        step_frame(scene, t, dt, ease=ease)
 
         cam = scene.camera
         fx = cam.x if math.isfinite(cam.x) else scene.width / 2.0

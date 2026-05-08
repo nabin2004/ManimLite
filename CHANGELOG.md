@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **PyAV export / render:** Optional `frames_dir` writes numbered PNG frames during encode; `PyAVEncoder(linear_timeline=…)` drives linear easing; `SkiaRenderer.render_frame(..., ease=…)` (default `smoothstep`). CLI: `manimlite render --frames-dir`.
 - **World coordinates:** `manimlite.world` — `WorldSpec`, `WorldPortal`, `world_to_screen` / `screen_to_world`, `world_pixel_affine_coeffs`, light-weight shell helpers (`world_shell`, `ground_strip`, `place_on_ground`, …) and fake-depth projection (`project_depth_fake`); `SemanticPart` / `WorldShellNodes` for simple character-style rigs. Scene graph: `Node.world_z` for depth ordering alongside `x` / `y`.
 - **Skia drawing:** `SkiaCanvas.fill_sector` (pie wedge) and `push_affine_2x3` / `pop_affine_2x3` for arbitrary 2×3 affines (used by world portal drawing).
 - **Shapes:** `Sector` and `SemiCircle` in `manimlite.shapes` (Skia-backed wedge fill via `fill_sector`).

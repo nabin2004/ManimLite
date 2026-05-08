@@ -1,4 +1,7 @@
-"""Video export via PyAV — streams Skia RGBA frames into H.264 MP4."""
+"""Video export via PyAV — streams Skia RGBA frames into H.264 MP4.
+
+Optionally writes each rendered frame as PNG alongside muxing (single render pass).
+"""
 
 from __future__ import annotations
 
@@ -9,20 +12,26 @@ from pathlib import Path
 import numpy as np
 import numpy.typing as npt
 
+from manimlite.animate import smoothstep
 from manimlite.core import Scene
 from manimlite.render import SkiaRenderer
 
 
 @dataclass(slots=True)
 class PyAVEncoder:
-    """Encodes a rendered scene to H.264 MP4 without intermediate frame files."""
+    """Encodes a rendered scene to H.264 MP4; optional PNG sequence per frame."""
 
     scene: Scene
     output_path: Path
     renderer: SkiaRenderer = field(default_factory=SkiaRenderer)
+    linear_timeline: bool = False
+    frames_dir: Path | None = None
 
     def encode(self, *, verbose: bool = True) -> Path:
         """Render every frame and mux into an MP4 container.
+
+        If ``frames_dir`` is set, each frame is also written as
+        ``{frames_dir}/{index:06d}.png`` (1-based indices).
 
         Returns the output path on success.
         """
@@ -38,6 +47,11 @@ class PyAVEncoder:
         w = scene.width if scene.width % 2 == 0 else scene.width + 1
         h = scene.height if scene.height % 2 == 0 else scene.height + 1
 
+        frames_root: Path | None = None
+        if self.frames_dir is not None:
+            frames_root = self.frames_dir.expanduser().resolve()
+            frames_root.mkdir(parents=True, exist_ok=True)
+
         self.output_path.parent.mkdir(parents=True, exist_ok=True)
         container = av.open(str(self.output_path), mode="w")
         stream = container.add_stream("libx264", rate=int(scene.fps))
@@ -47,9 +61,12 @@ class PyAVEncoder:
         stream.options = {"crf": "23", "preset": "medium"}
 
         try:
+            frame_ease = None if self.linear_timeline else smoothstep
             for i in range(n_frames):
                 t = min(scene.duration, (i + 1) * dt)
-                rgba = self.renderer.render_frame(scene, t)
+                rgba = self.renderer.render_frame(scene, t, ease=frame_ease)
+                if frames_root is not None:
+                    self._write_png(frames_root / f"{i + 1:06d}.png", rgba)
                 rgb = self._rgba_to_rgb(rgba, w, h)
                 video_frame = av.VideoFrame.from_ndarray(rgb, format="rgb24")
                 video_frame.pts = i
@@ -72,6 +89,15 @@ class PyAVEncoder:
             print(file=sys.stderr)
 
         return self.output_path
+
+    @staticmethod
+    def _write_png(path: Path, rgba: npt.NDArray[np.uint8]) -> None:
+        import skia
+
+        arr = np.ascontiguousarray(rgba)
+        img = skia.Image.fromarray(arr, skia.ColorType.kRGBA_8888_ColorType)
+        data = img.encodeToData(skia.EncodedImageFormat.kPNG, 100)
+        path.write_bytes(bytes(data))
 
     @staticmethod
     def _rgba_to_rgb(

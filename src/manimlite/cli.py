@@ -79,6 +79,13 @@ def render(
         float | None,
         typer.Option(help="Override scene FPS"),
     ] = None,
+    frames_dir: Annotated[
+        Path | None,
+        typer.Option(
+            "--frames-dir",
+            help="Write each frame as PNG under this directory (same pass as MP4)",
+        ),
+    ] = None,
     quiet: Annotated[
         bool,
         typer.Option("--quiet", "-q", help="Suppress progress output"),
@@ -107,9 +114,17 @@ def render(
         if callable(get_renderer)
         else SkiaRenderer()
     )
-    encoder = PyAVEncoder(scene=scene, output_path=output, renderer=renderer)
+    encoder = PyAVEncoder(
+        scene=scene,
+        output_path=output,
+        renderer=renderer,
+        frames_dir=frames_dir,
+    )
     result = encoder.encode(verbose=not quiet)
-    typer.echo(f"Rendered: {result} ({result.stat().st_size:,} bytes)")
+    msg = f"Rendered: {result} ({result.stat().st_size:,} bytes)"
+    if frames_dir is not None:
+        msg += f"; frames: {frames_dir.expanduser().resolve()}"
+    typer.echo(msg)
 
 
 def main() -> None:
