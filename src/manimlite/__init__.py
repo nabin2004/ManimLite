@@ -76,8 +76,24 @@ from manimlite.shapes import (
     Sector,
     SemiCircle,
 )
+from manimlite.subtitles import (
+    SubtitleCue,
+    SubtitleStyle,
+    SubtitleTrack,
+    active_subtitles,
+    sort_cues,
+    subtitle_typst_layout,
+    validate_subtitle_track,
+    write_webvtt,
+)
 from manimlite.text import CodeBlock, MathExpr, Text
-from manimlite.typst_cache import cached_typst_svg_path, typst_cache_key
+from manimlite.typst_cache import (
+    cached_typst_subtitle_svg_path,
+    cached_typst_svg_path,
+    subtitle_document_for_cache,
+    typst_cache_key,
+    typst_subtitle_cache_key,
+)
 from manimlite.value import GradientOverlay, Shadow
 from manimlite.world import (
     CHARACTER_HEIGHT_UNITS,
@@ -181,6 +197,17 @@ __all__ = [
     "stack_vertical",
     "Stagger",
     "step_frame",
+    "SubtitleCue",
+    "SubtitleStyle",
+    "SubtitleTrack",
+    "active_subtitles",
+    "cached_typst_subtitle_svg_path",
+    "sort_cues",
+    "subtitle_document_for_cache",
+    "subtitle_typst_layout",
+    "typst_subtitle_cache_key",
+    "validate_subtitle_track",
+    "write_webvtt",
     "TAU",
     "Text",
     "Timeline",

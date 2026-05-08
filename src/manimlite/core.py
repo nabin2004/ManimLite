@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 from typing import Any, Protocol, runtime_checkable
 
 from manimlite.canvas import Canvas
+from manimlite.subtitles import SubtitleTrack
 
 
 @runtime_checkable
@@ -151,6 +152,7 @@ class Scene:
     root: Node = field(default_factory=Node)
     timeline: Timeline = field(default_factory=Timeline)
     camera: Camera = field(default_factory=Camera)
+    subtitle_track: SubtitleTrack | None = None
 
     def narrate(self, voice_over: Any) -> None:
         """Register narration for mixing into the output audio (stub)."""

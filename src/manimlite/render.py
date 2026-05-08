@@ -13,6 +13,8 @@ import numpy.typing as npt
 from manimlite.animate import smoothstep
 from manimlite.core import Scene
 from manimlite.engine import step_frame
+from manimlite.subtitles import active_subtitles, subtitle_typst_layout
+from manimlite.typst_cache import cached_typst_subtitle_svg_path
 
 
 def _clamp01(x: float) -> float:
@@ -514,6 +516,58 @@ class SkiaCanvas:
         self._canvas.restore()
 
 
+
+_SUBTITLE_TYST_WARNED = False
+
+
+def _composite_subtitle_track(surface: Any, scene: Scene, t: float) -> None:
+    """Burn active subtitle cues in **screen space** (after camera transform)."""
+    global _SUBTITLE_TYST_WARNED
+    track = scene.subtitle_track
+    if track is None or not track.cues:
+        return
+    import shutil
+    import sys
+
+    import skia
+
+    if shutil.which("typst") is None:
+        if not _SUBTITLE_TYST_WARNED:
+            print("manimlite: typst not on PATH; subtitles skipped", file=sys.stderr)
+            _SUBTITLE_TYST_WARNED = True
+        return
+    active = active_subtitles(track, t)
+    if not active:
+        return
+    page_w_pt, font_pt = subtitle_typst_layout(scene_width_px=float(scene.width), style=track.style)
+    canvas = SkiaCanvas(surface)
+    w = float(scene.width)
+    h = float(scene.height)
+    bottom = h - track.style.bottom_margin
+    for cue in active:
+        if not cue.typst.strip():
+            continue
+        svg_path = cached_typst_subtitle_svg_path(
+            cue.typst,
+            page_width_pt=page_w_pt,
+            font_size_pt=font_pt,
+            fill_rgb_hex=track.style.color,
+        )
+        if svg_path is None:
+            continue
+        data = svg_path.read_bytes()
+        dom = skia.SVGDOM.MakeFromStream(skia.MemoryStream(data))
+        if dom is None:
+            continue
+        sz = dom.containerSize()
+        scaled_w = sz.width()
+        scaled_h = sz.height()
+        x = (w - scaled_w) / 2.0
+        top = bottom - scaled_h
+        canvas.draw_svg_bytes(data, x, top, 1.0)
+        bottom = top - track.style.line_gap
+
+
 @dataclass(slots=True)
 class SkiaRenderer:
     """Rasterize the scene at time ``t``; returns HxWx4 ``uint8`` RGBA."""
@@ -551,6 +605,8 @@ class SkiaRenderer:
         scene.root.draw(canvas, 0.0, 0.0)
 
         raw.restore()
+
+        _composite_subtitle_track(surface, scene, t)
 
         img = surface.makeImageSnapshot()
         return np.asarray(img)
