@@ -9,6 +9,11 @@
 
 Additional symbols remain importable from submodules (`shapes`, `animate`, etc.) but may move until v0.2.
 
+### `manimlite.procedural` (optional, explicit import)
+
+- Not part of ``manimlite.__all__`` — import explicitly, e.g. ``from manimlite.procedural import RainyLandscapeManifest, materialize_rainy_landscape``.
+- Holds **preset manifests** and builders that populate a `world_shell()` and schedule `Scene.add_animation` from data; stable engine APIs remain ``manimlite.world`` + timeline primitives.
+
 ## Core
 
 ### `Scene`

@@ -70,6 +70,21 @@ Implemented under [`src/manimlite/shapes.py`](src/manimlite/shapes.py) and drawn
 
 These are optional sugar; the semantic source of motion remains the principle examples and leaf animators.
 
+### Procedural manifests (optional `manimlite.procedural`)
+
+- **Purpose:** seedable, data-first descriptions (manifests) of parametrized worlds—terrain silhouettes, weather fields, discrete props—that **materialize** into [`world_shell()`](src/manimlite/world.py) buckets and return handles for wiring [`Scene.add_animation`](src/manimlite/core.py).
+- **Not core engine:** authors import explicitly (`from manimlite.procedural import …`). Symbols are **not** re-exported from the `manimlite` package root so the stable public surface stays small.
+- **Reference:** [`RainyLandscapeManifest`](src/manimlite/procedural/rainy_landscape.py) and [`examples/principles/26_world_viewport.py`](examples/principles/26_world_viewport.py).
+
+### Compiler boundary (e.g. Manimator)
+
+ManimLite is the **substrate**: `WorldSpec`, `WorldPortal`, the `Node` graph, discrete timeline entries (`start`, `end`, `target`, `Animator`). A higher-level toolchain (working name **Manimator**) should own narrative or curriculum intermediate representation—mapping pedagogical intent to manifests or directly to lowered scenes—and emit **fragments that compile to**:
+
+- instantiated geometry under an existing portal/shell, and
+- concrete `Animator` constructions passed to `add_animation`,
+
+without growing topic logic inside [`manimlite.world`](src/manimlite/world.py), [`SkiaRenderer`](src/manimlite/render.py), or unrelated core modules.
+
 ### Starter scenes
 
 | Goal | Example |
@@ -77,7 +92,7 @@ These are optional sugar; the semantic source of motion remains the principle ex
 | Spatial-only world sketch | [`examples/recipes/spatial_landscape.py`](examples/recipes/spatial_landscape.py) |
 | Structure + clips + recipe helpers | [`examples/recipes/animated_character.py`](examples/recipes/animated_character.py) |
 | Canonical timeline pattern | [`examples/play_circles.py`](examples/play_circles.py) |
-| World portal (static sanity) | [`examples/principles/26_world_viewport.py`](examples/principles/26_world_viewport.py) |
+| World portal + procedural manifest demo | [`examples/principles/26_world_viewport.py`](examples/principles/26_world_viewport.py) |
 
 ### Export and tooling
 
@@ -117,6 +132,7 @@ The items below match the original world-building vision; **several are already 
 - [x] **Semantic shell** — `world_shell()`, `SemanticPart.role`, `CHARACTER_HEIGHT_UNITS` hint.
 - [x] **Depth metadata** — `Node.world_z` (metadata only; no automatic reorder).
 - [x] **Stubs** — `attach`, `mirror_x`, `apply_gravity_step` raise until bounds/simulation are defined; document timeline-first motion ([AGENTS.md](AGENTS.md)).
+- [x] **Procedural manifest slice** — [`manimlite.procedural`](src/manimlite/procedural/__init__.py) (`RainyLandscapeManifest`, materialize + timeline helpers; see [26_world_viewport.py](examples/principles/26_world_viewport.py)).
 - [ ] **Camera in world space** — optional future: `CameraPan` accepting `WorldSpec` or automatic conversion; today camera remains pixel-native after the portal.
 - [ ] **Constraint / anchor system** — implement `attach` once parent bounds exist.
 
