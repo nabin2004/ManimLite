@@ -57,3 +57,6 @@ renders/
 # OS
 .DS_Store
 Thumbs.db
+
+# Local render/debug frame dumps
+text-frame/
