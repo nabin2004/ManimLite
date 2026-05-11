@@ -25,3 +25,18 @@ This file lists the main algorithms and data-structure concepts used inside the 
 | Path sampling | `src/manimlite/composition.py` | Spiral and gesture helpers approximate curves by sampling points.
 | Curve stitching | `src/manimlite/composition.py`, `src/manimlite/shapes.py` | Bézier control points are used to construct smooth paths and curves.
 | Deterministic procedural generation | `src/manimlite/procedural/rainy_landscape.py` | Seeded randomness is used to make generated scenes repeatable.
+
+## Per-shape algorithms
+
+Below are the primary algorithms or techniques used when rendering or constructing common shapes in `src/manimlite`.
+
+- Line: Bresenham line algorithm for ASCII raster (`src/manimlite/renderer.py`); vector line via backend path APIs for Skia.
+- Circle / SemiCircle / Sector: Midpoint circle algorithm for ASCII raster (`src/manimlite/renderer.py`); vector arcs/fills via Skia path primitives.
+- BezierCurve / Path / GesturePath: Cubic Bézier segments; Skia uses `cubicTo` for vector stroking; curve sampling and stitching used for gesture ribbons (`src/manimlite/composition.py`, `src/manimlite/shapes.py`).
+- Arc: sampled circular arc for ASCII; native arc stroking in Skia (`src/manimlite/shapes.py`, `src/manimlite/render.py`).
+- Ellipse: parametric sampling for raster/backends or backend ellipse primitives (`src/manimlite/shapes.py`).
+- Polygon / RegularPolygon: vertex generation with trig (cos/sin) and polygon fill via backend (`src/manimlite/shapes.py`).
+- Rectangle / Rounded rectangle: rectangle fill and optional corner radius via backend path primitives (`src/manimlite/shapes.py`).
+- Path sampling / Curve stitching: helpers create sampled points from analytic curves (GoldenSpiral, GesturePath) and either stroke as Béziers or approximate with polylines (`src/manimlite/composition.py`).
+- MoveAlongPath / polyline helpers: polyline length accumulation and parameterization for constant-speed travel along a sampled polyline (`src/manimlite/animate.py`).
+
