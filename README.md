@@ -2,6 +2,10 @@
 
 Lightweight **motion graphics** for explainers and teaching clips: **Typst** math → SVG, **Skia** rasterization, **PyAV** MP4 export, optional **[Kitten TTS](https://github.com/KittenML/KittenTTS)** narration. Scene APIs favor explicit timelines and small composable primitives— approachable for humans and for LLM-assisted authoring.
 
+![ManimLite preview](docs/assets/image.png)
+
+
+
 Install and import as **`manimlite`** (`pip install -e ".[dev]"` from this repo).
 
 | Goal | Target |
