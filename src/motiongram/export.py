@@ -22,10 +22,16 @@ class PyAVEncoder:
     """Encodes a rendered scene to H.264 MP4; optional PNG sequence per frame."""
 
     scene: Scene
-    output_path: Path
+    output_path: str | Path
     renderer: SkiaRenderer = field(default_factory=SkiaRenderer)
     linear_timeline: bool = False
-    frames_dir: Path | None = None
+    frames_dir: str | Path | None = None
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.output_path, Path):
+            self.output_path = Path(self.output_path)
+        if self.frames_dir is not None and not isinstance(self.frames_dir, Path):
+            self.frames_dir = Path(self.frames_dir)
 
     def encode(self, *, verbose: bool = True) -> Path:
         """Render every frame and mux into an MP4 container.
