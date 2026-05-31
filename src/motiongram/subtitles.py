@@ -145,3 +145,91 @@ def write_webvtt(
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
     return path
+
+
+def _parse_webvtt_ts(raw: str) -> float:
+    """Parse WebVTT timestamp to seconds."""
+    s = raw.strip()
+    if "." in s:
+        head, ms_part = s.rsplit(".", 1)
+        ms = int(ms_part.ljust(3, "0")[:3])
+    else:
+        head = s
+        ms = 0
+    parts = head.split(":")
+    if len(parts) == 3:
+        h, m, sec = int(parts[0]), int(parts[1]), int(parts[2])
+    elif len(parts) == 2:
+        h, m, sec = 0, int(parts[0]), int(parts[1])
+    else:
+        raise ValueError(f"invalid WebVTT timestamp: {raw!r}")
+    return h * 3600 + m * 60 + sec + ms / 1000.0
+
+
+def read_webvtt(path: Path | str) -> SubtitleTrack:
+    """Read a WebVTT file into a :class:`SubtitleTrack`.
+
+    Cue text is stored in both ``typst`` and ``plain`` fields.
+    """
+    path = Path(path)
+    text = path.read_text(encoding="utf-8")
+    lines = text.replace("\r\n", "\n").replace("\r", "\n").split("\n")
+    if not lines or not lines[0].strip().startswith("WEBVTT"):
+        raise ValueError(f"not a WebVTT file: {path}")
+
+    cues: list[SubtitleCue] = []
+    i = 1
+    n = len(lines)
+
+    def skip_blank() -> None:
+        nonlocal i
+        while i < n and not lines[i].strip():
+            i += 1
+
+    skip_blank()
+    while i < n:
+        line = lines[i].strip()
+        if not line:
+            i += 1
+            continue
+        if "-->" not in line:
+            i += 1
+            continue
+        timing_parts = line.split("-->")
+        if len(timing_parts) != 2:
+            i += 1
+            continue
+        start_raw = timing_parts[0].strip()
+        end_and_settings = timing_parts[1].strip()
+        end_tokens = end_and_settings.split()
+        if not end_tokens:
+            i += 1
+            continue
+        end_raw = end_tokens[0]
+        settings = " ".join(end_tokens[1:]) if len(end_tokens) > 1 else None
+        i += 1
+        text_lines: list[str] = []
+        while i < n and lines[i].strip():
+            text_lines.append(lines[i].rstrip())
+            i += 1
+        payload = "\n".join(text_lines).strip()
+        if not payload:
+            continue
+        voice: str | None = None
+        if payload.startswith("<v ") and ">" in payload:
+            close = payload.index(">")
+            voice = payload[3:close].strip()
+            payload = payload[close + 1 :].strip()
+        cues.append(
+            SubtitleCue(
+                start=_parse_webvtt_ts(start_raw),
+                end=_parse_webvtt_ts(end_raw),
+                typst=payload,
+                plain=payload,
+                voice=voice,
+                settings=settings,
+            )
+        )
+        skip_blank()
+
+    return SubtitleTrack(cues=tuple(sort_cues(cues)))

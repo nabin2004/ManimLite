@@ -64,6 +64,20 @@ python examples/math_and_text.py
 
 See the [Setup Guide](docs/guides/setup.md) for platform-specific instructions.
 
+## YAML scenes
+
+Declarative manifests drive the same Node classes and timeline animators as Python scenes — useful for lectures, LLM-authored content, and non-programmers.
+
+```bash
+# Deep-learning showcase (port of examples/deeplearning_showcase.py)
+motiongram render examples/yaml/deeplearning_showcase.yaml -o showcase.mp4
+
+# Lecture with sections, recipes, and auto section titles
+motiongram render examples/yaml/weight_decay_lecture.yaml -o weight_decay.mp4
+```
+
+Full field reference: [YAML schema (SCHEMA.md)](docs/SCHEMA.md). Python scenes remain the escape hatch for custom logic; YAML covers composition, elements, animations, sections, and recipes like `ForwardPass`.
+
 ## Principles gallery
 
 Twelve **drawing** and twelve **animation** principle demos live under [`examples/principles/`](examples/principles/). Each script writes an MP4 next to itself (those outputs stay gitignored).
@@ -76,6 +90,7 @@ Index and topics: [Principles examples guide](docs/guides/principles-examples.md
 
 ## Documentation
 
+- [YAML schema (SCHEMA.md)](docs/SCHEMA.md) — declarative scene manifests
 - [Setup Guide](docs/guides/setup.md) — installing skia-python and Typst
 - [Math Rendering Guide](docs/guides/math-rendering.md) — using Typst for math
 - [Principles examples](docs/guides/principles-examples.md) — `examples/principles/` gallery

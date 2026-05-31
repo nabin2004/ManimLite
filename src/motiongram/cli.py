@@ -64,7 +64,7 @@ def _scene_from_module(mod: ModuleType, scene_file: Path) -> Scene:
 def render(
     scene_file: Annotated[
         Path,
-        typer.Argument(help="Path to scene .py", exists=True, readable=True),
+        typer.Argument(help="Path to scene .py or .yaml", exists=True, readable=True),
     ],
     output: Annotated[
         Path | None,
@@ -98,8 +98,32 @@ def render(
     from motiongram.export import PyAVEncoder
     from motiongram.render import SkiaRenderer
 
-    mod = _import_scene_module(scene_file)
-    scene = _scene_from_module(mod, scene_file)
+    linear_timeline = False
+    suffix = scene_file.suffix.lower()
+    if suffix in (".yaml", ".yml"):
+        from motiongram.manifest.loader import render_manifest
+
+        program, scene = render_manifest(scene_file)
+        if output is None:
+            output = program.output_path
+        renderer = SkiaRenderer(clear_color=program.clear_color)
+        linear_timeline = program.uses_custom_easing
+        if program.voiceover_paths and not quiet:
+            typer.echo(
+                "Note: voiceover paths detected but audio mux is not yet supported.",
+                err=True,
+            )
+    else:
+        mod = _import_scene_module(scene_file)
+        scene = _scene_from_module(mod, scene_file)
+        if output is None:
+            output = Path(scene_file.stem + ".mp4")
+        get_renderer = getattr(mod, "get_skia_renderer", None)
+        renderer = (
+            get_renderer()
+            if callable(get_renderer)
+            else SkiaRenderer()
+        )
 
     if width is not None:
         scene.width = width
@@ -108,20 +132,12 @@ def render(
     if fps is not None:
         scene.fps = fps
 
-    if output is None:
-        output = Path(scene_file.stem + ".mp4")
-
-    get_renderer = getattr(mod, "get_skia_renderer", None)
-    renderer = (
-        get_renderer()
-        if callable(get_renderer)
-        else SkiaRenderer()
-    )
     encoder = PyAVEncoder(
         scene=scene,
         output_path=output,
         renderer=renderer,
         frames_dir=frames_dir,
+        linear_timeline=linear_timeline,
     )
     result = encoder.encode(verbose=not quiet)
     msg = f"Rendered: {result} ({result.stat().st_size:,} bytes)"

@@ -1,0 +1,95 @@
+version: "1.0"
+
+canvas:
+  width: 1280
+  height: 720
+  background: "#21252b"
+  fps: 30
+
+output:
+  file: deeplearning_showcase.mp4
+  codec: h264
+
+scenes:
+  - id: deeplearning_showcase
+    duration: 8s
+    elements:
+      - id: weights
+        type: Matrices
+        properties:
+          x: 80
+          y: 100
+          values:
+            - [0.2, -0.5, 0.1, 0.0]
+            - [0.8, 0.3, -0.2, 0.6]
+            - [0.0, 0.6, 0.4, -0.1]
+          label: "Weight matrix W"
+          highlight_row: 0
+        animations:
+          - type: animate_int_attribute
+            attribute: highlight_row
+            from: 0
+            to: 2
+            start: 0s
+            duration: 4s
+
+      - id: net
+        type: HiddenLayers
+        properties:
+          x: 520
+          y: 80
+          layer_sizes: [3, 5, 5, 2]
+          progress: 0.0
+        animations:
+          - type: animate_attribute
+            attribute: progress
+            from: 0
+            to: 1
+            start: 0s
+            duration: 8s
+
+      - id: relu
+        type: ActivationFunctions
+        properties:
+          x: 80
+          y: 380
+          activation: relu
+          input_val: -2.5
+          width: 320
+          height: 200
+        animations:
+          - type: animate_attribute
+            attribute: input_val
+            from: -2.5
+            to: 3.0
+            start: 0s
+            duration: 5s
+
+      - id: conv
+        type: Convolutions
+        properties:
+          x: 520
+          y: 380
+          input_grid:
+            - [1.0, 0.0, 1.0, 0.0]
+            - [0.0, 1.0, 0.0, 1.0]
+            - [1.0, 1.0, 0.0, 0.0]
+            - [0.0, 0.0, 1.0, 1.0]
+          kernel:
+            - [1.0, 0.0]
+            - [0.0, 1.0]
+          kernel_row: 0
+          kernel_col: 0
+        animations:
+          - type: animate_int_attribute
+            attribute: kernel_col
+            from: 0
+            to: 2
+            start: 0s
+            duration: 6s
+          - type: animate_int_attribute
+            attribute: kernel_row
+            from: 0
+            to: 2
+            start: 2s
+            duration: 4s

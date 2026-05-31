@@ -1,0 +1,131 @@
+version: "1.0"
+
+lecture:
+  title: "3.7 Weight Decay"
+  subtitle: "Regularization for Deep Learning"
+  author: "MotionGram"
+  series: "Neural Networks: Zero to Hero"
+  language: en
+  description: >
+    A visual explainer of weight decay, L2 regularization,
+    and forward-pass visualization.
+
+canvas:
+  width: 1280
+  height: 720
+  background: "#21252b"
+  fps: 30
+
+output:
+  file: weight_decay.mp4
+
+options:
+  generate_section_titles: true
+  section_title_duration: 3s
+
+scenes:
+  - id: intro_title
+    duration: 4s
+    elements:
+      - id: title
+        type: Text
+        properties:
+          content: "3.7 Weight Decay"
+          x: 80
+          y: 280
+          font_size: 64
+          color: "#e5c07b"
+      - id: subtitle
+        type: Text
+        properties:
+          content: "Regularization for Deep Learning"
+          x: 80
+          y: 360
+          font_size: 32
+          color: "#abb2bf"
+        animations:
+          - type: fade_in
+            start: 0.5s
+            duration: 0.8s
+            from: 0
+            to: 1
+
+sections:
+  - id: norms_and_weight_decay
+    title: "3.7.1 Norms and Weight Decay"
+    description: "L2 norm, penalty term, and why weights shrink."
+    scenes:
+      - id: l2_norm_explanation
+        duration: 10s
+        elements:
+          - id: weight_matrix
+            type: Matrices
+            properties:
+              x: 80
+              y: 200
+              values:
+                - [0.2, -0.5, 0.1]
+                - [0.8, 0.3, -0.2]
+                - [0.0, 0.6, 0.4]
+              label: "W"
+              highlight_row: 0
+            animations:
+              - type: animate_int_attribute
+                attribute: highlight_row
+                from: 0
+                to: 2
+                start: 0s
+                duration: 6s
+                easing: ease_in_out_cubic
+
+          - id: l2_penalty_eq
+            type: MathExpr
+            properties:
+              typst: "(lambda)/2 norm(W)^2"
+              x: 520
+              y: 300
+              color: "#e5c07b"
+            animations:
+              - type: fade_in
+                start: 0.5s
+                duration: 0.8s
+
+          - id: reg_viz
+            type: Regularization
+            properties:
+              x: 520
+              y: 420
+
+  - id: forward_pass
+    title: "3.7.2 Forward Pass"
+    description: "Sequential layer activation."
+    scenes:
+      - id: forward_pass_demo
+        duration: 8s
+        elements:
+          - id: layer_input
+            type: HiddenLayers
+            properties:
+              x: 100
+              y: 300
+              layer_sizes: [2, 3]
+              progress: 0.0
+          - id: layer_hidden
+            type: HiddenLayers
+            properties:
+              x: 400
+              y: 300
+              layer_sizes: [3, 4]
+              progress: 0.0
+          - id: layer_output
+            type: HiddenLayers
+            properties:
+              x: 700
+              y: 300
+              layer_sizes: [4, 2]
+              progress: 0.0
+        recipe:
+          type: ForwardPass
+          layers: [layer_input, layer_hidden, layer_output]
+          start: 1s
+          duration: 6s

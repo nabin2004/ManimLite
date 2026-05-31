@@ -84,6 +84,7 @@ from motiongram.subtitles import (
     sort_cues,
     subtitle_typst_layout,
     validate_subtitle_track,
+    read_webvtt,
     write_webvtt,
 )
 from motiongram.text import CodeBlock, MathExpr, Text
@@ -207,6 +208,7 @@ __all__ = [
     "subtitle_typst_layout",
     "typst_subtitle_cache_key",
     "validate_subtitle_track",
+    "read_webvtt",
     "write_webvtt",
     "TAU",
     "Text",
