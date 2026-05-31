@@ -32,11 +32,6 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-tts = [
-    # Kitten TTS — Apache-2.0; wheel from upstream releases (see ADR-0004)
-    "kittentts @ https://github.com/KittenML/KittenTTS/releases/download/0.8.1/kittentts-0.8.1-py3-none-any.whl",
-    "soundfile>=0.12",
-]
 docs = [
     "mkdocs>=1.6",
     "mkdocs-material>=9.5",
