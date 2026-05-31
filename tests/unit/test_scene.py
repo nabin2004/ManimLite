@@ -1,5 +1,5 @@
-from manimlite.animate import Animation, MoveX
-from manimlite.core import Node, Scene
+from motiongram.animate import Animation, MoveX
+from motiongram.core import Node, Scene
 
 
 def test_scene_and_timeline():

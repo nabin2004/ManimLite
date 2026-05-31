@@ -1,7 +1,7 @@
 """Rainy landscape preset: manifest, materialization, and timeline hooks.
 
 This module is the home for the procedural content that used to live entirely in
-``examples/principles/26_world_viewport.py``.  It only uses the public ManimLite
+``examples/principles/26_world_viewport.py``.  It only uses the public MotionGram
 world/scene API.
 """
 
@@ -10,10 +10,10 @@ from __future__ import annotations
 import random
 from dataclasses import dataclass
 
-from manimlite import MoveX, MoveY, ground_strip, place_on_ground
-from manimlite.core import Node, Scene
-from manimlite.shapes import Ellipse, Line, Polygon, Rectangle
-from manimlite.world import WorldShellNodes, WorldSpec
+from motiongram import MoveX, MoveY, ground_strip, place_on_ground
+from motiongram.core import Node, Scene
+from motiongram.shapes import Ellipse, Line, Polygon, Rectangle
+from motiongram.world import WorldShellNodes, WorldSpec
 
 # ---------------------------------------------------------------------------
 # Small world-space helpers (duplicated from principle demo docstrings on purpose)

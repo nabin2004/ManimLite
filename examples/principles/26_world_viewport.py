@@ -1,13 +1,13 @@
-"""Principle: centered world units under a :class:`~manimlite.world.WorldPortal`.
+"""Principle: centered world units under a :class:`~motiongram.world.WorldPortal`.
 
 Run::
 
     python examples/principles/26_world_viewport.py
-    manimlite render examples/principles/26_world_viewport.py
+    motiongram render examples/principles/26_world_viewport.py
 
 The scene stacks many world-unit props (sky markers, hill, trees, grass, fence, orbs)
 with timeline-driven drifting clouds and rain.  Procedural content is built from
-:class:`~manimlite.procedural.RainyLandscapeManifest` in ``manimlite.procedural``.
+:class:`~motiongram.procedural.RainyLandscapeManifest` in ``motiongram.procedural``.
 Requires: skia-python.
 """
 
@@ -19,7 +19,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, NamedTuple
 
-from manimlite import (
+from motiongram import (
     Scene,
     SkiaRenderer,
     WorldPortal,
@@ -28,16 +28,16 @@ from manimlite import (
     world_shell,
     world_to_screen,
 )
-from manimlite.core import Node
-from manimlite.export import PyAVEncoder
-from manimlite.procedural import (
+from motiongram.core import Node
+from motiongram.export import PyAVEncoder
+from motiongram.procedural import (
     RainyLandscapeManifest,
     apply_rainy_landscape_animations,
     default_rainy_landscape_manifest,
     materialize_rainy_landscape,
     resting_anchor_y,
 )
-from manimlite.shapes import Ellipse, Rectangle
+from motiongram.shapes import Ellipse, Rectangle
 
 # ---------------------------------------------------------------------------
 # Configuration (scene framing + principle hero disc — not part of manifest)
@@ -172,7 +172,7 @@ def _build_scene_and_spec(
 
 
 def build_scene() -> Scene:
-    """CLI hook for ``manimlite render`` (must return :class:`~manimlite.core.Scene` only)."""
+    """CLI hook for ``motiongram render`` (must return :class:`~motiongram.core.Scene` only)."""
     scene, _ = _build_scene_and_spec()
     return scene
 

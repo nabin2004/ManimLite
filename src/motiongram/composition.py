@@ -6,8 +6,8 @@ import math
 from collections.abc import Iterable
 from collections.abc import Sequence as ABCSequence
 
-from manimlite.canvas import Canvas
-from manimlite.core import Node
+from motiongram.canvas import Canvas
+from motiongram.core import Node
 
 TAU = 2.0 * math.pi
 PHI = (1.0 + math.sqrt(5.0)) / 2.0

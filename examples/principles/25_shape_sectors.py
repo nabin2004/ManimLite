@@ -1,6 +1,6 @@
 """Drawing principle: Shape — circular sectors and semicircles.
 
-Demonstrates :class:`~manimlite.shapes.Sector` / :class:`~manimlite.shapes.SemiCircle`
+Demonstrates :class:`~motiongram.shapes.Sector` / :class:`~motiongram.shapes.SemiCircle`
 for filled wedges (eyes, pie slices) without hand-tessellating polygons.
 
 Run::
@@ -16,10 +16,10 @@ import math
 import sys
 from pathlib import Path
 
-from manimlite import Scene, SkiaRenderer
-from manimlite.core import Node
-from manimlite.export import PyAVEncoder
-from manimlite.shapes import Ellipse, Sector, SemiCircle
+from motiongram import Scene, SkiaRenderer
+from motiongram.core import Node
+from motiongram.export import PyAVEncoder
+from motiongram.shapes import Ellipse, Sector, SemiCircle
 
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0

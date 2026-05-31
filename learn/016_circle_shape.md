@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
 ## Explanation
 
-This is the same drawing code with a clearer type name. ManimLite’s real `Circle` will use Skia paths; the *data model* (`center + radius`) stays.
+This is the same drawing code with a clearer type name. MotionGram’s real `Circle` will use Skia paths; the *data model* (`center + radius`) stays.
 
 ## Limitations
 

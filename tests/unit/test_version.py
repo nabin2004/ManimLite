@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import manimlite
+import motiongram
 
 
 def test_version_is_set() -> None:
-    assert manimlite.__version__
+    assert motiongram.__version__

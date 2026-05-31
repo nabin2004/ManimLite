@@ -1,6 +1,6 @@
 # Setup Guide
 
-This guide covers installing ManimLite's two core external dependencies:
+This guide covers installing MotionGram's two core external dependencies:
 **skia-python** (2D rendering) and **Typst** (math typesetting).
 
 ## Prerequisites
@@ -45,7 +45,7 @@ print("skia-python OK")
 
 ## 3. Install Typst CLI
 
-ManimLite uses Typst as a CLI tool (invoked via subprocess) to compile math
+MotionGram uses Typst as a CLI tool (invoked via subprocess) to compile math
 expressions into SVG. Install the binary:
 
 ### Option A: Pre-built binary (recommended)
@@ -76,7 +76,7 @@ typst --version
 # Expected: typst 0.14.x or later
 ```
 
-Ensure `typst` is on your `PATH`. ManimLite's `typst_cache.py` uses
+Ensure `typst` is on your `PATH`. MotionGram's `typst_cache.py` uses
 `shutil.which("typst")` to locate the binary.
 
 ## 4. Verify the Full Pipeline
@@ -90,7 +90,7 @@ python examples/math_and_text.py
 Or via the CLI:
 
 ```bash
-manimlite render examples/math_and_text.py -o output.mp4
+motiongram render examples/math_and_text.py -o output.mp4
 ```
 
 ## Troubleshooting
@@ -100,8 +100,8 @@ manimlite render examples/math_and_text.py -o output.mp4
 | `ModuleNotFoundError: No module named 'skia'` | `uv pip install skia-python` |
 | `typst: command not found` | Install Typst and add its directory to `PATH` |
 | `libEGL.so: cannot open shared object` | Install `libegl1` (Ubuntu) or `mesa-libEGL` (Fedora) |
-| Math expressions render as blank | Check `typst --version` works; check `~/.cache/manimlite/typst/` for cached SVGs |
-| `TypeError: MakeLinear(): incompatible function arguments` | Upgrade ManimLite — linear gradients pass a **sequence** of two `skia.Point`s per current skia-python bindings; ensure `skia-python>=120` per `pyproject.toml`. |
+| Math expressions render as blank | Check `typst --version` works; check `~/.cache/motiongram/typst/` for cached SVGs |
+| `TypeError: MakeLinear(): incompatible function arguments` | Upgrade MotionGram — linear gradients pass a **sequence** of two `skia.Point`s per current skia-python bindings; ensure `skia-python>=120` per `pyproject.toml`. |
 
 ## Optional: custom Skia background in the CLI
 
@@ -112,7 +112,7 @@ def get_skia_renderer() -> SkiaRenderer:
     return SkiaRenderer(clear_color=(18, 22, 32))
 ```
 
-`manimlite render` calls it when present so MP4 matches `python your_scene.py`.
+`motiongram render` calls it when present so MP4 matches `python your_scene.py`.
 
 ## 5. Principles gallery
 

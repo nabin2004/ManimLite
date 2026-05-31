@@ -1,10 +1,10 @@
-# ManimLite — Cinematic Black Hole Rendering Architecture
+# MotionGram — Cinematic Black Hole Rendering Architecture
 
 ## Overview
 The existing recipe (`interstellar_black_hole.py`) is a manually-assembled flat list of
 `Ellipse` / `Arc` / `Line` primitives with a `Rotate` + `CameraZoom` animation pair.
 It works, but it does not *scale*. The design below introduces ten interlocking systems
-that collectively move ManimLite from "shape placer" toward "visual communication
+that collectively move MotionGram from "shape placer" toward "visual communication
 engine." Each step builds on the previous and preserves backward compatibility with the
 existing `Scene / Node / SkiaRenderer / PyAVEncoder` API.
 
@@ -21,7 +21,7 @@ transparency, and tint independently.
 ### Class Definition
 
 ```python
-# manimlite/materials.py
+# motiongram/materials.py
 
 from __future__ import annotations
 from dataclasses import dataclass, field
@@ -187,7 +187,7 @@ geometry, materials, and child hierarchy once.
 ### Base protocol
 
 ```python
-# manimlite/core.py  (extend existing Node)
+# motiongram/core.py  (extend existing Node)
 
 class BuildableNode(Node):
     """Node that constructs its subtree lazily on first render."""
@@ -208,11 +208,11 @@ class BuildableNode(Node):
 ### DiskBand
 
 ```python
-# manimlite/shapes/disk_band.py
+# motiongram/shapes/disk_band.py
 
-from manimlite.core import BuildableNode
-from manimlite.materials import Material, WARM_DISK
-from manimlite.shapes import Ellipse
+from motiongram.core import BuildableNode
+from motiongram.materials import Material, WARM_DISK
+from motiongram.shapes import Ellipse
 
 
 class DiskBand(BuildableNode):
@@ -264,10 +264,10 @@ class DiskBand(BuildableNode):
 ### AccretionDisk
 
 ```python
-# manimlite/shapes/accretion_disk.py
+# motiongram/shapes/accretion_disk.py
 
-from manimlite.core import BuildableNode
-from manimlite.materials import HOT_PLASMA, WARM_DISK, COOL_CORONA
+from motiongram.core import BuildableNode
+from motiongram.materials import HOT_PLASMA, WARM_DISK, COOL_CORONA
 from .disk_band import DiskBand
 
 
@@ -304,12 +304,12 @@ class AccretionDisk(BuildableNode):
 ### PhotonRing
 
 ```python
-# manimlite/shapes/photon_ring.py
+# motiongram/shapes/photon_ring.py
 
 import math
-from manimlite.core import BuildableNode
-from manimlite.materials import PHOTON_RING as PM
-from manimlite.shapes import Arc, Ellipse
+from motiongram.core import BuildableNode
+from motiongram.materials import PHOTON_RING as PM
+from motiongram.shapes import Arc, Ellipse
 
 
 class PhotonRing(BuildableNode):
@@ -342,11 +342,11 @@ class PhotonRing(BuildableNode):
 ### EventHorizon
 
 ```python
-# manimlite/shapes/event_horizon.py
+# motiongram/shapes/event_horizon.py
 
-from manimlite.core import BuildableNode
-from manimlite.materials import EVENT_HORIZON as EH, DIFFRACTION_SPIKE as DS
-from manimlite.shapes import Ellipse, Line
+from motiongram.core import BuildableNode
+from motiongram.materials import EVENT_HORIZON as EH, DIFFRACTION_SPIKE as DS
+from motiongram.shapes import Ellipse, Line
 
 
 class EventHorizon(BuildableNode):
@@ -374,9 +374,9 @@ class EventHorizon(BuildableNode):
 ### Top-level BlackHole semantic object
 
 ```python
-# manimlite/shapes/black_hole.py
+# motiongram/shapes/black_hole.py
 
-from manimlite.core import BuildableNode
+from motiongram.core import BuildableNode
 from .accretion_disk import AccretionDisk
 from .photon_ring import PhotonRing
 from .event_horizon import EventHorizon
@@ -441,13 +441,13 @@ the synthetic look without destroying the underlying geometry.
 ### DistortedEllipse
 
 ```python
-# manimlite/shapes/distorted_ellipse.py
+# motiongram/shapes/distorted_ellipse.py
 
 from __future__ import annotations
 import numpy as np
 import skia
-from manimlite.core import Node
-from manimlite.materials import Material
+from motiongram.core import Node
+from motiongram.materials import Material
 
 
 def _perlin_1d(theta: np.ndarray, frequency: float, seed: int = 0) -> np.ndarray:
@@ -581,7 +581,7 @@ nightmare. A style token dict gives a single source of truth.
 ### Token schema
 
 ```python
-# manimlite/styles.py
+# motiongram/styles.py
 
 from __future__ import annotations
 from dataclasses import dataclass, field
@@ -692,12 +692,12 @@ those degrees of freedom.
 ### CosmicRotation
 
 ```python
-# manimlite/animations/cosmic_rotation.py
+# motiongram/animations/cosmic_rotation.py
 
 from __future__ import annotations
 import math
 import numpy as np
-from manimlite.core import Node
+from motiongram.core import Node
 
 
 class CosmicRotation:
@@ -751,7 +751,7 @@ class CosmicRotation:
 
         return base + turb + wob
 
-    # ManimLite animation protocol
+    # MotionGram animation protocol
     def apply(self, node: Node, t: float, _t0: float, _t1: float) -> None:
         node.rotation = self.angle_at(t - _t0)
 ```
@@ -789,7 +789,7 @@ disk_root  ←── CosmicRotation(speed=0.20)        # base spin
 ### GlowLag
 
 ```python
-# manimlite/animations/secondary.py
+# motiongram/animations/secondary.py
 
 class GlowLag:
     """Applies the parent's rotation with a time delay, creating inertia."""
@@ -875,7 +875,7 @@ scene.add_animation(0.0, DURATION, lensing, LensingPulse(freq=0.75, amp=0.06))
 ### MotionLayer protocol
 
 ```python
-# manimlite/composition/motion_layers.py
+# motiongram/composition/motion_layers.py
 
 from __future__ import annotations
 import math
@@ -988,9 +988,9 @@ contrast, and blur for each node without manual per-element tuning.
 ### ImportanceNode
 
 ```python
-# manimlite/composition/importance.py
+# motiongram/composition/importance.py
 
-from manimlite.core import Node
+from motiongram.core import Node
 
 
 class ImportanceNode(Node):
@@ -1038,12 +1038,12 @@ adds inertia, cinematic drift, and a target-following mode.
 ### CameraRig
 
 ```python
-# manimlite/animations/camera_rig.py
+# motiongram/animations/camera_rig.py
 
 from __future__ import annotations
 import math
 import numpy as np
-from manimlite.core import Node
+from motiongram.core import Node
 
 
 class CameraRig:
@@ -1113,7 +1113,7 @@ class CameraRig:
             target_zoom - self._current_zoom
         )
         dx, dy = self._drift_offset(dt)
-        # Apply to scene root transform (ManimLite Scene exposes camera attrs)
+        # Apply to scene root transform (MotionGram Scene exposes camera attrs)
         scene_root.camera_zoom = self._current_zoom
         scene_root.camera_tx = dx
         scene_root.camera_ty = dy
@@ -1147,7 +1147,7 @@ They live in `SkiaRenderer` as an optional `AtmosphericPass`.
 ### BloomPass
 
 ```python
-# manimlite/rendering/atmospheric.py
+# motiongram/rendering/atmospheric.py
 
 from __future__ import annotations
 import numpy as np
@@ -1289,22 +1289,22 @@ instantiates every system above with sensible defaults, so a caller can produce
 a cinematic 12-second clip in ~10 lines.
 
 ```python
-# manimlite/scenes/black_hole_scene.py
+# motiongram/scenes/black_hole_scene.py
 
 from __future__ import annotations
-from manimlite import Scene, SkiaRenderer
-from manimlite.shapes.black_hole import BlackHole
-from manimlite.animations.cosmic_rotation import CosmicRotation
-from manimlite.animations.secondary import GlowLag, LensingPulse, ParticleDrift
-from manimlite.animations.camera_rig import CameraRig
-from manimlite.composition.motion_layers import (
+from motiongram import Scene, SkiaRenderer
+from motiongram.shapes.black_hole import BlackHole
+from motiongram.animations.cosmic_rotation import CosmicRotation
+from motiongram.animations.secondary import GlowLag, LensingPulse, ParticleDrift
+from motiongram.animations.camera_rig import CameraRig
+from motiongram.composition.motion_layers import (
     CompositeMotion, BaseMotion, TurbulenceMotion, NoiseMotion,
 )
-from manimlite.composition.importance import ImportanceNode
-from manimlite.rendering.atmospheric import COSMIC_ATMOSPHERE
-from manimlite.styles import COSMIC_STYLE, CosmicStyleTokens
-from manimlite.value import GradientOverlay
-from manimlite.core import Node
+from motiongram.composition.importance import ImportanceNode
+from motiongram.rendering.atmospheric import COSMIC_ATMOSPHERE
+from motiongram.styles import COSMIC_STYLE, CosmicStyleTokens
+from motiongram.value import GradientOverlay
+from motiongram.core import Node
 import math, random
 
 
@@ -1421,7 +1421,7 @@ class BlackHoleScene:
         scene.add_animation(0.0, self.duration, scene.root, rig)
 
         # Atmospheric renderer
-        from manimlite.rendering.atmospheric import AtmosphericPass, BloomPass, GrainPass, HazePass
+        from motiongram.rendering.atmospheric import AtmosphericPass, BloomPass, GrainPass, HazePass
         atmosphere = AtmosphericPass(
             bloom=BloomPass(threshold=0.72, sigma=16.0, strength=self.bloom_strength),
             grain=GrainPass(intensity=self.grain),
@@ -1439,8 +1439,8 @@ class BlackHoleScene:
 
 import sys
 from pathlib import Path
-from manimlite.export import PyAVEncoder
-from manimlite.scenes.black_hole_scene import BlackHoleScene
+from motiongram.export import PyAVEncoder
+from motiongram.scenes.black_hole_scene import BlackHoleScene
 
 bhs = BlackHoleScene(
     duration=12.0,
@@ -1463,17 +1463,17 @@ print(f"Output: {result} ({result.stat().st_size:,} bytes)", file=sys.stderr)
 
 | Phase | Deliverable | Key files |
 |-------|-------------|-----------|
-| 1 | Material system + canonical library | `manimlite/materials.py` |
-| 2 | Shape grammar (`DiskBand`, `AccretionDisk`, `PhotonRing`, `EventHorizon`, `BlackHole`) | `manimlite/shapes/` |
-| 3 | `DistortedEllipse` + `_perlin_1d` | `manimlite/shapes/distorted_ellipse.py` |
-| 4 | Style tokens + three built-in presets | `manimlite/styles.py` |
-| 5 | `CosmicRotation` animation | `manimlite/animations/cosmic_rotation.py` |
-| 6 | Secondary motion: `GlowLag`, `LensingPulse`, `ParticleDrift` | `manimlite/animations/secondary.py` |
-| 7a | Motion layer system: `BaseMotion`, `TurbulenceMotion`, `InertiaMotion`, `NoiseMotion`, `CompositeMotion` | `manimlite/composition/motion_layers.py` |
-| 7b | Importance system: `ImportanceNode` | `manimlite/composition/importance.py` |
-| 8 | `CameraRig` with inertia + drift | `manimlite/animations/camera_rig.py` |
-| 9 | `BloomPass`, `GrainPass`, `HazePass`, `AtmosphericPass` | `manimlite/rendering/atmospheric.py` |
-| 10 | `BlackHoleScene` semantic object | `manimlite/scenes/black_hole_scene.py` |
+| 1 | Material system + canonical library | `motiongram/materials.py` |
+| 2 | Shape grammar (`DiskBand`, `AccretionDisk`, `PhotonRing`, `EventHorizon`, `BlackHole`) | `motiongram/shapes/` |
+| 3 | `DistortedEllipse` + `_perlin_1d` | `motiongram/shapes/distorted_ellipse.py` |
+| 4 | Style tokens + three built-in presets | `motiongram/styles.py` |
+| 5 | `CosmicRotation` animation | `motiongram/animations/cosmic_rotation.py` |
+| 6 | Secondary motion: `GlowLag`, `LensingPulse`, `ParticleDrift` | `motiongram/animations/secondary.py` |
+| 7a | Motion layer system: `BaseMotion`, `TurbulenceMotion`, `InertiaMotion`, `NoiseMotion`, `CompositeMotion` | `motiongram/composition/motion_layers.py` |
+| 7b | Importance system: `ImportanceNode` | `motiongram/composition/importance.py` |
+| 8 | `CameraRig` with inertia + drift | `motiongram/animations/camera_rig.py` |
+| 9 | `BloomPass`, `GrainPass`, `HazePass`, `AtmosphericPass` | `motiongram/rendering/atmospheric.py` |
+| 10 | `BlackHoleScene` semantic object | `motiongram/scenes/black_hole_scene.py` |
 
 ---
 

@@ -12,10 +12,10 @@ from pathlib import Path
 
 
 def _cache_root() -> Path:
-    base = os.environ.get("MANIMLITE_CACHE_HOME", "")
+    base = os.environ.get("MOTIONGRAM_CACHE_HOME", "")
     if base:
         return Path(base).expanduser() / "typst"
-    return Path.home() / ".cache" / "manimlite" / "typst"
+    return Path.home() / ".cache" / "motiongram" / "typst"
 
 
 def _typst_stub(source: str) -> str:
@@ -61,7 +61,7 @@ def _subtitle_typst_document(
 """
 
 
-def typst_cache_key(source: str, *, engine_marker: str = "manimlite_typst_v1") -> str:
+def typst_cache_key(source: str, *, engine_marker: str = "motiongram_typst_v1") -> str:
     h = hashlib.sha256()
     h.update(engine_marker.encode())
     h.update(b"\n")
@@ -91,7 +91,7 @@ def typst_subtitle_cache_key(
     page_width_pt: float,
     font_size_pt: float,
     fill_rgb_hex: str,
-    engine_marker: str = "manimlite_subtitle_v1",
+    engine_marker: str = "motiongram_subtitle_v1",
 ) -> str:
     doc = subtitle_document_for_cache(
         body,
@@ -102,7 +102,7 @@ def typst_subtitle_cache_key(
     return typst_cache_key(doc, engine_marker=engine_marker)
 
 
-def cached_typst_svg_path(source: str, *, engine_marker: str = "manimlite_typst_v1") -> Path | None:
+def cached_typst_svg_path(source: str, *, engine_marker: str = "motiongram_typst_v1") -> Path | None:
     """Return path to ``.svg`` compiled from ``source``, or ``None`` if ``typst`` is unavailable.
 
     Cached by :func:`typst_cache_key`. Idempotent: same source returns the same file.
@@ -142,7 +142,7 @@ def cached_typst_subtitle_svg_path(
     page_width_pt: float,
     font_size_pt: float,
     fill_rgb_hex: str,
-    engine_marker: str = "manimlite_subtitle_v1",
+    engine_marker: str = "motiongram_subtitle_v1",
 ) -> Path | None:
     """Compile subtitle Typst to a cached SVG, or None if Typst is missing or compile fails."""
     if shutil.which("typst") is None:

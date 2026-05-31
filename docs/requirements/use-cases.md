@@ -8,11 +8,11 @@ Primary actors: **Educator**, **Developer**, **LLM Agent**, **CI Pipeline**.
 
 **Actor:** Educator  
 **Goal:** Export a 30–120 s MP4 explaining one idea.  
-**Preconditions:** ManimLite installed; scene file written.  
+**Preconditions:** MotionGram installed; scene file written.  
 **Main flow:**
 
 1. Author defines `Scene`, shapes, and timeline.
-2. Run `manimlite render scene.py`.
+2. Run `motiongram render scene.py`.
 3. System renders frames and encodes MP4.
 4. User uploads MP4 to LMS or YouTube.
 

@@ -6,7 +6,7 @@ layered ring geometry, diagonal slash, dot-grid atmosphere, floating glyph.
 Run::
 
     python examples/showcase_intro.py
-    manimlite render examples/showcase_intro.py -o showcase.mp4
+    motiongram render examples/showcase_intro.py -o showcase.mp4
 
 Requires: skia-python, ``typst`` on ``PATH``.
 """
@@ -17,11 +17,11 @@ import math
 import sys
 from pathlib import Path
 
-from manimlite import MoveX, MoveY, Parallel, Scene, SkiaRenderer
-from manimlite.export import PyAVEncoder
-from manimlite.core import Node
-from manimlite.shapes import Line, Polygon
-from manimlite.text import CodeBlock, MathExpr, Text
+from motiongram import MoveX, MoveY, Parallel, Scene, SkiaRenderer
+from motiongram.export import PyAVEncoder
+from motiongram.core import Node
+from motiongram.shapes import Line, Polygon
+from motiongram.text import CodeBlock, MathExpr, Text
 
 # ---------------------------------------------------------------------------
 # Layout constants
@@ -255,7 +255,7 @@ def build_scene() -> Scene:
 
     # Title — biggest, arrives first
     title = Text(
-        content="ManimLite",
+        content="MotionGram",
         x=80.0,
         y=104.0,
         font_size=58.0,
@@ -300,7 +300,7 @@ def build_scene() -> Scene:
     # Code block — rises from below the rule
     snippet = CodeBlock(
         code=(
-            'from manimlite import Scene, MoveX, Text\n\n'
+            'from motiongram import Scene, MoveX, Text\n\n'
             "scene = Scene(width=1280, height=720, fps=30, duration=3.0)\n"
             "label = Text('Hello', x=80, y=120, font_size=42)\n"
             "scene.add_node(label)\n"
@@ -319,7 +319,7 @@ def build_scene() -> Scene:
     # -----------------------------------------------------------------------
 
     footer = Text(
-        content="Render:  manimlite render examples/showcase_intro.py",
+        content="Render:  motiongram render examples/showcase_intro.py",
         x=80.0,
         y=666.0,
         font_size=14.0,
@@ -337,7 +337,7 @@ def build_scene() -> Scene:
 # ---------------------------------------------------------------------------
 
 def get_skia_renderer() -> SkiaRenderer:
-    """Optional hook for ``manimlite render`` — matches :func:`main` clear color."""
+    """Optional hook for ``motiongram render`` — matches :func:`main` clear color."""
     return SkiaRenderer(clear_color=BG)
 
 

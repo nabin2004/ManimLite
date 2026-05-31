@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from manimlite import Renderer
+from motiongram import Renderer
 
 WIDTH, HEIGHT = 32, 16
 BG = " "

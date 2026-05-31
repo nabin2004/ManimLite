@@ -1,4 +1,4 @@
-# ManimLite roadmap
+# MotionGram 📽️ roadmap
 
 Milestones from the project proposal, adjusted for Kitten TTS voice-over and no Marp in core scope.
 

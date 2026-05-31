@@ -8,8 +8,8 @@ from __future__ import annotations
 
 from collections.abc import Sequence as Seq
 
-from manimlite.animate import MoveY, Parallel, ScaleY, SquashStretch
-from manimlite.core import Node, Scene
+from motiongram.animate import MoveY, Parallel, ScaleY, SquashStretch
+from motiongram.core import Node, Scene
 
 
 def add_squash_stretch_drop(
@@ -47,7 +47,7 @@ def add_blink(
 ) -> None:
     """Scale ``targets`` down along ``scale_y`` then back — lid-style blink.
 
-    Apply to lightweight wrapper :class:`~manimlite.core.Node` parents around each
+    Apply to lightweight wrapper :class:`~motiongram.core.Node` parents around each
     drawable so eyelids or whites squash symmetrically.
     """
     if blink_duration <= 0.0:

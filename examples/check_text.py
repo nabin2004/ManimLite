@@ -1,4 +1,4 @@
-"""Showcase: Text, MathExpr (Typst), and CodeBlock capabilities in ManimLite.
+"""Showcase: Text, MathExpr (Typst), and CodeBlock capabilities in MotionGram.
 
 This example demonstrates:
 - Plain text rendering with various font sizes
@@ -9,7 +9,7 @@ This example demonstrates:
 Run::
 
     python examples/check_text.py                # renders to check_text.mp4
-    manimlite render examples/check_text.py     # same, via CLI
+    motiongram render examples/check_text.py     # same, via CLI
 
 Requires: skia-python, typst CLI on PATH, pygments, pyav
 """
@@ -19,7 +19,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from manimlite import (
+from motiongram import (
     Circle,
     CircleOutline,
     MoveX,
@@ -27,8 +27,8 @@ from manimlite import (
     Scene,
     SkiaRenderer,
 )
-from manimlite.export import PyAVEncoder
-from manimlite.text import CodeBlock, MathExpr, Text
+from motiongram.export import PyAVEncoder
+from motiongram.text import CodeBlock, MathExpr, Text
 
 WIDTH, HEIGHT = 1920, 1080
 FPS = 30.0
@@ -43,7 +43,7 @@ def build_scene() -> Scene:
     # Title Section
     # ─────────────────────────────────────────────────────────────
     title = Text(
-        content="ManimLite: Elegant Math Animations",
+        content="MotionGram: Elegant Math Animations",
         x=100,
         y=80,
         font_size=64.0,

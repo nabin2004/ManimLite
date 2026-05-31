@@ -1041,7 +1041,7 @@ wheels = [
 ]
 
 [[package]]
-name = "manimlite"
+name = "motiongram"
 version = "0.1.0a0"
 source = { editable = "." }
 dependencies = [

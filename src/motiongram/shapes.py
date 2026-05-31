@@ -1,12 +1,12 @@
-"""Vector primitives: lines, polygons, curves, and canonical :class:`~manimlite.core.Circle`."""
+"""Vector primitives: lines, polygons, curves, and canonical :class:`~motiongram.core.Circle`."""
 
 from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
 
-from manimlite.canvas import Canvas
-from manimlite.core import Circle, Node
+from motiongram.canvas import Canvas
+from motiongram.core import Circle, Node
 
 PathCommands = list[tuple[str, tuple[float, ...]]]
 
@@ -16,7 +16,7 @@ class Line(Node):
     """Line segment from start to end in local space.
 
     Use keyword arguments for geometry fields so positional args do not bind
-    :class:`~manimlite.core.Node` fields ``x``, ``y``, ``children``.
+    :class:`~motiongram.core.Node` fields ``x``, ``y``, ``children``.
     """
 
     x0: float = 0.0

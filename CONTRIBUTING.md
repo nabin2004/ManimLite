@@ -1,6 +1,6 @@
-# Contributing to ManimLite
+# Contributing to MotionGram
 
-Thank you for your interest in ManimLite.
+Thank you for your interest in MotionGram.
 
 ## Development setup
 

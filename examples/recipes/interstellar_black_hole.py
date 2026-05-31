@@ -7,7 +7,7 @@ shadow, photon-ring stroke, and optional lensed hints. Motion comes from the tim
 Run::
 
     python examples/recipes/interstellar_black_hole.py
-    manimlite render examples/recipes/interstellar_black_hole.py -o gargantua.mp4
+    motiongram render examples/recipes/interstellar_black_hole.py -o gargantua.mp4
 
 Requires: skia-python, PyAV.
 
@@ -20,11 +20,11 @@ import random
 import sys
 from pathlib import Path
 
-from manimlite import CameraZoom, Rotate, Scene, SkiaRenderer
-from manimlite.core import Node
-from manimlite.export import PyAVEncoder
-from manimlite.shapes import Arc, Ellipse, Line
-from manimlite.value import GradientOverlay
+from motiongram import CameraZoom, Rotate, Scene, SkiaRenderer
+from motiongram.core import Node
+from motiongram.export import PyAVEncoder
+from motiongram.shapes import Arc, Ellipse, Line
+from motiongram.value import GradientOverlay
 
 WIDTH = 1280
 HEIGHT = 720

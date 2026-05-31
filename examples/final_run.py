@@ -1,8 +1,8 @@
-from manimlite.core import Node 
-from manimlite import CameraZoom, Rotate, Scene, SkiaRenderer, renderer
-from manimlite.export import PyAVEncoder
-from manimlite.shapes import Circle, Line, Path, Rectangle
-from manimlite.value import GradientOverlay
+from motiongram.core import Node 
+from motiongram import CameraZoom, Rotate, Scene, SkiaRenderer, renderer
+from motiongram.export import PyAVEncoder
+from motiongram.shapes import Circle, Line, Path, Rectangle
+from motiongram.value import GradientOverlay
 import sys
 
 

@@ -1,6 +1,6 @@
 # World-building catalog (shapes + animation)
 
-ManimLite scenes separate **structure** (`Node` graph), **time** (`Scene.add_animation`),
+MotionGram scenes separate **structure** (`Node` graph), **time** (`Scene.add_animation`),
 and **behavior** (`Animator` implementations). This page maps a few **drawing primitives**
 and **motion combos** to the principle demos under [`examples/principles/`](principles/).
 
@@ -12,7 +12,7 @@ This is the intended mental model for **world-authored** scenes (see [`world_bui
 - **Order of transforms:** Anything under a **`WorldPortal`** is laid out in **world units**. The portal’s `draw` pushes an **affine** (`world_pixel_affine_coeffs` → `SkiaCanvas.push_affine_2x3`) so Skia sees **frame pixel** coordinates. **`Scene.camera`** (and `CameraPan` / `CameraZoom`) still run in **pixel space after** that—plan camera moves in pixels.
 - **Semantic layers:** **`world_shell()`** returns named empty containers (`background`, `midground`, `foreground`, plus `props` / `characters` under mid). **Draw order follows tree order** (sibling order). **`Node.world_z`** is optional metadata only in v1; there is no global depth sort yet.
 - **Ground:** (1) **Logical:** `WorldSpec.ground_y` plus **`place_on_ground(node, ground_y)`** for pinning a node’s anchor to the ground line. (2) **Visual:** optional **`ground_strip(spec, …)`** builds a full-width band under the portal whose **top edge** is at the chosen ground **y** (see [`principles/26_world_viewport.py`](principles/26_world_viewport.py)).
-- **Procedural presets (optional):** **`manimlite.procedural`** hosts seedable manifests that materialize into a `world_shell()` and return handles for `add_animation` (see `RainyLandscapeManifest` in [`src/manimlite/procedural/`](../src/manimlite/procedural/__init__.py)). The root `manimlite` package does **not** re-export this subpackage.
+- **Procedural presets (optional):** **`motiongram.procedural`** hosts seedable manifests that materialize into a `world_shell()` and return handles for `add_animation` (see `RainyLandscapeManifest` in [`src/motiongram/procedural/`](../src/motiongram/procedural/__init__.py)). The root `motiongram` package does **not** re-export this subpackage.
 - **Stubs:** `attach`, `mirror_x`, and `apply_gravity_step` remain unimplemented on purpose until bounds and graph-copy semantics are defined; clip motion stays on the **timeline** per [`AGENTS.md`](../AGENTS.md).
 
 ```mermaid
@@ -43,15 +43,15 @@ flowchart LR
 When you want **stage space** instead of guessing pixels:
 
 - **`WorldSpec`** + **`WorldPortal`** — subtree `x` / `y` are **world units** with horizontal domain `[-world_width/2, +world_width/2]` (so with `world_width=10`, `x=-5` is the left edge). Skia still receives final pixel coordinates; the portal installs an affine map via `SkiaCanvas.push_affine_2x3`.
-- **`Scene.camera`** / **`CameraPan`** / **`CameraZoom`** — still operate in **pixel** space **after** the portal (see [`SkiaRenderer.render_frame`](../src/manimlite/render.py)). Plan pans in pixels that match your composed layout.
+- **`Scene.camera`** / **`CameraPan`** / **`CameraZoom`** — still operate in **pixel** space **after** the portal (see [`SkiaRenderer.render_frame`](../src/motiongram/render.py)). Plan pans in pixels that match your composed layout.
 - **`world_shell()`** — returns named empty containers (`background`, `midground`, `foreground`, `props`, `characters`) so you target intent, not coordinates; **painter order** follows tree order (no global depth sort yet).
 - **`Node.world_z`** — optional metadata for recipes / documentation; v1 does not reorder drawing automatically.
 - **Stubs** — `attach`, `mirror_x`, `apply_gravity_step` raise `NotImplementedError` until bounds and simulation hooks exist; **authored motion stays on the timeline** per [`AGENTS.md`](../AGENTS.md).
 
 ```python
-from manimlite import Scene, SkiaRenderer, WorldPortal, WorldSpec, world_shell
-from manimlite.core import Node
-from manimlite.shapes import Ellipse
+from motiongram import Scene, SkiaRenderer, WorldPortal, WorldSpec, world_shell
+from motiongram.core import Node
+from motiongram.shapes import Ellipse
 
 scene = Scene(width=960, height=540, fps=30, duration=1.0)
 spec = WorldSpec(world_width=10.0, ground_y=-2.5)
@@ -96,8 +96,8 @@ to the parent anchor.
 
 | Helper | Role | Defined in |
 |--------|------|------------|
-| `add_squash_stretch_drop` | Parallel squash–stretch + vertical move | [`manimlite.recipes`](../src/manimlite/recipes.py) |
-| `add_blink` | Two-phase `ScaleY` on wrapper nodes | [`manimlite.recipes`](../src/manimlite/recipes.py) |
+| `add_squash_stretch_drop` | Parallel squash–stretch + vertical move | [`motiongram.recipes`](../src/motiongram/recipes.py) |
+| `add_blink` | Two-phase `ScaleY` on wrapper nodes | [`motiongram.recipes`](../src/motiongram/recipes.py) |
 
 Worked examples: [`recipes/animated_character.py`](recipes/animated_character.py).
 

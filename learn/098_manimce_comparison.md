@@ -2,7 +2,7 @@
 
 ## Goal of this phase
 
-Be honest: ManimLite trades **ecosystem breadth** for **install size, cold path, and LLM ergonomics**.
+Be honest: MotionGram trades **ecosystem breadth** for **install size, cold path, and LLM ergonomics**.
 
 ## Problem being solved
 
@@ -10,7 +10,7 @@ Be honest: ManimLite trades **ecosystem breadth** for **install size, cold path,
 
 ## Implementation
 
-| Area | ManimCE | ManimLite direction |
+| Area | ManimCE | MotionGram direction |
 |------|---------|---------------------|
 | Math | LaTeX (powerful) | Typst → SVG (different syntax) |
 | Vector | Cairo/Pango stack | Skia (planned) / numpy (teaching) |
@@ -28,4 +28,4 @@ Manim’s community assets (templates, gallery) won’t port line-for-line.
 
 ## Next phase preview
 
-Phase 099 — **Limitations** list of this tutorial’s toy code vs the real `manimlite` package.
+Phase 099 — **Limitations** list of this tutorial’s toy code vs the real `motiongram` package.

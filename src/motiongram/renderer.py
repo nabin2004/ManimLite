@@ -5,9 +5,9 @@ import sys
 import time
 from typing import Any
 
-from manimlite.animate import apply_timeline
-from manimlite.core import Node, Scene
-from manimlite.engine import step_frame
+from motiongram.animate import apply_timeline
+from motiongram.core import Node, Scene
+from motiongram.engine import step_frame
 
 
 def ascii_frame_text(frame: list[list[str]]) -> str:
@@ -32,7 +32,7 @@ class AsciiFrameCanvas:
         self._frame = frame
 
     def set_pixel(self, x: int, y: int, ch: str = "#") -> None:
-        """Satisfies :class:`~manimlite.canvas.Canvas` for raster ASCII."""
+        """Satisfies :class:`~motiongram.canvas.Canvas` for raster ASCII."""
         self._renderer.set_pixel(self._frame, x, y, ch)
 
 

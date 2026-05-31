@@ -23,7 +23,7 @@ Reimplementing H.264 is not an option. Controlling the **API surface** in-proces
 
 ## Explanation
 
-The tutorial keeps pseudocode: PyAV is **nontrivial**; ManimLite’s `export` module is the right place to centralize the real version-pinned code.
+The tutorial keeps pseudocode: PyAV is **nontrivial**; MotionGram’s `export` module is the right place to centralize the real version-pinned code.
 
 ## Limitations
 

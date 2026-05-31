@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from manimlite.canvas import Canvas
-from manimlite.core import Node
+from motiongram.canvas import Canvas
+from motiongram.core import Node
 
 
 @dataclass(slots=True)

@@ -1,11 +1,11 @@
-# Typst subtitles in ManimLite
+# Typst subtitles in MotionGram
 
 Burned-in captions are **declarative**: you attach a `SubtitleTrack` to `Scene.subtitle_track`. The Skia renderer draws cues **after** the camera transform, so text stays fixed on screen during pans and zooms.
 
 ## Dependencies
 
 - The **Typst CLI** must be on `PATH` (same as `MathExpr`).
-- SVG output is cached under `~/.cache/manimlite/typst` or `MANIMLITE_CACHE_HOME/typst`.
+- SVG output is cached under `~/.cache/motiongram/typst` or `MOTIONGRAM_CACHE_HOME/typst`.
 
 ## Required shape (for humans and LLM agents)
 
@@ -17,7 +17,7 @@ Burned-in captions are **declarative**: you attach a `SubtitleTrack` to `Scene.s
 Example (conceptual):
 
 ```python
-from manimlite import Scene, SubtitleCue, SubtitleStyle, SubtitleTrack, validate_subtitle_track
+from motiongram import Scene, SubtitleCue, SubtitleStyle, SubtitleTrack, validate_subtitle_track
 
 scene = Scene(width=1280, height=720, fps=30.0, duration=5.0)
 scene.subtitle_track = SubtitleTrack(
@@ -50,7 +50,7 @@ for w in validate_subtitle_track(scene.subtitle_track, duration=scene.duration):
 ## Typst body rules
 
 - **No LaTeX.** Use Typst math: inline `$...$`, display `[$ ... $]` if you need a full document with `#set page` (advanced).
-- **Default wrapper:** if `typst` does *not* start with `#set` or `#page`, ManimLite wraps your fragment in a centered paragraph with page width and text size derived from `SubtitleStyle` and scene width.
+- **Default wrapper:** if `typst` does *not* start with `#set` or `#page`, MotionGram wraps your fragment in a centered paragraph with page width and text size derived from `SubtitleStyle` and scene width.
 
 - **Transparent compositing:** the default wrapper sets Typst `page(fill: none)` so glyphs composite on your scene background—avoiding a solid white page that washes out light ink colors.
 - **`#` starts markup** in Typst. Literal text that looks like code may need escaping or string syntax per Typst rules.
@@ -67,7 +67,7 @@ Stacking order: cues are sorted by start, end, typst, then plain / WebVTT fields
 
 ## WebVTT sidecar
 
-ManimLite writes **WebVTT**, not SubRip (SRT): timestamps use a **period** before milliseconds (`00:11.000`), not a comma. When the cue lies in the first hour, times use the compact **`MM:SS.mmm`** form; longer clips use **`HH:MM:SS.mmm`**.
+MotionGram writes **WebVTT**, not SubRip (SRT): timestamps use a **period** before milliseconds (`00:11.000`), not a comma. When the cue lies in the first hour, times use the compact **`MM:SS.mmm`** form; longer clips use **`HH:MM:SS.mmm`**.
 
 Optional on each `SubtitleCue` (WebVTT-only; ignored for burned-in Typst):
 

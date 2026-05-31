@@ -14,7 +14,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from manimlite import (
+from motiongram import (
     CameraPan,
     Circle,
     CircleOutline,
@@ -26,7 +26,7 @@ from manimlite import (
     validate_subtitle_track,
     write_webvtt,
 )
-from manimlite.export import PyAVEncoder
+from motiongram.export import PyAVEncoder
 
 # Match showcase_intro reel palette
 WIDTH = 1280

@@ -6,7 +6,7 @@ Describe the **end-to-end mental model**: `for frame in frames: encode.write(fra
 
 ## Problem being solved
 
-Many tutorials teach “export PNGs then ffmpeg.” That violates ManimLite’s I/O and subprocess constraints. The right mental model is **streaming memory to an encoder** (PyAV, Phase 074).
+Many tutorials teach “export PNGs then ffmpeg.” That violates MotionGram’s I/O and subprocess constraints. The right mental model is **streaming memory to an encoder** (PyAV, Phase 074).
 
 ## Implementation
 

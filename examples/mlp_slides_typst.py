@@ -6,7 +6,7 @@ parent ``Node``; transitions are ``Parallel(MoveX(...), FadeIn/FadeOut)``.
 Run::
 
     python examples/mlp_slides_typst.py
-    manimlite render examples/mlp_slides_typst.py -o mlp_slides.mp4
+    motiongram render examples/mlp_slides_typst.py -o mlp_slides.mp4
 
 Requires: skia-python, ``typst`` on ``PATH``.
 """
@@ -16,7 +16,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from manimlite import (
+from motiongram import (
     FadeIn,
     FadeOut,
     MoveX,
@@ -25,8 +25,8 @@ from manimlite import (
     Scene,
     SkiaRenderer,
 )
-from manimlite.export import PyAVEncoder
-from manimlite.text import MathExpr, Text
+from motiongram.export import PyAVEncoder
+from motiongram.text import MathExpr, Text
 
 WIDTH, HEIGHT = 1280, 720
 FPS = 30.0

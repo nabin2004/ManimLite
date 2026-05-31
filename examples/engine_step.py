@@ -6,7 +6,7 @@ timeline + ``apply_timeline``; ``step_frame`` also runs ``Node.update`` for non-
 
 from __future__ import annotations
 
-from manimlite import Circle, CircleOutline, Scene, step_frame
+from motiongram import Circle, CircleOutline, Scene, step_frame
 
 
 def main() -> None:

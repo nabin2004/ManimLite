@@ -9,18 +9,18 @@ import math
 import sys
 from pathlib import Path
 
-from manimlite import Scene, SkiaRenderer
-from manimlite.export import PyAVEncoder
+from motiongram import Scene, SkiaRenderer
+from motiongram.export import PyAVEncoder
 
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 3.0
 BG = (30, 30, 30)
 
-from manimlite import MoveY, Parallel, ScaleY
-from manimlite.form import Sphere
-from manimlite.shapes import Line
-from manimlite.value import GradientOverlay
+from motiongram import MoveY, Parallel, ScaleY
+from motiongram.form import Sphere
+from motiongram.shapes import Line
+from motiongram.value import GradientOverlay
 
 
 def build_scene() -> Scene:

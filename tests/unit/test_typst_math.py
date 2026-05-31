@@ -6,10 +6,10 @@ import shutil
 
 import pytest
 
-from manimlite.core import Scene
-from manimlite.render import SkiaRenderer
-from manimlite.text import MathExpr
-from manimlite.typst_cache import cached_typst_svg_path, typst_cache_key
+from motiongram.core import Scene
+from motiongram.render import SkiaRenderer
+from motiongram.text import MathExpr
+from motiongram.typst_cache import cached_typst_svg_path, typst_cache_key
 
 
 def test_typst_cache_key_stable() -> None:

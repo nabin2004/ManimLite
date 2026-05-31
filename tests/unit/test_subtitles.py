@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from manimlite.subtitles import (
+from motiongram.subtitles import (
     SubtitleCue,
     SubtitleStyle,
     SubtitleTrack,

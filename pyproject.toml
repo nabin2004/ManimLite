@@ -3,9 +3,9 @@ requires = ["hatchling>=1.24"]
 build-backend = "hatchling.build"
 
 [project]
-name = "manimlite"
-version = "0.1.0a0"
-description = "Lightweight motion graphics for explainers — Typst math, Skia rendering, PyAV MP4 export — built for speed and LLM-friendly scene code."
+name = "motiongram"
+version = "0.2.0"
+description = "Lightweight motion graphics for explainers — Typst math, Skia rendering, PyAV MP4 export, built for speed and LLM-friendly scene code."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
@@ -50,19 +50,19 @@ dev = [
 ]
 
 [project.scripts]
-manimlite = "manimlite.cli:app"
+motiongram = "motiongram.cli:app"
 
 [project.urls]
-Homepage = "https://github.com/nabin2004/ManimLite"
-Documentation = "https://github.com/nabin2004/ManimLite/tree/main/docs"
-Repository = "https://github.com/nabin2004/ManimLite"
-Issues = "https://github.com/nabin2004/ManimLite/issues"
+Homepage = "https://github.com/nabin2004/MotionGram"
+Documentation = "https://github.com/nabin2004/MotionGram/tree/main/docs"
+Repository = "https://github.com/nabin2004/MotionGram"
+Issues = "https://github.com/nabin2004/MotionGram/issues"
 
 [tool.hatch.metadata]
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/manimlite"]
+packages = ["src/motiongram"]
 
 [tool.ruff]
 target-version = "py311"
@@ -80,7 +80,7 @@ python_version = "3.11"
 strict = true
 warn_return_any = true
 warn_unused_ignores = true
-packages = ["manimlite"]
+packages = ["motiongram"]
 mypy_path = "src"
 explicit_package_bases = true
 

@@ -9,17 +9,17 @@ import math
 import sys
 from pathlib import Path
 
-from manimlite import Scene, SkiaRenderer
-from manimlite.export import PyAVEncoder
+from motiongram import Scene, SkiaRenderer
+from motiongram.export import PyAVEncoder
 
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 2.5
 BG = (30, 30, 30)
 
-from manimlite import MoveX, TimeScale
-from manimlite.easing import ease_in_out_cubic
-from manimlite.shapes import Ellipse
+from motiongram import MoveX, TimeScale
+from motiongram.easing import ease_in_out_cubic
+from motiongram.shapes import Ellipse
 
 
 def build_scene() -> Scene:

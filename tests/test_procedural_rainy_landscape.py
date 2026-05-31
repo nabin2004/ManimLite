@@ -1,14 +1,14 @@
-"""Tests for procedural manifest materialization (`manimlite.procedural`)."""
+"""Tests for procedural manifest materialization (`motiongram.procedural`)."""
 
 from __future__ import annotations
 
-from manimlite import Scene, world_shell
-from manimlite.procedural import (
+from motiongram import Scene, world_shell
+from motiongram.procedural import (
     apply_rainy_landscape_animations,
     default_rainy_landscape_manifest,
     materialize_rainy_landscape,
 )
-from manimlite.world import WorldSpec
+from motiongram.world import WorldSpec
 
 
 def test_default_rainy_landscape_handles_shape() -> None:

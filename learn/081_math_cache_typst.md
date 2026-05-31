@@ -21,7 +21,7 @@ def cache_key(src: str, typst_version: str) -> str:
 
 ## Explanation
 
-The **hot path** loads cached SVG; **cache miss** runs Typst offline and stores the SVG in `~/.cache/manimlite/typst/...`.
+The **hot path** loads cached SVG; **cache miss** runs Typst offline and stores the SVG in `~/.cache/motiongram/typst/...`.
 
 ## Limitations
 

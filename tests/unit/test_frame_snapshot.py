@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from manimlite.animate import CircleOutline
-from manimlite.core import Circle, Scene
-from manimlite.engine import step_frame
-from manimlite.renderer import AsciiFrameCanvas, Renderer, ascii_frame_sha256
+from motiongram.animate import CircleOutline
+from motiongram.core import Circle, Scene
+from motiongram.engine import step_frame
+from motiongram.renderer import AsciiFrameCanvas, Renderer, ascii_frame_sha256
 
 
 def _render_still_at_t(scene: Scene, t: float, r: Renderer) -> list[list[str]]:

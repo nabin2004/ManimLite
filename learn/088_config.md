@@ -2,7 +2,7 @@
 
 ## Goal of this phase
 
-Layer configuration: **defaults** in code, **overrides** from CLI, optional **.manimlite.toml** later.
+Layer configuration: **defaults** in code, **overrides** from CLI, optional **.motiongram.toml** later.
 
 ## Problem being solved
 
@@ -26,7 +26,7 @@ class Config:
 
 def from_env() -> Config:
     c = Config()
-    w = os.getenv("MANIMLITE_WIDTH")
+    w = os.getenv("MOTIONGRAM_WIDTH")
     if w:
         c.width = int(w)
     return c

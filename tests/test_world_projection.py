@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from manimlite.world import WorldSpec, screen_to_world, world_pixel_affine_coeffs, world_to_screen
+from motiongram.world import WorldSpec, screen_to_world, world_pixel_affine_coeffs, world_to_screen
 
 
 def test_world_to_screen_corners_y_down() -> None:

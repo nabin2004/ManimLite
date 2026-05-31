@@ -10,11 +10,11 @@ from typing import Any, cast
 import numpy as np
 import numpy.typing as npt
 
-from manimlite.animate import smoothstep
-from manimlite.core import Scene
-from manimlite.engine import step_frame
-from manimlite.subtitles import active_subtitles, subtitle_typst_layout
-from manimlite.typst_cache import cached_typst_subtitle_svg_path
+from motiongram.animate import smoothstep
+from motiongram.core import Scene
+from motiongram.engine import step_frame
+from motiongram.subtitles import active_subtitles, subtitle_typst_layout
+from motiongram.typst_cache import cached_typst_subtitle_svg_path
 
 
 def _clamp01(x: float) -> float:
@@ -533,7 +533,7 @@ def _composite_subtitle_track(surface: Any, scene: Scene, t: float) -> None:
 
     if shutil.which("typst") is None:
         if not _SUBTITLE_TYST_WARNED:
-            print("manimlite: typst not on PATH; subtitles skipped", file=sys.stderr)
+            print("motiongram: typst not on PATH; subtitles skipped", file=sys.stderr)
             _SUBTITLE_TYST_WARNED = True
         return
     active = active_subtitles(track, t)

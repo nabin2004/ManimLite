@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from manimlite.animate import CircleOutline, MoveX
-from manimlite.canvas import NullCanvas, RecordingCanvas
-from manimlite.core import Circle, Node, Scene
-from manimlite.engine import step_frame
-from manimlite.renderer import AsciiFrameCanvas, Renderer
+from motiongram.animate import CircleOutline, MoveX
+from motiongram.canvas import NullCanvas, RecordingCanvas
+from motiongram.core import Circle, Node, Scene
+from motiongram.engine import step_frame
+from motiongram.renderer import AsciiFrameCanvas, Renderer
 
 
 def _paired_scenes():

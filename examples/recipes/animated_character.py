@@ -1,8 +1,8 @@
 """Recipe: tiny character from combined primitives + shared timeline helpers.
 
-Eyes use :class:`~manimlite.shapes.SemiCircle`; mouth is a :class:`~manimlite.shapes.Sector`.
-Motion uses :func:`~manimlite.recipes.add_squash_stretch_drop` and
-:func:`~manimlite.recipes.add_blink` (wrappers around ``add_animation``).
+Eyes use :class:`~motiongram.shapes.SemiCircle`; mouth is a :class:`~motiongram.shapes.Sector`.
+Motion uses :func:`~motiongram.recipes.add_squash_stretch_drop` and
+:func:`~motiongram.recipes.add_blink` (wrappers around ``add_animation``).
 
 Run::
 
@@ -17,11 +17,11 @@ import math
 import sys
 from pathlib import Path
 
-from manimlite import Scene, SkiaRenderer
-from manimlite.core import Node
-from manimlite.export import PyAVEncoder
-from manimlite.recipes import add_blink, add_squash_stretch_drop
-from manimlite.shapes import Ellipse, Rectangle, Sector, SemiCircle
+from motiongram import Scene, SkiaRenderer
+from motiongram.core import Node
+from motiongram.export import PyAVEncoder
+from motiongram.recipes import add_blink, add_squash_stretch_drop
+from motiongram.shapes import Ellipse, Rectangle, Sector, SemiCircle
 
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0

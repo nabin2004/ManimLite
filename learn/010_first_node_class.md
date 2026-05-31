@@ -55,7 +55,7 @@ if __name__ == "__main__":
 
 ## Explanation
 
-`@dataclass` makes `__init__` and `repr` free. The method `draw` is the core protocol of ManimLite’s graph: *nodes know how to render themselves* into a target buffer.
+`@dataclass` makes `__init__` and `repr` free. The method `draw` is the core protocol of MotionGram’s graph: *nodes know how to render themselves* into a target buffer.
 
 Inheritance is not required yet. We start with a concrete `Node` that is really a “point object.”
 

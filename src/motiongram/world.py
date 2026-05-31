@@ -5,7 +5,7 @@ Transforms sit **above** canvas backends (see pipeline in ``WorldPortal``).
 Domain: horizontal world ``x`` runs from ``-world_width/2`` … ``+world_width/2``
 (for ``world_width=10``, ``x=-5`` is the left edge at ``y=0``).
 
-``Scene.camera`` / :class:`~manimlite.animate.CameraPan` operate in **pixel** space after
+``Scene.camera`` / :class:`~motiongram.animate.CameraPan` operate in **pixel** space after
 :class:`WorldPortal` (portal outputs frame pixels consumed by ``SkiaRenderer``).
 """
 
@@ -14,9 +14,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Literal, NamedTuple
 
-from manimlite.canvas import Canvas
-from manimlite.core import Node
-from manimlite.shapes import Rectangle
+from motiongram.canvas import Canvas
+from motiongram.core import Node
+from motiongram.shapes import Rectangle
 
 CHARACTER_HEIGHT_UNITS = 1.8
 DEFAULT_GROUND_Y = -2.5
@@ -163,8 +163,8 @@ def ground_strip(
 ) -> Node:
     """Full-width band in world units whose **top** edge sits on the ground line.
 
-    Child :class:`~manimlite.shapes.Rectangle` uses top-left anchoring; the returned
-    :class:`~manimlite.core.Node` is placed at ``x = -world_width/2``, ``y = gy`` so
+    Child :class:`~motiongram.shapes.Rectangle` uses top-left anchoring; the returned
+    :class:`~motiongram.core.Node` is placed at ``x = -world_width/2``, ``y = gy`` so
     the strip spans ``[-world_width/2, +world_width/2]`` horizontally and extends
     downward by ``thickness`` (for default ``WorldSpec.y_down``).
     """

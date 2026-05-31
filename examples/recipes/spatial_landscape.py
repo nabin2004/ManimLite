@@ -1,8 +1,8 @@
 """Recipe: static world from primitive shapes (structure only, no timeline clips).
 
-Hills, sun, and pine trees built from :class:`~manimlite.shapes.Rectangle`,
-:class:`~manimlite.shapes.Ellipse`, :class:`~manimlite.shapes.Polygon`, and
-:class:`~manimlite.shapes.Line`.
+Hills, sun, and pine trees built from :class:`~motiongram.shapes.Rectangle`,
+:class:`~motiongram.shapes.Ellipse`, :class:`~motiongram.shapes.Polygon`, and
+:class:`~motiongram.shapes.Line`.
 
 Run::
 
@@ -16,10 +16,10 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from manimlite import Scene, SkiaRenderer
-from manimlite.core import Node
-from manimlite.export import PyAVEncoder
-from manimlite.shapes import Ellipse, Line, Polygon, Rectangle
+from motiongram import Scene, SkiaRenderer
+from motiongram.core import Node
+from motiongram.export import PyAVEncoder
+from motiongram.shapes import Ellipse, Line, Polygon, Rectangle
 
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0

@@ -9,15 +9,15 @@ import math
 import sys
 from pathlib import Path
 
-from manimlite import Scene, SkiaRenderer
-from manimlite.export import PyAVEncoder
+from motiongram import Scene, SkiaRenderer
+from motiongram.export import PyAVEncoder
 
 WIDTH, HEIGHT = 960, 540
 FPS = 30.0
 DURATION = 3.0
 BG = (30, 30, 30)
 
-from manimlite.shapes import BezierCurve, Line
+from motiongram.shapes import BezierCurve, Line
 
 
 def build_scene() -> Scene:

@@ -1,10 +1,10 @@
-"""ManimLite — lightweight educational animation engine (pre-alpha stubs)."""
+"""MotionGram 📽️ — The grammar of motion graphics (pre-alpha stubs)."""
 
 from __future__ import annotations
 
 __version__ = "0.1.0a0"
 
-from manimlite.animate import (
+from motiongram.animate import (
     Animator,
     Anticipate,
     Blur,
@@ -33,9 +33,9 @@ from manimlite.animate import (
     lerp,
     smoothstep,
 )
-from manimlite.audio import KittenVoiceOverBackend, VoiceOver
-from manimlite.canvas import Canvas, NullCanvas, RecordingCanvas
-from manimlite.composition import (
+from motiongram.audio import KittenVoiceOverBackend, VoiceOver
+from motiongram.canvas import Canvas, NullCanvas, RecordingCanvas
+from motiongram.composition import (
     PHI,
     TAU,
     GesturePath,
@@ -45,8 +45,8 @@ from manimlite.composition import (
     distribute_evenly,
     stack_vertical,
 )
-from manimlite.core import Camera, Circle, Node, Scene, Timeline
-from manimlite.easing import (
+from motiongram.core import Camera, Circle, Node, Scene, Timeline
+from motiongram.easing import (
     cubic_bezier,
     ease_in_back,
     ease_in_out_cubic,
@@ -57,14 +57,14 @@ from manimlite.easing import (
     linear,
     overshoot,
 )
-from manimlite.engine import step_frame
-from manimlite.export import PyAVEncoder
-from manimlite.form import Cube, Cylinder, Sphere
-from manimlite.perspective import PerspectiveGrid
-from manimlite.recipes import add_blink, add_squash_stretch_drop
-from manimlite.render import SkiaCanvas, SkiaRenderer
-from manimlite.renderer import Renderer, ascii_frame_sha256, ascii_frame_text
-from manimlite.shapes import (
+from motiongram.engine import step_frame
+from motiongram.export import PyAVEncoder
+from motiongram.form import Cube, Cylinder, Sphere
+from motiongram.perspective import PerspectiveGrid
+from motiongram.recipes import add_blink, add_squash_stretch_drop
+from motiongram.render import SkiaCanvas, SkiaRenderer
+from motiongram.renderer import Renderer, ascii_frame_sha256, ascii_frame_text
+from motiongram.shapes import (
     Arc,
     BezierCurve,
     Ellipse,
@@ -76,7 +76,7 @@ from manimlite.shapes import (
     Sector,
     SemiCircle,
 )
-from manimlite.subtitles import (
+from motiongram.subtitles import (
     SubtitleCue,
     SubtitleStyle,
     SubtitleTrack,
@@ -86,16 +86,16 @@ from manimlite.subtitles import (
     validate_subtitle_track,
     write_webvtt,
 )
-from manimlite.text import CodeBlock, MathExpr, Text
-from manimlite.typst_cache import (
+from motiongram.text import CodeBlock, MathExpr, Text
+from motiongram.typst_cache import (
     cached_typst_subtitle_svg_path,
     cached_typst_svg_path,
     subtitle_document_for_cache,
     typst_cache_key,
     typst_subtitle_cache_key,
 )
-from manimlite.value import GradientOverlay, Shadow
-from manimlite.world import (
+from motiongram.value import GradientOverlay, Shadow
+from motiongram.world import (
     CHARACTER_HEIGHT_UNITS,
     SemanticPart,
     WorldPortal,

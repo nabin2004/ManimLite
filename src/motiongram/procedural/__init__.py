@@ -1,10 +1,10 @@
 """Procedural manifests and preset builders (**optional**, unstable).
 
-Authors should import explicitly, e.g. ``from manimlite.procedural import …``.
-This subpackage is **not** re-exported from ``manimlite`` top-level.
+Authors should import explicitly, e.g. ``from motiongram.procedural import …``.
+This subpackage is **not** re-exported from ``motiongram`` top-level.
 """
 
-from manimlite.procedural.rainy_landscape import (
+from motiongram.procedural.rainy_landscape import (
     LandscapeAnimationSpec,
     LandscapeTrackHandles,
     RainyLandscapeManifest,

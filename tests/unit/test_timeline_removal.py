@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from manimlite.animate import CircleOutline, MoveX, apply_timeline
-from manimlite.core import Circle, Node, Scene, Timeline
+from motiongram.animate import CircleOutline, MoveX, apply_timeline
+from motiongram.core import Circle, Node, Scene, Timeline
 
 
 def test_remove_animation_at_leaves_other_entry_intact() -> None:

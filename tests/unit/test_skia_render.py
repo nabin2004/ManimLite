@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from manimlite.core import Circle, Scene
-from manimlite.render import SkiaCanvas, SkiaRenderer
+from motiongram.core import Circle, Scene
+from motiongram.render import SkiaCanvas, SkiaRenderer
 
 
 def test_skia_render_frame_returns_rgba_numpy() -> None:

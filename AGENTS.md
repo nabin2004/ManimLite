@@ -1,6 +1,6 @@
-# Agent / LLM authoring guide (ManimLite)
+# Agent / LLM authoring guide (MotionGram)
 
-This file helps humans and **LLM agents** write scenes that match ManimLite’s intended public API.
+This file helps humans and **LLM agents** write scenes that match MotionGram’s intended public API.
 
 ## Design principles
 
@@ -12,7 +12,7 @@ This file helps humans and **LLM agents** write scenes that match ManimLite’s 
 
 ## Architecture: three layers (normative)
 
-ManimLite separates **structure**, **time scheduling**, and **how values change**. Keep these boundaries when generating scenes.
+MotionGram separates **structure**, **time scheduling**, and **how values change**. Keep these boundaries when generating scenes.
 
 ### Layer 1 — Structure (scene graph)
 
@@ -43,7 +43,7 @@ ManimLite separates **structure**, **time scheduling**, and **how values change*
 
 ## Naming
 
-- Module names: `snake_case` (`manimlite.core`).
+- Module names: `snake_case` (`motiongram.core`).
 - Public classes: `PascalCase` (`Circle`, `MathExpr`).
 - Time in **seconds** as `float`.
 
@@ -63,7 +63,7 @@ ManimLite separates **structure**, **time scheduling**, and **how values change*
 ## Example shape (conceptual)
 
 ```python
-from manimlite import Scene, Circle, Timeline
+from motiongram import Scene, Circle, Timeline
 
 scene = Scene(width=1920, height=1080, fps=30, duration=3.0)
 # Nodes and timeline entries are added explicitly (API TBD in implementation).

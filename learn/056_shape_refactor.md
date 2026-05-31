@@ -44,7 +44,7 @@ class Shape:
 
 ## Explanation
 
-This mirrors ManimLite’s design direction: **flat** records with a few well-named parts instead of 6-level inheritance.
+This mirrors MotionGram’s design direction: **flat** records with a few well-named parts instead of 6-level inheritance.
 
 ## Limitations
 
