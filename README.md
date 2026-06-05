@@ -74,9 +74,12 @@ motiongram render examples/yaml/deeplearning_showcase.yaml -o showcase.mp4
 
 # Lecture with sections, recipes, and auto section titles
 motiongram render examples/yaml/weight_decay_lecture.yaml -o weight_decay.mp4
+
+# Live side-by-side preview while editing (VS Code / browser)
+motiongram preview examples/yaml/deeplearning_showcase.yaml --video-on-save
 ```
 
-Full field reference: [YAML schema (SCHEMA.md)](docs/SCHEMA.md). Python scenes remain the escape hatch for custom logic; YAML covers composition, elements, animations, sections, and recipes like `ForwardPass`.
+Full field reference: [YAML schema (SCHEMA.md)](docs/SCHEMA.md). For live editing, see the [Live Preview Guide](docs/guides/live-preview.md). Python scenes remain the escape hatch for custom logic; YAML covers composition, elements, animations, sections, and recipes like `ForwardPass`.
 
 ## Principles gallery
 
@@ -92,6 +95,7 @@ Index and topics: [Principles examples guide](docs/guides/principles-examples.md
 
 - [YAML schema (SCHEMA.md)](docs/SCHEMA.md) — declarative scene manifests
 - [Setup Guide](docs/guides/setup.md) — installing skia-python and Typst
+- [Live Preview Guide](docs/guides/live-preview.md) — YAML side-by-side editing in VS Code
 - [Math Rendering Guide](docs/guides/math-rendering.md) — using Typst for math
 - [Principles examples](docs/guides/principles-examples.md) — `examples/principles/` gallery
 - [Learn path (phases 000–100)](learn/README.md)

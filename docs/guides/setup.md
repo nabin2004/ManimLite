@@ -114,7 +114,17 @@ def get_skia_renderer() -> SkiaRenderer:
 
 `motiongram render` calls it when present so MP4 matches `python your_scene.py`.
 
-## 5. Principles gallery
+## 5. Live YAML preview
+
+While editing a declarative manifest, run a local preview server that reloads on save:
+
+```bash
+motiongram preview examples/yaml/deeplearning_showcase.yaml --video-on-save
+```
+
+For VS Code / Cursor side-by-side setup, see the [Live Preview Guide](live-preview.md).
+
+## 6. Principles gallery
 
 Short drawing and animation demos live in `examples/principles/`. Run any script from the repo root; it writes `<name>.mp4` beside the script:
 

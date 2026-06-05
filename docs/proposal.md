@@ -85,7 +85,7 @@ MotionGram fixes this with a flat, typed API.
 | matplotlib    | Python   | ~60 MB  | 3–6s       | Optional LaTeX | Medium       | Scientific plots  |
 | Blender       | Python   | ~3 GB   | 10–30s     | None           | Low          | 3D rendering      |
 
-### Key Positioning
+### Key Positioninga
 
 MotionGram is:
 

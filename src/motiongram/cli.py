@@ -146,6 +146,50 @@ def render(
     typer.echo(msg)
 
 
+
+@app.command()
+def preview(
+    scene_file: Annotated[
+        Path,
+        typer.Argument(help="Path to YAML manifest", exists=True, readable=True),
+    ],
+    port: Annotated[
+        int,
+        typer.Option("--port", help="HTTP port for preview server"),
+    ] = 8765,
+    host: Annotated[
+        str,
+        typer.Option("--host", help="Bind address"),
+    ] = "127.0.0.1",
+    time: Annotated[
+        str,
+        typer.Option("--time", help="Initial scrub time (e.g. 0s, 2.5)"),
+    ] = "0s",
+    video_on_save: Annotated[
+        bool,
+        typer.Option(
+            "--video-on-save",
+            help="Background full MP4 encode after saves (debounced)",
+        ),
+    ] = False,
+) -> None:
+    """Live-preview a YAML manifest in the browser (reloads on save)."""
+    suffix = scene_file.suffix.lower()
+    if suffix not in (".yaml", ".yml"):
+        raise typer.BadParameter("preview only supports .yaml / .yml manifests")
+
+    from motiongram.preview import run_preview_server
+
+    run_preview_server(
+        scene_file,
+        host=host,
+        port=port,
+        video_on_save=video_on_save,
+        initial_time=time,
+    )
+
+
+
 def main() -> None:
     """Entry point for ``python -m motiongram`` style invocation."""
     app()
